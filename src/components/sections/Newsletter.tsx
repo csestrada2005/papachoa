@@ -1,51 +1,55 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail } from "lucide-react";
 
 const Newsletter = () => {
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Newsletter submission logic would go here
     console.log("Newsletter signup:", email);
     setEmail("");
   };
 
   return (
-    <section className="py-20 md:py-28">
-      <div className="container">
+    <section className="py-24 md:py-32 bg-papachoa-blush/40 relative overflow-hidden">
+      {/* Decorative blobs */}
+      <div className="absolute top-10 left-10 w-40 h-40 bg-papachoa-sky/40 blob-shape" />
+      <div className="absolute bottom-10 right-10 w-32 h-32 bg-papachoa-sage/40 blob-shape-2" />
+
+      <div className="container relative">
         <div className="max-w-xl mx-auto text-center">
-          <Mail className="h-8 w-8 mx-auto text-primary mb-6" />
+          <div className="inline-block bg-card px-4 py-2 rounded-full mb-8 shadow-sm">
+            <span className="text-2xl">💌</span>
+          </div>
           
-          <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
-            Recibe noticias suaves
+          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
+            Recibe noticias <span className="italic">suaves</span>
           </h2>
-          <p className="text-muted-foreground mb-8">
+          <p className="text-muted-foreground mb-10 text-lg">
             Como nuestros productos. Nuevos lanzamientos, colecciones especiales
             y consejos para el descanso familiar.
           </p>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <Input
               type="email"
               placeholder="tu@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 bg-card border-border/50 text-foreground placeholder:text-muted-foreground focus:border-primary"
+              className="flex-1 bg-card border-0 rounded-full px-6 py-6 text-foreground placeholder:text-muted-foreground shadow-sm focus:ring-2 focus:ring-papachoa-blush-dark"
               required
             />
             <Button
               type="submit"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 px-8"
+              className="bg-papachoa-warm-brown text-card hover:bg-papachoa-warm-brown/90 rounded-full px-8 py-6 font-semibold shadow-lg hover:scale-105 transition-transform"
             >
               Suscribirme
             </Button>
           </form>
 
-          <p className="text-xs text-muted-foreground mt-4">
-            Sin spam. Solo apapacho. Puedes darte de baja cuando quieras.
+          <p className="text-sm text-muted-foreground mt-6">
+            Sin spam. Solo apapacho. ✨
           </p>
         </div>
       </div>

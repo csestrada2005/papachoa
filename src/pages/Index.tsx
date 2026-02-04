@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
+import BrandMarquee from "@/components/sections/BrandMarquee";
 import Emotion from "@/components/sections/Emotion";
 import Collections from "@/components/sections/Collections";
 import Softness from "@/components/sections/Softness";
@@ -10,10 +11,11 @@ import Newsletter from "@/components/sections/Newsletter";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <Header />
       <main>
         <Hero />
+        <BrandMarquee />
         <Emotion />
         <Collections />
         <Softness />
