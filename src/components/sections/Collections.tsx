@@ -68,23 +68,23 @@ const Collections = () => {
                 index === 0 ? "md:col-span-2 md:row-span-2" : ""
               }`}
             >
-              <div className={`${collection.bgColor} h-full p-6 md:p-8 ${index === 0 ? "min-h-[300px] md:min-h-[400px]" : "min-h-[180px] md:min-h-[200px]"} flex flex-col justify-between`}>
-                <div className={`${collection.bgColor === "bg-papachoa-blush" ? "bg-card/60" : "bg-card/40"} w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center`}>
-                  <collection.icon className={`h-7 w-7 md:h-8 md:w-8 ${collection.iconColor}`} />
+              <div className={`${collection.bgColor} h-full p-5 md:p-6 ${index === 0 ? "min-h-[160px] md:min-h-[280px]" : "min-h-[120px] md:min-h-[140px]"} flex flex-col gap-3`}>
+                <div className={`${collection.bgColor === "bg-papachoa-blush" ? "bg-card/60" : "bg-card/40"} w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center`}>
+                  <collection.icon className={`h-5 w-5 md:h-6 md:w-6 ${collection.iconColor}`} />
                 </div>
                 
                 <div>
-                  <h3 className={`font-display ${index === 0 ? "text-2xl md:text-3xl" : "text-lg md:text-xl"} text-foreground mb-2`}>
+                  <h3 className={`font-display ${index === 0 ? "text-xl md:text-2xl" : "text-base md:text-lg"} text-foreground mb-1`}>
                     {collection.title}
                   </h3>
-                  <p className={`text-foreground/70 font-light ${index === 0 ? "text-base" : "text-sm"} hidden md:block`}>
+                  <p className={`text-foreground/70 font-light text-xs md:text-sm ${index === 0 ? "" : "hidden md:block"}`}>
                     {collection.description}
                   </p>
                 </div>
 
                 {/* Arrow indicator */}
-                <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 w-10 h-10 bg-card/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                  <span className="text-foreground">→</span>
+                <div className="absolute bottom-4 right-4 md:bottom-6 md:right-6 w-8 h-8 bg-card/60 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                  <span className="text-foreground text-sm">→</span>
                 </div>
               </div>
             </a>
