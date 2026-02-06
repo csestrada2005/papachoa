@@ -1,114 +1,149 @@
 
 
-# Plan de Rediseño Papachoa México 🧸
+# Plan: Pagina de Catalogo
 
-## Visión General
-Crear un sitio web que se sienta como un abrazo digital: cálido, calmado y lleno de ternura. El objetivo es elevar la percepción premium de la marca sin perder accesibilidad, donde la emoción siempre venga antes que el producto.
+## Resumen
 
----
-
-## Fase 1: Home Page (Mobile-First)
-
-### Header
-- Logo Papachoa multicolor (el que compartiste)
-- Menú minimalista: Inicio | Catálogo | Nosotros | Contacto
-- Iconos suaves: búsqueda, cuenta, carrito
-- Banner discreto superior: "Enviamos a toda la República"
-
-### Hero Principal
-- Imagen emocional grande (familia/mamá con bebé)
-- Texto principal: *"Pensado por mamás, para mamás"*
-- Subtexto: *"Pijamas y cobijos ultra suaves que apapachan"*
-- Sin precios, sin botones agresivos
-
-### Sección Emoción
-- Frase destacada: *"Papachoa no vende pijamas. Vende calma, descanso y hogar."*
-- Imagen lifestyle complementaria
-
-### Colecciones Visuales
-Tarjetas suaves con estilo editorial:
-- Recién nacido
-- Bebé & cobijo
-- Pijamas familiares
-- Sacos & nidos
-- Listo para regalar
-
-### Prueba de Suavidad
-- Close-ups de texturas de tela
-- Frases sensoriales: *"Ultra suave", "Se siente rico desde el primer minuto", "Pensado para dormir mejor"*
-
-### Testimonios
-- Diseño cálido con los testimonios de Fernanda C, Ofe S y María Elena M (texto placeholder por ahora, los agregaremos después)
-
-### Hecho en México
-- Copy emocional sobre comercio justo y artesanía
-- Humanizar a las personas que confeccionan
-
-### Newsletter
-- Diseño suave, no invasivo
-- *"Recibe noticias suaves, como nuestros productos"*
-
-### Footer
-- Nosotros, Términos, Políticas, Newsletter
-- Redes sociales
-- Métodos de pago
-- MXN
+Crear una pagina de catalogo (`/catalogo`) que muestre los productos organizados por colecciones, con fotos grandes, filtros simples y precios visibles. Diseno mobile-first que mantenga el estilo editorial y organico de la marca.
 
 ---
 
-## Fase 2: Páginas Secundarias
+## Estructura de la Pagina
 
-### Catálogo
-- Organizado por colecciones
-- Fotos grandes, espaciadas
-- Filtros simples
-- Precios visibles solo aquí
-
-### Página de Producto
-- Imagen grande + close-up textura
-- Beneficio emocional + funcional
-- Copy corto y cálido
-- CTA suave: "Agregar al carrito"
-
-### Nosotros
-- Jerarquía visual mejorada
-- Frases clave destacadas
-- Enfoque humano y emocional
-
-### Contacto
-- Formulario simple
-- Tono cercano y cálido
-
----
-
-## Estilo Visual
-
-**Paleta de colores:**
-- Beige cálido (fondo principal)
-- Blush/rosa suave
-- Azul cielo suave
-- Verde salvia
-- Mucho espacio en blanco
-
-**Tipografía:**
-- Amable e infantil pero elegante
-- Limpia y legible
-
-**Fotografía:**
-- Usaremos las imágenes que compartiste como referencia visual
-- Espacios para agregar más fotos después
+```text
++----------------------------------+
+|           Header                 |
++----------------------------------+
+|      Hero del Catalogo           |
+|  "Nuestra Coleccion"             |
++----------------------------------+
+|     Filtros por Coleccion        |
+|  [Todos] [Bebe] [Familia] ...    |
++----------------------------------+
+|                                  |
+|     Grid de Productos            |
+|  +--------+  +--------+          |
+|  | Foto   |  | Foto   |          |
+|  | Nombre |  | Nombre |          |
+|  | $XXX   |  | $XXX   |          |
+|  +--------+  +--------+          |
+|                                  |
++----------------------------------+
+|           Footer                 |
++----------------------------------+
+```
 
 ---
 
-## Lo que NO haremos
-- ❌ Diseño saturado o agresivo
-- ❌ Banners de descuento llamativos
-- ❌ Colores fuertes o contrastes duros
-- ❌ Grids tipo fast fashion
-- ❌ Urgencia artificial
+## Archivos a Crear/Modificar
+
+### 1. Nuevo archivo: `src/pages/Catalogo.tsx`
+Pagina principal del catalogo que incluye:
+- Hero compacto con titulo y subtitulo
+- Filtros de coleccion (tabs/pills horizontales con scroll en mobile)
+- Grid de productos responsivo (2 columnas mobile, 3 desktop)
+
+### 2. Nuevo archivo: `src/data/products.ts`
+Datos placeholder de productos con:
+- id, nombre, precio, coleccion, imagen (placeholder.svg por ahora)
+- Colecciones: recien-nacido, bebe-cobijo, pijamas-familiares, sacos-nidos, regalo
+
+### 3. Nuevo archivo: `src/components/catalog/ProductCard.tsx`
+Tarjeta de producto con:
+- Foto grande con bordes organicos (rounded-3xl)
+- Nombre del producto
+- Precio visible
+- Hover sutil con escala
+- Link a pagina de producto (placeholder por ahora)
+
+### 4. Nuevo archivo: `src/components/catalog/CollectionFilter.tsx`
+Filtros simples como pills horizontales:
+- Scroll horizontal en mobile
+- Opcion "Todos" por defecto
+- Cada coleccion con su color sutil de fondo
+
+### 5. Modificar: `src/App.tsx`
+Agregar ruta `/catalogo` para la nueva pagina
+
+---
+
+## Diseno Visual
+
+### Mobile-First
+- Grid de 2 columnas con gap reducido
+- Filtros como pills con scroll horizontal
+- Fotos grandes que dominan la tarjeta
+- Precios claros pero no agresivos
+
+### Desktop
+- Grid de 3 columnas con mas espacio
+- Filtros centrados
+- Hover states mas pronunciados
+
+### Paleta y Estilo
+- Mantiene colores papachoa (cream, blush, sage, sky)
+- Bordes organicos (rounded-3xl)
+- Tipografia Fraunces para titulos, Nunito para precios
+- Sin saturacion, sin look "tienda departamental"
+
+---
+
+## Datos de Productos (Placeholder)
+
+```text
+Recien Nacido:
+- Set bienvenida recien nacido - $890
+- Cobija primera siesta - $650
+- Mameluco estrellitas - $450
+
+Bebe & Cobijo:
+- Cobija abrazo suave - $780
+- Pijama dulces suenos - $520
+- Set cobija + gorro - $890
+
+Pijamas Familiares:
+- Pijama mama + bebe - $1,290
+- Set familia completa - $2,450
+- Pijama papa oso - $680
+
+Sacos & Nidos:
+- Saco de dormir nube - $950
+- Nido para bebe - $1,180
+- Saco transicion - $720
+
+Listo para Regalar:
+- Caja regalo baby shower - $1,450
+- Set primeros meses - $980
+- Canasta apapacho - $1,650
+```
+
+---
+
+## Detalles Tecnicos
+
+### Estado y Filtrado
+- useState para manejar la coleccion seleccionada
+- Filtrado simple del array de productos
+- useMemo para optimizar el filtrado
+
+### Animaciones
+- Transicion suave al cambiar filtros
+- Hover scale en tarjetas de producto
+- Fade-in al cargar productos
+
+### Accesibilidad
+- Links semanticos para cada producto
+- Alt text descriptivo en imagenes
+- Focus states visibles en filtros
 
 ---
 
 ## Resultado Esperado
-Un sitio que se siente como hogar, vende sin presionar, y hace que Papachoa se perciba más grande, más cuidada y más deseable.
+
+Una pagina de catalogo que:
+- Se siente premium y editorial, no como tienda generica
+- Muestra precios de forma clara pero elegante
+- Permite filtrar por coleccion facilmente
+- Funciona perfectamente en mobile
+- Mantiene la esencia calida y organica de Papachoa
 
