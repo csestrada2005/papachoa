@@ -65,11 +65,11 @@ const SearchModal = ({ isOpen, onClose }: SearchModalProps) => {
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="absolute inset-0 bg-foreground/40 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-foreground/25 backdrop-blur-sm" />
 
       {/* Modal */}
       <div
-        className="relative w-full max-w-lg mx-4 bg-card rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-lg mx-4 bg-card rounded-2xl shadow-md border border-border/30 overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Search input */}
