@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import SearchModal from "@/components/SearchModal";
+import MiniCart from "@/components/MiniCart";
+import { useCart } from "@/context/CartContext";
 import logo from "@/assets/logo-papachoa.webp";
 
 const navLinks = [
@@ -15,6 +17,8 @@ const navLinks = [
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const { itemCount } = useCart();
 
   return (
     <>
@@ -99,8 +103,16 @@ const Header = () => {
               <Search className="h-5 w-5" />
               <span className="sr-only">Buscar</span>
             </button>
-            <button className="p-2 text-foreground/70 hover:text-foreground hover:bg-papachoa-sage active:scale-95 rounded-full transition-all duration-150 relative">
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className="p-2 text-foreground/70 hover:text-foreground hover:bg-papachoa-sage active:scale-95 rounded-full transition-all duration-150 relative"
+            >
               <ShoppingBag className="h-5 w-5" />
+              {itemCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-papachoa-warm-brown text-card text-[10px] font-bold w-4.5 h-4.5 min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center">
+                  {itemCount > 9 ? "9+" : itemCount}
+                </span>
+              )}
               <span className="sr-only">Carrito</span>
             </button>
           </div>
@@ -109,6 +121,7 @@ const Header = () => {
     </header>
 
     <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    <MiniCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 };
