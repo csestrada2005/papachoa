@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-family.png";
 
 const Hero = () => {
@@ -31,18 +32,21 @@ const Hero = () => {
               src={heroImage}
               alt="Familia usando pijamas Papachoa"
               className="w-full aspect-square object-cover"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
             />
           </div>
 
           {/* Floating accent - emotional, subtle */}
-          <div className="absolute -bottom-4 -left-4 bg-card/90 backdrop-blur-sm rounded-2xl shadow-md border border-border/40 px-5 py-3 animate-float">
+          <div className="absolute -bottom-4 -left-4 bg-card/90 backdrop-blur-sm rounded-2xl shadow-md border border-border/40 px-5 py-3">
             <p className="font-display text-sm md:text-base text-muted-foreground italic leading-snug">
               Pensado para los momentos<br />que importan
             </p>
           </div>
           
           {/* Made in Mexico - editorial style */}
-          <div className="absolute top-6 -right-3 bg-card/85 backdrop-blur-sm rounded-xl shadow-sm border border-border/30 px-3 py-2 animate-float" style={{ animationDelay: "1s" }}>
+          <div className="absolute top-6 -right-3 bg-card/85 backdrop-blur-sm rounded-xl shadow-sm border border-border/30 px-3 py-2">
             <p className="text-[10px] font-medium tracking-wide text-muted-foreground uppercase">
               Diseñado y hecho en México
             </p>
@@ -66,13 +70,13 @@ const Hero = () => {
           </p>
 
           {/* CTA Button - prominent */}
-          <a
-            href="/catalogo"
+          <Link
+            to="/catalogo"
             className="inline-flex items-center gap-2 bg-papachoa-warm-brown text-card font-semibold px-7 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-transform shadow-lg text-sm"
           >
             Ver colección
             <span className="text-lg">→</span>
-          </a>
+          </Link>
         </div>
       </div>
 
