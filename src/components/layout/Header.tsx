@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import SearchModal from "@/components/SearchModal";
 import logo from "@/assets/logo-papachoa.webp";
 
 const navLinks = [
@@ -13,8 +14,10 @@ const navLinks = [
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
+    <>
     <header className="w-full fixed top-0 left-0 right-0 z-50">
       {/* Marquee banner - more compact */}
       <div className="bg-papachoa-blush-mid overflow-hidden py-1.5">
@@ -89,7 +92,10 @@ const Header = () => {
 
           {/* Icons */}
           <div className="flex items-center gap-0.5">
-            <button className="p-2 text-foreground/70 hover:text-foreground hover:bg-muted active:scale-95 rounded-full transition-all duration-150">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 text-foreground/70 hover:text-foreground hover:bg-muted active:scale-95 rounded-full transition-all duration-150"
+            >
               <Search className="h-5 w-5" />
               <span className="sr-only">Buscar</span>
             </button>
@@ -101,6 +107,9 @@ const Header = () => {
         </div>
       </div>
     </header>
+
+    <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+    </>
   );
 };
 
