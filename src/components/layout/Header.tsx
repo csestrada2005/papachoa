@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Menu, Search, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import logo from "@/assets/logo-papachoa.webp";
@@ -48,39 +49,41 @@ const Header = () => {
                 <img src={logo} alt="Papachoa" className="h-10 mb-10" />
                 <nav className="flex flex-col gap-1">
                   {navLinks.map((link) => (
-                    <a
+                    <Link
                       key={link.label}
-                      href={link.href}
+                      to={link.href}
                       className="text-xl font-display text-foreground hover:bg-papachoa-blush/50 px-4 py-3 rounded-2xl transition-colors"
                       onClick={() => setIsOpen(false)}
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   ))}
                 </nav>
               </div>
             </SheetContent>
           </Sheet>
 
-          {/* Logo - smaller */}
-          <a href="/" className="flex-1 lg:flex-none flex justify-center lg:justify-start">
+          {/* Logo - priority loading */}
+          <Link to="/" className="flex-1 lg:flex-none flex justify-center lg:justify-start">
             <img 
               src={logo} 
               alt="Papachoa México" 
               className="h-9 md:h-10 w-auto"
+              loading="eager"
+              fetchPriority="high"
             />
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <nav className="hidden lg:flex items-center gap-2 flex-1 justify-center">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
-                href={link.href}
+                to={link.href}
                 className="text-sm font-body font-semibold text-foreground/80 hover:text-foreground hover:bg-papachoa-blush/40 px-5 py-2 rounded-full transition-all"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
