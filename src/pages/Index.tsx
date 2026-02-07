@@ -8,8 +8,11 @@ import Softness from "@/components/sections/Softness";
 import Testimonials from "@/components/sections/Testimonials";
 import MadeInMexico from "@/components/sections/MadeInMexico";
 import Newsletter from "@/components/sections/Newsletter";
+import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 
 const Index = () => {
+  // Prefetch key routes after initial render
+  usePrefetchRoutes();
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <Header />

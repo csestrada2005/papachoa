@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Baby, Heart, Users, Moon, Gift } from "lucide-react";
 
 const collections = [
@@ -61,10 +62,10 @@ const Collections = () => {
         {/* Bento-style grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-4xl mx-auto">
           {collections.map((collection, index) => (
-            <a
+            <Link
               key={collection.title}
-              href="/catalogo"
-              className={`group relative overflow-hidden rounded-3xl md:rounded-4xl transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${
+              to="/catalogo"
+              className={`group relative overflow-hidden rounded-3xl md:rounded-4xl transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] ${
                 index === 0 ? "md:col-span-2 md:row-span-2" : ""
               }`}
             >
@@ -87,7 +88,7 @@ const Collections = () => {
                   <span className="text-foreground text-sm">→</span>
                 </div>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
       </div>

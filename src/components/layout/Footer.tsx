@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-papachoa.webp";
 
@@ -41,6 +42,9 @@ const Footer = () => {
               src={logo}
               alt="Papachoa México"
               className="h-10 w-auto mb-6"
+              loading="lazy"
+              width={120}
+              height={40}
             />
             <p className="text-sm text-muted-foreground mb-6 max-w-xs leading-relaxed">
               Pijamas y cobijos ultra suaves pensados por mamás, para mamás. 🧸
@@ -73,12 +77,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.tienda.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -90,12 +94,12 @@ const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.empresa.map((link) => (
                 <li key={link.label}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

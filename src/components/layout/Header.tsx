@@ -80,7 +80,7 @@ const Header = () => {
               <Link
                 key={link.label}
                 to={link.href}
-                className="text-sm font-body font-semibold text-foreground/80 hover:text-foreground hover:bg-papachoa-blush/40 px-5 py-2 rounded-full transition-all"
+                className="text-sm font-body font-semibold text-foreground/80 hover:text-foreground hover:bg-papachoa-blush/40 active:scale-95 px-5 py-2 rounded-full transition-all duration-150"
               >
                 {link.label}
               </Link>
@@ -89,11 +89,11 @@ const Header = () => {
 
           {/* Icons */}
           <div className="flex items-center gap-0.5">
-            <button className="p-2 text-foreground/70 hover:text-foreground hover:bg-muted rounded-full transition-all">
+            <button className="p-2 text-foreground/70 hover:text-foreground hover:bg-muted active:scale-95 rounded-full transition-all duration-150">
               <Search className="h-5 w-5" />
               <span className="sr-only">Buscar</span>
             </button>
-            <button className="p-2 text-foreground/70 hover:text-foreground hover:bg-papachoa-sage rounded-full transition-all relative">
+            <button className="p-2 text-foreground/70 hover:text-foreground hover:bg-papachoa-sage active:scale-95 rounded-full transition-all duration-150 relative">
               <ShoppingBag className="h-5 w-5" />
               <span className="sr-only">Carrito</span>
             </button>

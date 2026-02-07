@@ -76,11 +76,14 @@ const Softness = () => {
                   src={lifestyleImage}
                   alt="Textura suave de tela Papachoa"
                   className="w-full aspect-[4/5] object-cover"
+                  loading="lazy"
+                  width={400}
+                  height={500}
                 />
               </div>
 
               {/* Floating badge */}
-              <div className="absolute -bottom-4 right-4 md:bottom-10 md:-right-6 bg-card rounded-2xl shadow-xl p-4 animate-float" style={{ animationDelay: "0.5s" }}>
+              <div className="absolute -bottom-4 right-4 md:bottom-10 md:-right-6 bg-card rounded-2xl shadow-xl p-4">
                 <p className="font-display text-lg text-foreground">
                   Tan suave como un <span className="italic text-papachoa-blush-dark">abrazo</span> 🤍
                 </p>

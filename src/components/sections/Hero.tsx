@@ -72,7 +72,7 @@ const Hero = () => {
           {/* CTA Button - prominent */}
           <Link
             to="/catalogo"
-            className="inline-flex items-center gap-2 bg-papachoa-warm-brown text-card font-semibold px-7 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-transform shadow-lg text-sm"
+            className="inline-flex items-center gap-2 bg-papachoa-warm-brown text-card font-semibold px-7 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 shadow-lg text-sm"
           >
             Ver colección
             <span className="text-lg">→</span>

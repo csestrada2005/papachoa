@@ -18,6 +18,9 @@ const Emotion = () => {
                   src={lifestyleImage}
                   alt="Bebé descansando con cobijo Papachoa"
                   className="w-full aspect-[3/4] object-cover"
+                  loading="lazy"
+                  width={400}
+                  height={533}
                 />
               </div>
             </div>
