@@ -74,11 +74,11 @@ const Collections = () => {
                   <collection.icon className={`h-5 w-5 md:h-6 md:w-6 ${collection.iconColor}`} />
                 </div>
                 
-                <div>
-                  <h3 className={`font-display ${index === 0 ? "text-xl md:text-2xl" : "text-base md:text-lg"} text-foreground mb-1`}>
+                <div className="flex-1 min-w-0">
+                  <h3 className={`font-display ${index === 0 ? "text-xl md:text-2xl" : "text-sm md:text-lg"} text-foreground mb-0.5 md:mb-1 leading-tight`}>
                     {collection.title}
                   </h3>
-                  <p className={`text-foreground/70 font-light text-xs md:text-sm ${index === 0 ? "" : "hidden md:block"}`}>
+                  <p className={`text-foreground/70 font-light text-xs md:text-sm leading-snug ${index === 0 ? "" : "line-clamp-2"}`}>
                     {collection.description}
                   </p>
                 </div>
