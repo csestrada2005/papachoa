@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-family.png";
+import HeroHotspots, { ShopTheLookList } from "./HeroHotspots";
 
 const Hero = () => {
   return (
@@ -26,7 +27,7 @@ const Hero = () => {
           {/* Background blob */}
           <div className="absolute inset-0 bg-papachoa-blush/40 blob-shape scale-105" />
           
-          {/* Main image */}
+          {/* Main image with hotspots */}
           <div className="blob-shape overflow-hidden relative">
             <img
               src={heroImage}
@@ -36,6 +37,8 @@ const Hero = () => {
               fetchPriority="high"
               decoding="async"
             />
+            {/* Shop the Look hotspots */}
+            <HeroHotspots />
           </div>
 
           {/* Floating accent - emotional, subtle */}
@@ -53,8 +56,11 @@ const Hero = () => {
           </div>
         </div>
 
+        {/* Mobile "Shop the Look" fallback */}
+        <ShopTheLookList />
+
         {/* Text content - tighter */}
-        <div className="text-center">
+        <div className="text-center mt-4 sm:mt-0">
           <div className="inline-block bg-papachoa-sage/60 px-3 py-1 rounded-full mb-4">
             <span className="text-xs font-semibold text-accent-foreground">🧸 Nueva colección</span>
           </div>
