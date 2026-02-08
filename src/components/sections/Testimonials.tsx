@@ -5,30 +5,27 @@ const testimonials = [
     name: "Fernanda C.",
     text: "La calidad es increíble. Mis hijos no quieren quitarse las pijamas y el cobijo es lo más suave que hemos tenido en casa.",
     rating: 5,
-    color: "bg-papachoa-blush",
   },
   {
     name: "Ofe S.",
     text: "Compré para regalar y ahora toda la familia tiene Papachoa. Los pijamas familiares son un hit en Navidad.",
     rating: 5,
-    color: "bg-papachoa-sky",
   },
   {
     name: "María Elena M.",
     text: "El saco de dormir fue lo mejor que compré para mi bebé. Duerme toda la noche y yo también.",
     rating: 5,
-    color: "bg-papachoa-sage",
   },
 ];
 
 const Testimonials = () => {
   return (
     <section className="py-24 md:py-32 bg-papachoa-cream relative overflow-hidden">
-      {/* Decorative blobs */}
-      <div className="absolute top-20 left-10 w-32 h-32 bg-papachoa-peach/40 blob-shape" />
-      <div className="absolute bottom-20 right-10 w-40 h-40 bg-papachoa-sky/30 blob-shape-2" />
+      {/* Decorative blobs - positioned lower to avoid card overlap */}
+      <div className="absolute bottom-8 left-10 w-32 h-32 bg-papachoa-peach/40 blob-shape pointer-events-none -z-10" />
+      <div className="absolute bottom-4 right-10 w-40 h-40 bg-papachoa-sky/30 blob-shape-2 pointer-events-none -z-10" />
 
-      <div className="container relative">
+      <div className="container relative z-10">
         <div className="text-center mb-16">
           <span className="inline-block bg-papachoa-blush-mid px-4 py-1.5 rounded-full text-sm font-semibold text-foreground/80 mb-6">
             💬 Lo que dicen las mamás
@@ -41,17 +38,14 @@ const Testimonials = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto">
-          {testimonials.map((testimonial, index) => (
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto items-stretch">
+          {testimonials.map((testimonial) => (
             <div
               key={testimonial.name}
-              className={`${testimonial.color}/60 rounded-3xl md:rounded-4xl p-8 relative overflow-hidden`}
-              style={{ 
-                transform: index === 1 ? "translateY(-20px)" : "translateY(0)",
-              }}
+              className="bg-card rounded-3xl md:rounded-4xl p-8 relative overflow-hidden shadow-sm border border-border/50 flex flex-col min-h-[280px]"
             >
               {/* Background pattern */}
-              <div className="absolute top-4 right-4 text-6xl opacity-10">❛❛</div>
+              <div className="absolute top-4 right-4 text-6xl opacity-10 pointer-events-none">❛❛</div>
 
               {/* Stars */}
               <div className="flex gap-1 mb-6">
@@ -64,13 +58,13 @@ const Testimonials = () => {
               </div>
 
               {/* Quote */}
-              <blockquote className="text-foreground font-light leading-relaxed mb-8 text-lg">
+              <blockquote className="text-foreground font-light leading-relaxed mb-8 text-lg flex-1 line-clamp-4">
                 "{testimonial.text}"
               </blockquote>
 
               {/* Author */}
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-card rounded-full flex items-center justify-center font-display text-lg text-foreground">
+              <div className="flex items-center gap-3 mt-auto">
+                <div className="w-10 h-10 bg-papachoa-blush/60 rounded-full flex items-center justify-center font-display text-lg text-foreground">
                   {testimonial.name[0]}
                 </div>
                 <p className="font-display text-lg text-foreground">
