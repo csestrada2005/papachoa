@@ -81,40 +81,42 @@ const HotspotDot = ({ hotspot, isActive, onToggle }: HotspotDotProps) => {
           ref={popoverRef}
           className="
             absolute left-1/2 -translate-x-1/2 bottom-full mb-3
-            bg-card/98 backdrop-blur-sm rounded-xl
-            border border-border/50 shadow-lg
+            bg-card rounded-2xl
+            border border-border shadow-xl
             overflow-hidden
             animate-in fade-in-0 zoom-in-95 duration-150
-            z-50
+            z-[1000] pointer-events-auto
           "
           role="tooltip"
         >
           {/* Arrow */}
-          <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-card/98 border-r border-b border-border/50 rotate-45" />
+          <div className="absolute left-1/2 -translate-x-1/2 -bottom-1.5 w-3 h-3 bg-card border-r border-b border-border rotate-45" />
           
           {/* Product image placeholder */}
-          <div className="w-40 h-40 bg-muted/50 flex items-center justify-center border-b border-border/30">
-            <span className="text-xs text-muted-foreground">Imagen del producto</span>
+          <div className="w-48 h-48 bg-muted flex items-center justify-center border-b border-border/30">
+            <div className="text-center">
+              <span className="text-xs font-medium text-muted-foreground">Imagen del<br/>producto</span>
+            </div>
           </div>
           
           {/* Content */}
-          <div className="px-4 py-3">
-            <p className="text-sm font-bold text-foreground mb-1">
-              {hotspot.label}
-            </p>
-            
-            <p className="text-xs text-muted-foreground mb-3">
-              ${hotspot.price}
-            </p>
+          <div className="px-5 py-4 space-y-3">
+            <div>
+              <p className="text-sm font-bold text-foreground leading-tight">
+                {hotspot.label}
+              </p>
+              <p className="text-sm text-papachoa-warm-brown font-semibold mt-1">
+                ${hotspot.price}
+              </p>
+            </div>
             
             <Link
               to={hotspot.link}
               className="
                 block w-full text-center text-xs font-semibold
-                text-papachoa-warm-brown hover:text-papachoa-warm-brown/80
-                bg-papachoa-warm-brown/5 hover:bg-papachoa-warm-brown/10
-                rounded-lg py-2
-                transition-colors
+                text-card bg-papachoa-warm-brown hover:bg-papachoa-warm-brown/90
+                rounded-lg py-2.5
+                transition-colors duration-150
               "
               onClick={(e) => e.stopPropagation()}
             >
