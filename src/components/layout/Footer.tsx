@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-papachoa.webp";
 import { brand } from "@/data/brand";
+import { openExternal } from "@/lib/openExternal";
 
 const footerLinks = {
   tienda: [
@@ -52,24 +53,22 @@ const Footer = () => {
               Pijamas y cobijos ultra suaves pensados por mamás, para mamás. 🧸
             </p>
             <div className="flex gap-3">
-              <a
-                href={brand.socials.instagramUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
+                onClick={(e) => openExternal(brand.socials.instagramUrl, e)}
                 aria-label="Síguenos en Instagram"
-                className="w-10 h-10 bg-papachoa-blush rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 hover:shadow-md transition-all"
+                className="w-10 h-10 bg-papachoa-blush rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 hover:shadow-md transition-all cursor-pointer"
               >
                 <Instagram className="h-5 w-5" />
-              </a>
-              <a
-                href={brand.socials.facebookUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              </button>
+              <button
+                type="button"
+                onClick={(e) => openExternal(brand.socials.facebookUrl, e)}
                 aria-label="Síguenos en Facebook"
-                className="w-10 h-10 bg-papachoa-sky rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 hover:shadow-md transition-all"
+                className="w-10 h-10 bg-papachoa-sky rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 hover:shadow-md transition-all cursor-pointer"
               >
                 <Facebook className="h-5 w-5" />
-              </a>
+              </button>
             </div>
           </div>
 
