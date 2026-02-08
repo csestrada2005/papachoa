@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageCircle, Mail, Send } from "lucide-react";
+import { MessageCircle, Mail, Send, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { brand } from "@/data/brand";
 
 const Contacto = () => {
   const { toast } = useToast();
@@ -42,11 +42,6 @@ const Contacto = () => {
     setIsSubmitting(false);
   };
 
-  const whatsappNumber = "5215512345678"; // Replace with actual number
-  const whatsappMessage = encodeURIComponent(
-    "¡Hola! Me gustaría saber más sobre Papachoa."
-  );
-  const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -77,34 +72,68 @@ const Contacto = () => {
           <div className="container">
             <div className="max-w-xl mx-auto">
               {/* Quick contact buttons */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-12">
+              <div className="grid sm:grid-cols-2 gap-4 mb-8">
                 {/* WhatsApp - Primary */}
                 <a
-                  href={whatsappUrl}
+                  href={brand.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-5 bg-papachoa-sage rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-transform"
+                  aria-label="Contáctanos por WhatsApp"
+                  className="flex items-center gap-4 p-5 bg-papachoa-sage rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
                 >
                   <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
                     <MessageCircle className="h-6 w-6 text-accent-foreground" />
                   </div>
                   <div>
                     <p className="font-display text-foreground">WhatsApp</p>
-                    <p className="text-sm text-muted-foreground">Respuesta rápida</p>
+                    <p className="text-sm text-muted-foreground">{brand.contact.whatsappDisplay}</p>
                   </div>
                 </a>
 
-                {/* Email - Secondary */}
+                {/* Email */}
                 <a
-                  href="mailto:hola@papachoa.mx"
-                  className="flex items-center gap-4 p-5 bg-papachoa-blush/50 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-transform"
+                  href={brand.emailUrl}
+                  aria-label="Envíanos un correo"
+                  className="flex items-center gap-4 p-5 bg-papachoa-blush/50 rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
                 >
                   <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
                     <Mail className="h-6 w-6 text-papachoa-blush-dark" />
                   </div>
                   <div>
                     <p className="font-display text-foreground">Email</p>
-                    <p className="text-sm text-muted-foreground">hola@papachoa.mx</p>
+                    <p className="text-sm text-muted-foreground">{brand.contact.email}</p>
+                  </div>
+                </a>
+
+                {/* Messenger */}
+                <a
+                  href={brand.contact.messengerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Contáctanos por Messenger"
+                  className="flex items-center gap-4 p-5 bg-papachoa-sky/50 rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
+                >
+                  <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
+                    <MessageCircle className="h-6 w-6 text-foreground/70" />
+                  </div>
+                  <div>
+                    <p className="font-display text-foreground">Messenger</p>
+                    <p className="text-sm text-muted-foreground">Facebook Chat</p>
+                  </div>
+                </a>
+
+                {/* Phone */}
+                <a
+                  href={`tel:+52${brand.contact.whatsappE164.slice(2)}`}
+                  aria-label="Llámanos por teléfono"
+                  className="flex items-center gap-4 p-5 bg-papachoa-cream rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
+                >
+                  <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
+                    <Phone className="h-6 w-6 text-foreground/70" />
+                  </div>
+                  <div>
+                    <p className="font-display text-foreground">Teléfono</p>
+                    <p className="text-sm text-muted-foreground">{brand.contact.phoneDisplay}</p>
                   </div>
                 </a>
               </div>

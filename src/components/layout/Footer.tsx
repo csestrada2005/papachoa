@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-papachoa.webp";
+import { brand } from "@/data/brand";
 
 const footerLinks = {
   tienda: [
@@ -52,22 +53,22 @@ const Footer = () => {
             </p>
             <div className="flex gap-3">
               <a
-                href="https://instagram.com/papachoamx"
+                href={brand.socials.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-papachoa-blush rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 transition-all"
+                aria-label="Síguenos en Instagram"
+                className="w-10 h-10 bg-papachoa-blush rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 hover:shadow-md transition-all"
               >
                 <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
               </a>
               <a
-                href="https://facebook.com/papachoamx"
+                href={brand.socials.facebookUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 bg-papachoa-sky rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 transition-all"
+                aria-label="Síguenos en Facebook"
+                className="w-10 h-10 bg-papachoa-sky rounded-full flex items-center justify-center text-foreground/70 hover:text-foreground hover:scale-110 hover:shadow-md transition-all"
               >
                 <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
               </a>
             </div>
           </div>
