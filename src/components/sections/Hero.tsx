@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import heroImage from "@/assets/hero-family.png";
 
 const Hero = () => {
   return (
@@ -26,9 +27,19 @@ const Hero = () => {
       <div className="container flex-1 flex flex-col justify-center relative z-10">
         {/* ========================================
             LAYER B: Interactive Image Container
-            - ONLY this container can have hotspots
-            - Uses HeroInteractiveImage component
             ======================================== */}
+        {/* Hero image – purely visual, no interactivity */}
+        <div className="relative mx-auto w-full max-w-[280px] md:max-w-[320px] mb-6">
+          <div className="absolute inset-0 bg-papachoa-blush/40 blob-shape scale-105 pointer-events-none" />
+          <img
+            src={heroImage}
+            alt="Familia usando pijamas Papachoa"
+            className="relative z-10 w-full h-auto rounded-[2rem] object-cover"
+            fetchPriority="high"
+            draggable={false}
+          />
+        </div>
+
         {/* Text content */}
         <div className="text-center">
           <div className="inline-block bg-papachoa-sage/60 px-3 py-1 rounded-full mb-4">
