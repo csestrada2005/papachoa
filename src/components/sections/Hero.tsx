@@ -46,6 +46,22 @@ const Hero = () => {
               </clipPath>
             </defs>
           </svg>
+
+          {/* Decorative floating cards – no interactivity */}
+          <div
+            className="absolute -top-3 right-0 md:-right-16 z-20 pointer-events-none bg-white/90 backdrop-blur-sm rounded-xl shadow-md px-3 py-1.5 md:px-4 md:py-2"
+          >
+            <span className="text-[10px] md:text-xs font-semibold tracking-wide text-foreground/80 uppercase">
+              🇲🇽 Diseñado y hecho en México
+            </span>
+          </div>
+          <div
+            className="absolute -bottom-2 -left-4 md:-left-20 z-20 pointer-events-none bg-white/90 backdrop-blur-sm rounded-xl shadow-md px-3 py-2 md:px-4 md:py-2.5 max-w-[160px] md:max-w-[180px]"
+          >
+            <span className="text-[11px] md:text-xs font-light italic text-foreground/70 leading-snug block">
+              "Pensado para los momentos que importan"
+            </span>
+          </div>
         </div>
 
         {/* Text content */}
