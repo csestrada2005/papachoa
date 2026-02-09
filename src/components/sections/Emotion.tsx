@@ -19,6 +19,7 @@ const Emotion = () => {
                   alt="Bebé descansando con cobijo Papachoa"
                   className="w-full aspect-[3/4] object-cover"
                   loading="lazy"
+                  decoding="async"
                   width={400}
                   height={533}
                 />

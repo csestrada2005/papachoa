@@ -18,12 +18,16 @@ const ProductGallery = ({ images, name }: ProductGalleryProps) => {
           <Skeleton className="absolute inset-0 rounded-3xl" />
         )}
         <img
+          key={selectedIndex}
           src={images[selectedIndex]}
           alt={`${name} - imagen ${selectedIndex + 1}`}
           className="w-full h-full object-cover"
+          width={600}
+          height={750}
           onLoad={() => setImageLoaded(true)}
           loading="eager"
           fetchPriority="high"
+          decoding="async"
         />
       </div>
 
@@ -46,7 +50,10 @@ const ProductGallery = ({ images, name }: ProductGalleryProps) => {
               src={img}
               alt={`${name} - miniatura ${idx + 1}`}
               className="w-full h-full object-cover"
+              width={80}
+              height={80}
               loading="lazy"
+              decoding="async"
             />
           </button>
         ))}

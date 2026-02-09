@@ -46,6 +46,7 @@ const Footer = () => {
               alt="Papachoa México"
               className="h-10 w-auto mb-6"
               loading="lazy"
+              decoding="async"
               width={120}
               height={40}
             />

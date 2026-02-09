@@ -1,3 +1,4 @@
+import { memo, useMemo } from "react";
 import { Link } from "react-router-dom";
 import type { Product } from "@/data/products";
 
@@ -5,18 +6,17 @@ interface ProductCardProps {
   product: Product;
 }
 
-const ProductCard = ({ product }: ProductCardProps) => {
-  const formattedPrice = new Intl.NumberFormat("es-MX", {
-    style: "currency",
-    currency: "MXN",
-    minimumFractionDigits: 0,
-  }).format(product.price);
+const priceFormatter = new Intl.NumberFormat("es-MX", {
+  style: "currency",
+  currency: "MXN",
+  minimumFractionDigits: 0,
+});
+
+const ProductCard = memo(({ product }: ProductCardProps) => {
+  const formattedPrice = useMemo(() => priceFormatter.format(product.price), [product.price]);
 
   return (
-    <Link
-      to={`/producto/${product.slug}`}
-      className="group block"
-    >
+    <Link to={`/producto/${product.slug}`} className="group block">
       {/* Image container */}
       <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-papachoa-cream mb-3">
         <img
@@ -24,6 +24,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
           loading="lazy"
+          decoding="async"
           width={300}
           height={375}
         />
@@ -42,6 +43,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
       </div>
     </Link>
   );
-};
+});
+
+ProductCard.displayName = "ProductCard";
 
 export default ProductCard;
