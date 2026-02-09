@@ -1,0 +1,73 @@
+import { ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { toast } from "sonner";
+import { products, type Product } from "@/data/products";
+
+interface BundleSuggestionProps {
+  currentProduct: Product;
+}
+
+const BundleSuggestion = ({ currentProduct }: BundleSuggestionProps) => {
+  const { addItem } = useCart();
+
+  // Pick 2 products from same collection or random, excluding current
+  const suggestions = products
+    .filter((p) => p.id !== currentProduct.id)
+    .sort((a, b) => {
+      if (a.collection === currentProduct.collection && b.collection !== currentProduct.collection) return -1;
+      if (b.collection === currentProduct.collection && a.collection !== currentProduct.collection) return 1;
+      return 0;
+    })
+    .slice(0, 2);
+
+  if (suggestions.length === 0) return null;
+
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", minimumFractionDigits: 0 }).format(price);
+
+  return (
+    <div className="max-w-3xl">
+      <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">
+        Completa el <span className="italic">apapacho</span>
+      </h2>
+      <p className="text-sm text-muted-foreground mb-5">
+        Combina perfecto con…
+      </p>
+      <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+        {suggestions.map((item) => (
+          <div
+            key={item.id}
+            className="flex-shrink-0 w-48 bg-card rounded-2xl border border-border/30 overflow-hidden shadow-sm"
+          >
+            <div className="aspect-square bg-papachoa-cream">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div className="p-3">
+              <h4 className="font-display text-sm text-foreground leading-tight mb-1 line-clamp-2">
+                {item.name}
+              </h4>
+              <p className="text-xs text-muted-foreground mb-2">{formatPrice(item.price)}</p>
+              <button
+                onClick={() => {
+                  addItem(item);
+                  toast(`${item.name} agregado al carrito 🧸`, { duration: 3000 });
+                }}
+                className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold bg-papachoa-blush hover:bg-papachoa-blush-mid text-foreground rounded-full py-2 active:scale-95 transition-all"
+              >
+                <ShoppingBag className="h-3.5 w-3.5" />
+                Agregar
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default BundleSuggestion;
