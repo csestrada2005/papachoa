@@ -1,18 +1,56 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductCard from "@/components/catalog/ProductCard";
 import CollectionFilter from "@/components/catalog/CollectionFilter";
-import { products, type Collection } from "@/data/products";
+import { products, collections, type Collection } from "@/data/products";
+
+const validSlugs = new Set(collections.map((c) => c.id));
 
 const Catalogo = () => {
-  const [selectedCollection, setSelectedCollection] = useState<Collection>("todos");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const filterRef = useRef<HTMLDivElement>(null);
+
+  const paramCategoria = searchParams.get("categoria") as Collection | null;
+  const initial: Collection =
+    paramCategoria && validSlugs.has(paramCategoria) ? paramCategoria : "todos";
+
+  const [selectedCollection, setSelectedCollection] = useState<Collection>(initial);
+
+  // Sync from URL → state (e.g. browser back/forward)
+  useEffect(() => {
+    const cat = searchParams.get("categoria") as Collection | null;
+    const next = cat && validSlugs.has(cat) ? cat : "todos";
+    setSelectedCollection((prev) => (prev === next ? prev : next));
+  }, [searchParams]);
+
+  // When user picks a tab, update URL without reload
+  const handleSelect = useCallback(
+    (collection: Collection) => {
+      if (collection === selectedCollection) return;
+      setSelectedCollection(collection);
+      if (collection === "todos") {
+        setSearchParams({}, { replace: true });
+      } else {
+        setSearchParams({ categoria: collection }, { replace: true });
+      }
+    },
+    [selectedCollection, setSearchParams],
+  );
+
+  // Scroll to filters when arriving with a specific category
+  useEffect(() => {
+    if (paramCategoria && validSlugs.has(paramCategoria) && paramCategoria !== "todos") {
+      filterRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    // only on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredProducts = useMemo(() => {
-    if (selectedCollection === "todos") {
-      return products;
-    }
-    return products.filter((product) => product.collection === selectedCollection);
+    if (selectedCollection === "todos") return products;
+    return products.filter((p) => p.collection === selectedCollection);
   }, [selectedCollection]);
 
   return (
@@ -38,10 +76,10 @@ const Catalogo = () => {
       <section className="py-8 md:py-12">
         <div className="container">
           {/* Filtros */}
-          <div className="mb-8 md:mb-12">
+          <div ref={filterRef} className="mb-8 md:mb-12 scroll-mt-24">
             <CollectionFilter
               selected={selectedCollection}
-              onSelect={setSelectedCollection}
+              onSelect={handleSelect}
             />
           </div>
 

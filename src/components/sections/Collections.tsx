@@ -1,13 +1,22 @@
 import { Link } from "react-router-dom";
 import { Baby, Heart, Users, Moon, Gift } from "lucide-react";
+import type { Collection } from "@/data/products";
 
-const collections = [
+const collections: {
+  title: string;
+  description: string;
+  icon: typeof Baby;
+  bgColor: string;
+  iconColor: string;
+  slug: Collection;
+}[] = [
   {
     title: "Recién nacido",
     description: "Suavidad desde el primer día",
     icon: Baby,
     bgColor: "bg-papachoa-blush",
     iconColor: "text-papachoa-blush-dark",
+    slug: "recien-nacido",
   },
   {
     title: "Bebé & Cobijo",
@@ -15,6 +24,7 @@ const collections = [
     icon: Heart,
     bgColor: "bg-papachoa-sky",
     iconColor: "text-secondary-foreground",
+    slug: "bebe-cobijo",
   },
   {
     title: "Pijamas Familiares",
@@ -22,6 +32,7 @@ const collections = [
     icon: Users,
     bgColor: "bg-papachoa-sage",
     iconColor: "text-accent-foreground",
+    slug: "pijamas-familiares",
   },
   {
     title: "Sacos & Nidos",
@@ -29,6 +40,7 @@ const collections = [
     icon: Moon,
     bgColor: "bg-papachoa-peach",
     iconColor: "text-foreground/80",
+    slug: "sacos-nidos",
   },
   {
     title: "Listo para Regalar",
@@ -36,6 +48,7 @@ const collections = [
     icon: Gift,
     bgColor: "bg-papachoa-blush-mid",
     iconColor: "text-papachoa-warm-brown",
+    slug: "regalo",
   },
 ];
 
@@ -64,7 +77,8 @@ const Collections = () => {
           {collections.map((collection, index) => (
             <Link
               key={collection.title}
-              to="/catalogo"
+              to={`/catalogo?categoria=${collection.slug}`}
+              aria-label={`Ver colección ${collection.title}`}
               className={`group relative overflow-hidden rounded-3xl md:rounded-4xl transition-transform duration-200 hover:scale-[1.02] active:scale-[0.98] ${
                 index === 0 ? "md:col-span-2 md:row-span-2" : ""
               }`}
