@@ -7,6 +7,7 @@ import { CartProvider } from "@/context/CartContext";
 import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import Catalogo from "./pages/Catalogo";
+import Producto from "./pages/Producto";
 import Nosotros from "./pages/Nosotros";
 import Contacto from "./pages/Contacto";
 import Terminos from "./pages/Terminos";
@@ -28,6 +29,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/catalogo" element={<Catalogo />} />
+          <Route path="/producto/:slug" element={<Producto />} />
           <Route path="/nosotros" element={<Nosotros />} />
           <Route path="/contacto" element={<Contacto />} />
           <Route path="/terminos" element={<Terminos />} />

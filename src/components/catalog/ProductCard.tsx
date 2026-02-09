@@ -14,7 +14,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <Link
-      to={`/producto/${product.id}`}
+      to={`/producto/${product.slug}`}
       className="group block"
     >
       {/* Image container */}

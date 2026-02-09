@@ -1,0 +1,39 @@
+import ProductCard from "@/components/catalog/ProductCard";
+import { products, type Product } from "@/data/products";
+
+interface RelatedProductsProps {
+  currentProduct: Product;
+}
+
+const RelatedProducts = ({ currentProduct }: RelatedProductsProps) => {
+  const related = products
+    .filter((p) => p.id !== currentProduct.id)
+    .filter((p) => p.collection === currentProduct.collection)
+    .slice(0, 4);
+
+  // If not enough from same collection, fill with others
+  const backfill = related.length < 4
+    ? products
+        .filter((p) => p.id !== currentProduct.id && !related.includes(p))
+        .slice(0, 4 - related.length)
+    : [];
+
+  const allRelated = [...related, ...backfill];
+
+  if (allRelated.length === 0) return null;
+
+  return (
+    <div>
+      <h2 className="font-display text-xl md:text-2xl text-foreground mb-6">
+        Productos relacionados
+      </h2>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+        {allRelated.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default RelatedProducts;
