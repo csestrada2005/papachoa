@@ -34,10 +34,18 @@ const Hero = () => {
           <img
             src={heroImage}
             alt="Familia usando pijamas Papachoa"
-            className="relative z-10 w-full h-auto rounded-[2rem] object-cover"
+            className="relative z-10 w-full h-auto object-cover"
+            style={{ clipPath: "url(#hero-blob)" }}
             fetchPriority="high"
             draggable={false}
           />
+          <svg width="0" height="0" className="absolute">
+            <defs>
+              <clipPath id="hero-blob" clipPathUnits="objectBoundingBox">
+                <path d="M0.5,0.02 C0.75,-0.02,0.97,0.15,0.98,0.4 C0.99,0.65,0.85,0.88,0.6,0.97 C0.35,1.06,0.1,0.9,0.03,0.65 C-0.04,0.4,0.25,0.06,0.5,0.02Z" />
+              </clipPath>
+            </defs>
+          </svg>
         </div>
 
         {/* Text content */}
