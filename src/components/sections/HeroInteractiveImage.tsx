@@ -22,6 +22,8 @@ const HeroInteractiveImage = ({ src, alt }: HeroInteractiveImageProps) => {
         src={src}
         alt={alt}
         className="w-full aspect-square object-cover"
+        width={320}
+        height={320}
         loading="eager"
         fetchPriority="high"
         decoding="async"

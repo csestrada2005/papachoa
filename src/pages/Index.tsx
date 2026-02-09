@@ -1,17 +1,19 @@
+import { lazy, Suspense } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import Hero from "@/components/sections/Hero";
 import BrandMarquee from "@/components/sections/BrandMarquee";
 import Emotion from "@/components/sections/Emotion";
 import Collections from "@/components/sections/Collections";
-import Softness from "@/components/sections/Softness";
-import Testimonials from "@/components/sections/Testimonials";
-import MadeInMexico from "@/components/sections/MadeInMexico";
-import Newsletter from "@/components/sections/Newsletter";
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 
+// Below-fold sections – lazy loaded to speed up FCP/LCP
+const Softness = lazy(() => import("@/components/sections/Softness"));
+const Testimonials = lazy(() => import("@/components/sections/Testimonials"));
+const MadeInMexico = lazy(() => import("@/components/sections/MadeInMexico"));
+const Newsletter = lazy(() => import("@/components/sections/Newsletter"));
+
 const Index = () => {
-  // Prefetch key routes after initial render
   usePrefetchRoutes();
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -21,10 +23,12 @@ const Index = () => {
         <BrandMarquee />
         <Emotion />
         <Collections />
-        <Softness />
-        <Testimonials />
-        <MadeInMexico />
-        <Newsletter />
+        <Suspense fallback={null}>
+          <Softness />
+          <Testimonials />
+          <MadeInMexico />
+          <Newsletter />
+        </Suspense>
       </main>
       <Footer />
     </div>

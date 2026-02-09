@@ -77,6 +77,7 @@ const Softness = () => {
                   alt="Textura suave de tela Papachoa"
                   className="w-full aspect-[4/5] object-cover"
                   loading="lazy"
+                  decoding="async"
                   width={400}
                   height={500}
                 />
