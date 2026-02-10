@@ -8,6 +8,8 @@ const Hero = () => {
       {/* ========================================
           LAYER A: Decorative Background Elements
           ======================================== */}
+      {/* Ultra-subtle radial gradient overlay */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 70% 60% at 50% 35%, hsl(15 50% 88% / 0.35), transparent)" }} />
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-20 -right-32 w-80 h-80 bg-papachoa-blush/50 rounded-full blur-3xl" />
         <div className="absolute bottom-20 -left-20 w-60 h-60 bg-papachoa-sky/40 rounded-full blur-2xl" />
@@ -21,7 +23,9 @@ const Hero = () => {
 
       <div className="container flex-1 flex flex-col justify-center relative z-10">
         {/* Hero image – auto-transitioning inside the same organic mask */}
-        <div className="relative mx-auto w-full max-w-[280px] md:max-w-[320px] mb-3">
+      <div className="relative mx-auto w-full max-w-[280px] md:max-w-[320px] mb-5">
+          {/* Soft glow behind blob */}
+          <div className="absolute inset-0 bg-papachoa-blush/30 blob-shape scale-[1.12] blur-xl pointer-events-none" />
           <div className="absolute inset-0 bg-papachoa-blush/40 blob-shape scale-105 pointer-events-none" />
 
           {/* Locked aspect-ratio container – prevents CLS */}
@@ -51,13 +55,13 @@ const Hero = () => {
 
         {/* Text content */}
         <div className="text-center">
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-[1.15] mb-3">
+          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-[1.15] mb-4">
             Pensado por
             <br />
             <span className="italic text-papachoa-blush-dark">mamás,</span> para mamás
           </h1>
           
-          <p className="text-base text-muted-foreground font-light mb-6 max-w-xs mx-auto">
+          <p className="text-base text-muted-foreground font-light mb-7 max-w-xs mx-auto">
             Pijamas y cobijos ultra suaves que apapachan a toda la familia
           </p>
 
