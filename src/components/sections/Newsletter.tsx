@@ -64,7 +64,7 @@ const Newsletter = () => {
     <section className="py-24 md:py-32 bg-papachoa-blush/40 relative overflow-hidden">
       {/* Decorative blobs */}
       <div className="absolute top-4 right-2 w-24 h-24 md:top-10 md:left-10 md:w-40 md:h-40 bg-papachoa-sky/40 blob-shape pointer-events-none" />
-      <div className="absolute -bottom-2 -right-4 w-24 h-24 md:bottom-10 md:right-10 md:w-32 md:h-32 bg-papachoa-sage/40 blob-shape-2 pointer-events-none" />
+      <div className="absolute -bottom-2 -left-4 w-24 h-24 md:bottom-10 md:right-10 md:w-32 md:h-32 bg-papachoa-sage/40 blob-shape-2 pointer-events-none" />
 
       <div className="container relative">
         <div className="max-w-xl mx-auto text-center">
