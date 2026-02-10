@@ -129,16 +129,35 @@
 
 /* Marquee animation */
 @keyframes marquee {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
 }
-
 .animate-marquee {
   animation: marquee 25s linear infinite;
+}
+
+/* Icon blob breathing */
+@keyframes blob-breathe-1 {
+  0%, 100% { transform: scale(1) rotate(0deg); border-radius: 58% 42% 38% 62% / 55% 45% 55% 45%; }
+  50% { transform: scale(1.02) rotate(1deg); border-radius: 62% 38% 42% 58% / 45% 55% 45% 55%; }
+}
+@keyframes blob-breathe-2 {
+  0%, 100% { transform: scale(1) rotate(0deg); border-radius: 45% 55% 60% 40% / 50% 60% 40% 50%; }
+  50% { transform: scale(1.02) rotate(-1deg); border-radius: 50% 50% 55% 45% / 60% 40% 50% 50%; }
+}
+@keyframes blob-breathe-3 {
+  0%, 100% { transform: scale(1) rotate(0deg); border-radius: 52% 48% 45% 55% / 58% 42% 52% 48%; }
+  50% { transform: scale(1.02) rotate(1.5deg); border-radius: 48% 52% 55% 45% / 42% 58% 48% 52%; }
+}
+
+.icon-blob-1 {
+  animation: blob-breathe-1 7s ease-in-out infinite;
+}
+.icon-blob-2 {
+  animation: blob-breathe-2 8s ease-in-out infinite;
+}
+.icon-blob-3 {
+  animation: blob-breathe-3 6.5s ease-in-out infinite;
 }
 
 /* Blob shapes */

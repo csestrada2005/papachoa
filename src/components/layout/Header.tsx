@@ -46,8 +46,9 @@ const Header = () => {
         <div className="container flex items-center justify-between py-2.5">
           {/* Mobile menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger className="lg:hidden p-2.5 -ml-2 bg-papachoa-blush/30 hover:bg-papachoa-blush/50 active:scale-[0.97] rounded-[1rem] transition-all duration-200 hover:shadow-[0_2px_8px_hsl(var(--papachoa-blush)/0.3)] hover:scale-[1.03]">
-              <Menu className="h-[22px] w-[22px] text-foreground/80" />
+            <SheetTrigger className="lg:hidden relative p-3 -ml-2 group transition-all duration-300">
+              <span className="absolute inset-0 bg-papachoa-blush/20 group-hover:bg-papachoa-blush/35 group-active:scale-[0.96] icon-blob-1 transition-all duration-300 group-hover:shadow-[0_0_12px_hsl(var(--papachoa-blush)/0.4)] group-hover:scale-[1.05]" />
+              <Menu className="h-[22px] w-[22px] text-foreground/75 relative z-10" />
               <span className="sr-only">Menú</span>
             </SheetTrigger>
             <SheetContent side="left" className="w-[280px] bg-background border-r-0">
@@ -95,21 +96,23 @@ const Header = () => {
           </nav>
 
           {/* Icons */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2.5 text-foreground/70 hover:text-foreground bg-papachoa-sky/25 hover:bg-papachoa-sky/45 active:scale-[0.97] rounded-[1rem] transition-all duration-200 hover:shadow-[0_2px_8px_hsl(var(--papachoa-sky)/0.3)] hover:scale-[1.03]"
+              className="relative p-3 group transition-all duration-300"
             >
-              <Search className="h-[22px] w-[22px] md:h-5 md:w-5" />
+              <span className="absolute inset-0 bg-papachoa-sky/20 group-hover:bg-papachoa-sky/35 group-active:scale-[0.96] icon-blob-2 transition-all duration-300 group-hover:shadow-[0_0_12px_hsl(var(--papachoa-sky)/0.4)] group-hover:scale-[1.05]" />
+              <Search className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75 relative z-10" />
               <span className="sr-only">Buscar</span>
             </button>
             <button
               onClick={() => setIsCartOpen(true)}
-              className="p-2.5 text-foreground/70 hover:text-foreground bg-papachoa-sage/25 hover:bg-papachoa-sage/45 active:scale-[0.97] rounded-[1rem] transition-all duration-200 hover:shadow-[0_2px_8px_hsl(var(--papachoa-sage)/0.3)] hover:scale-[1.03] relative"
+              className="relative p-3 group transition-all duration-300"
             >
-              <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5" />
+              <span className="absolute inset-0 bg-papachoa-sage/20 group-hover:bg-papachoa-sage/35 group-active:scale-[0.96] icon-blob-3 transition-all duration-300 group-hover:shadow-[0_0_12px_hsl(var(--papachoa-sage)/0.4)] group-hover:scale-[1.05]" />
+              <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75 relative z-10" />
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 bg-papachoa-warm-brown text-card text-[10px] font-bold min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center px-1">
+                <span className="absolute -top-0.5 -right-0.5 z-20 bg-papachoa-warm-brown text-card text-[10px] font-bold min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center px-1">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
