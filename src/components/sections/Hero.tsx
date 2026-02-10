@@ -12,14 +12,9 @@ const FADE_MS = 800;
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);
-  const [fading, setFading] = useState(false);
 
   const advance = useCallback(() => {
-    setFading(true);
-    setTimeout(() => {
-      setCurrent((prev) => (prev + 1) % heroImages.length);
-      setFading(false);
-    }, FADE_MS);
+    setCurrent((prev) => (prev + 1) % heroImages.length);
   }, []);
 
   useEffect(() => {
@@ -48,18 +43,26 @@ const Hero = () => {
         <div className="relative mx-auto w-full max-w-[280px] md:max-w-[320px] mb-3">
           <div className="absolute inset-0 bg-papachoa-blush/40 blob-shape scale-105 pointer-events-none" />
 
-          <div className="relative w-full" style={{ clipPath: "url(#hero-blob)" }}>
-            <img
-              src={heroImages[current]}
-              alt="Familia usando pijamas Papachoa"
-              className="w-full h-auto object-cover transition-opacity ease-in-out"
-              style={{
-                opacity: fading ? 0 : 1,
-                transitionDuration: `${FADE_MS}ms`,
-              }}
-              fetchPriority={current === 0 ? "high" : undefined}
-              draggable={false}
-            />
+          {/* Locked aspect-ratio container – prevents CLS */}
+          <div
+            className="relative w-full"
+            style={{ clipPath: "url(#hero-blob)", aspectRatio: "1 / 1" }}
+          >
+            {heroImages.map((src, i) => (
+              <img
+                key={i}
+                src={src}
+                alt="Familia usando pijamas Papachoa"
+                className="absolute inset-0 w-full h-full object-cover will-change-[opacity]"
+                style={{
+                  opacity: i === current ? 1 : 0,
+                  transition: `opacity ${FADE_MS}ms ease-in-out`,
+                }}
+                fetchPriority={i === 0 ? "high" : "low"}
+                loading={i === 0 ? "eager" : "lazy"}
+                draggable={false}
+              />
+            ))}
           </div>
 
           <svg width="0" height="0" className="absolute">
