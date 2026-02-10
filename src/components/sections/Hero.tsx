@@ -53,10 +53,11 @@ const Hero = () => {
                 key={i}
                 src={src}
                 alt="Familia usando pijamas Papachoa"
-                className={`absolute inset-0 w-full h-full object-cover will-change-[opacity] ${i === 0 ? "object-[62%_18%]" : ""}`}
+                className="absolute inset-0 w-full h-full object-cover will-change-[opacity]"
                 style={{
                   opacity: i === current ? 1 : 0,
                   transition: `opacity ${FADE_MS}ms ease-in-out`,
+                  objectPosition: i === 0 ? "50% 65%" : undefined,
                 }}
                 fetchPriority={i === 0 ? "high" : "low"}
                 loading={i === 0 ? "eager" : "lazy"}
