@@ -53,7 +53,7 @@ const Hero = () => {
                 key={i}
                 src={src}
                 alt="Familia usando pijamas Papachoa"
-                className="absolute inset-0 w-full h-full object-cover will-change-[opacity]"
+                className={`absolute inset-0 w-full h-full object-cover will-change-[opacity] ${i === 0 ? "object-[55%_35%]" : ""}`}
                 style={{
                   opacity: i === current ? 1 : 0,
                   transition: `opacity ${FADE_MS}ms ease-in-out`,
