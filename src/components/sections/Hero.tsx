@@ -1,34 +1,7 @@
-import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-family.png";
-import hero2 from "@/assets/hero-2.jpg";
-import hero3 from "@/assets/hero-3.jpg";
-import hero4 from "@/assets/hero-4.jpg";
-import hero5 from "@/assets/hero-5.jpg";
-
-const heroImages = [heroImage, hero2, hero3, hero4, hero5];
-// Per-image art-directed crops – single source of truth, never recomputed
-const heroPositions = [
-  "52% 60%",   // slide 0 – two kids sleeping: both faces centered
-  "50% 20%",   // slide 1 – mom + two kids standing: show all faces
-  "62% 28%",   // slide 2 – family with baby: reveal adult on right + baby
-  "50% 35%",   // slide 3 – boy & girl standing: natural head framing
-  "50% 50%",   // slide 4 – default center
-];
-const INTERVAL = 5000; // 5s per image
-const FADE_MS = 800;
 
 const Hero = () => {
-  const [current, setCurrent] = useState(0);
-
-  const advance = useCallback(() => {
-    setCurrent((prev) => (prev + 1) % heroImages.length);
-  }, []);
-
-  useEffect(() => {
-    const id = setInterval(advance, INTERVAL);
-    return () => clearInterval(id);
-  }, [advance]);
 
   return (
     <section className="relative min-h-[100svh] bg-papachoa-cream pt-24 pb-8 overflow-hidden flex flex-col">
@@ -56,25 +29,15 @@ const Hero = () => {
             className="relative w-full"
             style={{ clipPath: "url(#hero-blob)", aspectRatio: "1 / 1" }}
           >
-            {heroImages.map((src, i) => {
-              const isFirst = i === 0;
-              return (
-                <img
-                  key={i}
-                  src={src}
-                  alt="Familia usando pijamas Papachoa"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{
-                    objectPosition: heroPositions[i],
-                    opacity: i === current ? 1 : 0,
-                    transition: `opacity ${FADE_MS}ms ease-in-out`,
-                  }}
-                  fetchPriority={isFirst ? "high" : "low"}
-                  loading={isFirst ? "eager" : "lazy"}
-                  draggable={false}
-                />
-              );
-            })}
+            <img
+              src={heroImage}
+              alt="Familia usando pijamas Papachoa"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: "52% 60%" }}
+              fetchPriority="high"
+              loading="eager"
+              draggable={false}
+            />
           </div>
 
           <svg width="0" height="0" className="absolute">
