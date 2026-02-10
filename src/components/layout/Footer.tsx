@@ -3,6 +3,7 @@ import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-papachoa.webp";
 import { brand } from "@/data/brand";
 import { openExternal } from "@/lib/openExternal";
+import { prefetchRoute } from "@/hooks/usePrefetch";
 
 const footerLinks = {
   tienda: [
@@ -81,6 +82,8 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
+                    onMouseEnter={() => prefetchRoute(link.href)}
+                    onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
@@ -98,6 +101,8 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
+                    onMouseEnter={() => prefetchRoute(link.href)}
+                    onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}
@@ -115,6 +120,8 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
+                    onMouseEnter={() => prefetchRoute(link.href)}
+                    onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                   >
                     {link.label}

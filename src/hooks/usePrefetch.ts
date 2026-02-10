@@ -5,6 +5,10 @@ const routeModules: Record<string, () => Promise<unknown>> = {
   "/catalogo": () => import("@/pages/Catalogo"),
   "/nosotros": () => import("@/pages/Nosotros"),
   "/contacto": () => import("@/pages/Contacto"),
+  "/terminos": () => import("@/pages/Terminos"),
+  "/devoluciones": () => import("@/pages/Devoluciones"),
+  "/privacidad": () => import("@/pages/Privacidad"),
+  "/faq": () => import("@/pages/FAQ"),
 };
 
 export const usePrefetchRoutes = () => {
