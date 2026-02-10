@@ -1,10 +1,27 @@
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-family.png";
+import hero2 from "@/assets/hero-2.jpg";
+import hero3 from "@/assets/hero-3.jpg";
+import hero4 from "@/assets/hero-4.jpg";
+import hero5 from "@/assets/hero-5.jpg";
+
+const heroSlides = [
+  { src: heroImage, alt: "Familia usando pijamas Papachoa", pos: "52% 60%" },
+  { src: hero2, alt: "Pijamas Papachoa estilo 2", pos: "50% 35%" },
+  { src: hero3, alt: "Pijamas Papachoa estilo 3", pos: "50% 30%" },
+  { src: hero4, alt: "Pijamas Papachoa estilo 4", pos: "50% 40%" },
+  { src: hero5, alt: "Pijamas Papachoa estilo 5", pos: "50% 55%" },
+];
 
 const Hero = () => {
 
   return (
     <section className="relative min-h-[100svh] bg-papachoa-cream pt-24 pb-8 overflow-hidden flex flex-col">
+      {/* Preload hero images */}
+      {heroSlides.map((slide, i) => (
+        <link key={i} rel="preload" as="image" href={slide.src} />
+      ))}
+
       {/* ========================================
           LAYER A: Decorative Background Elements
           ======================================== */}
@@ -22,7 +39,7 @@ const Hero = () => {
       </div>
 
       <div className="container flex-1 flex flex-col justify-center relative z-10">
-        {/* Hero image – auto-transitioning inside the same organic mask */}
+        {/* Hero image – CSS-only crossfade inside the same organic mask */}
       <div className="relative mx-auto w-full max-w-[280px] md:max-w-[320px] mb-5">
           {/* Soft glow behind blob */}
           <div className="absolute inset-0 bg-papachoa-blush/30 blob-shape scale-[1.12] blur-xl pointer-events-none" />
@@ -31,17 +48,20 @@ const Hero = () => {
           {/* Locked aspect-ratio container – prevents CLS */}
           <div
             className="relative w-full"
-            style={{ clipPath: "url(#hero-blob)", aspectRatio: "1 / 1" }}
+            style={{ clipPath: "url(#hero-blob)", aspectRatio: "1 / 1", contain: "paint" }}
           >
-            <img
-              src={heroImage}
-              alt="Familia usando pijamas Papachoa"
-              className="absolute inset-0 w-full h-full object-cover"
-              style={{ objectPosition: "52% 60%" }}
-              fetchPriority="high"
-              loading="eager"
-              draggable={false}
-            />
+            {heroSlides.map((slide, i) => (
+              <img
+                key={i}
+                src={slide.src}
+                alt={slide.alt}
+                className={`absolute inset-0 w-full h-full object-cover hero-slide hero-slide-${i}`}
+                style={{ objectPosition: slide.pos, willChange: "opacity" }}
+                fetchPriority={i === 0 ? "high" : undefined}
+                loading="eager"
+                draggable={false}
+              />
+            ))}
           </div>
 
           <svg width="0" height="0" className="absolute">
