@@ -48,22 +48,24 @@ const Hero = () => {
             className="relative w-full"
             style={{ clipPath: "url(#hero-blob)", aspectRatio: "1 / 1" }}
           >
-            {heroImages.map((src, i) => (
-              <img
-                key={i}
-                src={src}
-                alt="Familia usando pijamas Papachoa"
-                className="absolute inset-0 w-full h-full object-cover will-change-[opacity]"
-                style={{
-                  opacity: i === current ? 1 : 0,
-                  transition: `opacity ${FADE_MS}ms ease-in-out`,
-                  objectPosition: i === 0 ? "50% 65%" : undefined,
-                }}
-                fetchPriority={i === 0 ? "high" : "low"}
-                loading={i === 0 ? "eager" : "lazy"}
-                draggable={false}
-              />
-            ))}
+            {heroImages.map((src, i) => {
+              const isFirst = i === 0;
+              return (
+                <img
+                  key={i}
+                  src={src}
+                  alt="Familia usando pijamas Papachoa"
+                  className={`absolute inset-0 w-full h-full object-cover will-change-[opacity]${isFirst ? " object-[50%_65%]" : ""}`}
+                  style={{
+                    opacity: i === current ? 1 : 0,
+                    transition: `opacity ${FADE_MS}ms ease-in-out`,
+                  }}
+                  fetchPriority={isFirst ? "high" : "low"}
+                  loading={isFirst ? "eager" : "lazy"}
+                  draggable={false}
+                />
+              );
+            })}
           </div>
 
           <svg width="0" height="0" className="absolute">
