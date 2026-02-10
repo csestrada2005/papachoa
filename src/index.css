@@ -136,28 +136,31 @@
   animation: marquee 25s linear infinite;
 }
 
-/* Icon blob breathing */
-@keyframes blob-breathe-1 {
-  0%, 100% { transform: scale(1) rotate(0deg); border-radius: 58% 42% 38% 62% / 55% 45% 55% 45%; }
-  50% { transform: scale(1.02) rotate(1deg); border-radius: 62% 38% 42% 58% / 45% 55% 45% 55%; }
+/* Icon blob morphing – reuses hero organic shape via clip-path */
+@keyframes icon-morph-1 {
+  0%, 100% { clip-path: polygon(50% 2%, 80% 8%, 97% 35%, 96% 65%, 78% 90%, 50% 98%, 22% 92%, 5% 68%, 3% 38%, 20% 10%); }
+  33% { clip-path: polygon(48% 4%, 78% 6%, 95% 32%, 98% 62%, 82% 88%, 52% 96%, 20% 94%, 3% 72%, 5% 40%, 22% 12%); }
+  66% { clip-path: polygon(52% 3%, 82% 10%, 96% 38%, 94% 68%, 76% 92%, 48% 97%, 24% 90%, 6% 64%, 4% 36%, 18% 8%); }
 }
-@keyframes blob-breathe-2 {
-  0%, 100% { transform: scale(1) rotate(0deg); border-radius: 45% 55% 60% 40% / 50% 60% 40% 50%; }
-  50% { transform: scale(1.02) rotate(-1deg); border-radius: 50% 50% 55% 45% / 60% 40% 50% 50%; }
+@keyframes icon-morph-2 {
+  0%, 100% { clip-path: polygon(50% 3%, 78% 6%, 96% 32%, 98% 60%, 80% 88%, 52% 97%, 22% 92%, 4% 66%, 3% 36%, 22% 10%); }
+  33% { clip-path: polygon(52% 2%, 82% 8%, 98% 36%, 96% 64%, 78% 90%, 48% 98%, 20% 90%, 6% 62%, 5% 34%, 24% 8%); }
+  66% { clip-path: polygon(48% 4%, 76% 10%, 94% 34%, 97% 66%, 82% 92%, 54% 96%, 24% 94%, 3% 68%, 4% 38%, 20% 12%); }
 }
-@keyframes blob-breathe-3 {
-  0%, 100% { transform: scale(1) rotate(0deg); border-radius: 52% 48% 45% 55% / 58% 42% 52% 48%; }
-  50% { transform: scale(1.02) rotate(1.5deg); border-radius: 48% 52% 55% 45% / 42% 58% 48% 52%; }
+@keyframes icon-morph-3 {
+  0%, 100% { clip-path: polygon(52% 2%, 80% 10%, 96% 36%, 94% 66%, 76% 90%, 48% 98%, 24% 92%, 6% 64%, 4% 34%, 22% 8%); }
+  33% { clip-path: polygon(50% 4%, 76% 8%, 94% 38%, 96% 68%, 80% 92%, 52% 96%, 22% 90%, 4% 60%, 6% 32%, 24% 10%); }
+  66% { clip-path: polygon(54% 3%, 82% 6%, 98% 34%, 95% 62%, 78% 88%, 46% 97%, 20% 94%, 5% 68%, 3% 38%, 20% 12%); }
 }
 
 .icon-blob-1 {
-  animation: blob-breathe-1 7s ease-in-out infinite;
+  animation: icon-morph-1 8s ease-in-out infinite;
 }
 .icon-blob-2 {
-  animation: blob-breathe-2 8s ease-in-out infinite;
+  animation: icon-morph-2 9s ease-in-out infinite;
 }
 .icon-blob-3 {
-  animation: blob-breathe-3 6.5s ease-in-out infinite;
+  animation: icon-morph-3 7.5s ease-in-out infinite;
 }
 
 /* Blob shapes */
