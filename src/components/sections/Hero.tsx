@@ -1,44 +1,67 @@
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import heroImage from "@/assets/hero-family.png";
+import hero2 from "@/assets/hero-2.jpg";
+import hero3 from "@/assets/hero-3.jpg";
+import hero4 from "@/assets/hero-4.jpg";
+import hero5 from "@/assets/hero-5.jpg";
+
+const heroImages = [heroImage, hero2, hero3, hero4, hero5];
+const INTERVAL = 5000; // 5s per image
+const FADE_MS = 800;
 
 const Hero = () => {
+  const [current, setCurrent] = useState(0);
+  const [fading, setFading] = useState(false);
+
+  const advance = useCallback(() => {
+    setFading(true);
+    setTimeout(() => {
+      setCurrent((prev) => (prev + 1) % heroImages.length);
+      setFading(false);
+    }, FADE_MS);
+  }, []);
+
+  useEffect(() => {
+    const id = setInterval(advance, INTERVAL);
+    return () => clearInterval(id);
+  }, [advance]);
+
   return (
     <section className="relative min-h-[100svh] bg-papachoa-cream pt-24 pb-8 overflow-hidden flex flex-col">
       {/* ========================================
           LAYER A: Decorative Background Elements
-          - NO interactivity
-          - NO hotspots
           ======================================== */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Large blob top right */}
         <div className="absolute -top-20 -right-32 w-80 h-80 bg-papachoa-blush/50 rounded-full blur-3xl" />
-        {/* Blob bottom left */}
         <div className="absolute bottom-20 -left-20 w-60 h-60 bg-papachoa-sky/40 rounded-full blur-2xl" />
-        {/* Small accent circles */}
         <div className="absolute top-1/3 left-8 w-4 h-4 bg-papachoa-sage rounded-full opacity-60" />
         <div className="absolute top-1/2 right-12 w-3 h-3 bg-papachoa-blush-mid rounded-full opacity-70" />
         <div className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-papachoa-sky-mid rounded-full opacity-50" />
-        {/* Decorative stars/sparkles */}
         <span className="absolute top-32 right-8 text-2xl opacity-30">✦</span>
         <span className="absolute bottom-40 left-6 text-xl opacity-25">✧</span>
         <span className="absolute top-1/2 right-1/4 text-lg opacity-20">✦</span>
       </div>
 
       <div className="container flex-1 flex flex-col justify-center relative z-10">
-        {/* ========================================
-            LAYER B: Interactive Image Container
-            ======================================== */}
-        {/* Hero image – purely visual, no interactivity */}
+        {/* Hero image – auto-transitioning inside the same organic mask */}
         <div className="relative mx-auto w-full max-w-[280px] md:max-w-[320px] mb-3">
           <div className="absolute inset-0 bg-papachoa-blush/40 blob-shape scale-105 pointer-events-none" />
-          <img
-            src={heroImage}
-            alt="Familia usando pijamas Papachoa"
-            className="relative z-10 w-full h-auto object-cover"
-            style={{ clipPath: "url(#hero-blob)" }}
-            fetchPriority="high"
-            draggable={false}
-          />
+
+          <div className="relative w-full" style={{ clipPath: "url(#hero-blob)" }}>
+            <img
+              src={heroImages[current]}
+              alt="Familia usando pijamas Papachoa"
+              className="w-full h-auto object-cover transition-opacity ease-in-out"
+              style={{
+                opacity: fading ? 0 : 1,
+                transitionDuration: `${FADE_MS}ms`,
+              }}
+              fetchPriority={current === 0 ? "high" : undefined}
+              draggable={false}
+            />
+          </div>
+
           <svg width="0" height="0" className="absolute">
             <defs>
               <clipPath id="hero-blob" clipPathUnits="objectBoundingBox">
@@ -46,7 +69,6 @@ const Hero = () => {
               </clipPath>
             </defs>
           </svg>
-
         </div>
 
         {/* Text content */}
@@ -61,7 +83,6 @@ const Hero = () => {
             Pijamas y cobijos ultra suaves que apapachan a toda la familia
           </p>
 
-          {/* CTA Button - prominent */}
           <Link
             to="/catalogo"
             className="inline-flex items-center gap-2 bg-papachoa-warm-brown text-card font-semibold px-7 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-transform duration-150 shadow-lg text-sm"
