@@ -7,6 +7,14 @@ import hero4 from "@/assets/hero-4.jpg";
 import hero5 from "@/assets/hero-5.jpg";
 
 const heroImages = [heroImage, hero2, hero3, hero4, hero5];
+// Per-image art-directed crops (object-position) inside the shared mask
+const heroPositions = [
+  "50% 55%",   // img 1 – two kids sleeping: center faces vertically
+  "50% 30%",   // img 2 – mom + two kids standing: lift to show mom's face
+  "55% 40%",   // img 3 – family with baby: slight right to include all faces
+  "50% 25%",   // img 4 – boy & girl standing: shift up to frame heads naturally
+  "50% 50%",   // img 5 – default center
+];
 const INTERVAL = 5000; // 5s per image
 const FADE_MS = 800;
 
@@ -55,10 +63,11 @@ const Hero = () => {
                   key={i}
                   src={src}
                   alt="Familia usando pijamas Papachoa"
-                  className={`absolute inset-0 w-full h-full object-cover will-change-[opacity]${isFirst ? " object-[50%_65%]" : ""}`}
+                  className="absolute inset-0 w-full h-full object-cover will-change-[opacity]"
                   style={{
                     opacity: i === current ? 1 : 0,
                     transition: `opacity ${FADE_MS}ms ease-in-out`,
+                    objectPosition: heroPositions[i],
                   }}
                   fetchPriority={isFirst ? "high" : "low"}
                   loading={isFirst ? "eager" : "lazy"}
