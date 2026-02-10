@@ -7,13 +7,13 @@ import hero4 from "@/assets/hero-4.jpg";
 import hero5 from "@/assets/hero-5.jpg";
 
 const heroImages = [heroImage, hero2, hero3, hero4, hero5];
-// Per-image art-directed crops (object-position) inside the shared mask
+// Per-image art-directed crops – single source of truth, never recomputed
 const heroPositions = [
-  "50% 55%",   // img 1 – two kids sleeping: center faces vertically
-  "50% 30%",   // img 2 – mom + two kids standing: lift to show mom's face
-  "55% 40%",   // img 3 – family with baby: slight right to include all faces
-  "50% 25%",   // img 4 – boy & girl standing: shift up to frame heads naturally
-  "50% 50%",   // img 5 – default center
+  "52% 60%",   // slide 0 – two kids sleeping: both faces centered
+  "50% 20%",   // slide 1 – mom + two kids standing: show all faces
+  "62% 28%",   // slide 2 – family with baby: reveal adult on right + baby
+  "50% 35%",   // slide 3 – boy & girl standing: natural head framing
+  "50% 50%",   // slide 4 – default center
 ];
 const INTERVAL = 5000; // 5s per image
 const FADE_MS = 800;
