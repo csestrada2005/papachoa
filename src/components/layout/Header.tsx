@@ -47,7 +47,7 @@ const Header = () => {
           {/* Mobile menu */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger className="lg:hidden relative p-3 -ml-2 group transition-all duration-300">
-              <span className="absolute inset-0 bg-papachoa-blush/20 group-hover:bg-papachoa-blush/35 group-active:scale-[0.96] icon-blob-1 transition-all duration-300 group-hover:shadow-[0_0_12px_hsl(var(--papachoa-blush)/0.4)] group-hover:scale-[1.05]" />
+              <span className="absolute inset-0 bg-papachoa-blush/40 group-hover:bg-papachoa-blush/55 group-active:scale-[0.96] icon-blob-1 transition-all duration-300 group-hover:shadow-[0_0_14px_hsl(var(--papachoa-blush)/0.45)] group-hover:scale-[1.05]" />
               <Menu className="h-[22px] w-[22px] text-foreground/75 relative z-10" />
               <span className="sr-only">Menú</span>
             </SheetTrigger>
@@ -101,7 +101,7 @@ const Header = () => {
               onClick={() => setIsSearchOpen(true)}
               className="relative p-3 group transition-all duration-300"
             >
-              <span className="absolute inset-0 bg-papachoa-sky/20 group-hover:bg-papachoa-sky/35 group-active:scale-[0.96] icon-blob-2 transition-all duration-300 group-hover:shadow-[0_0_12px_hsl(var(--papachoa-sky)/0.4)] group-hover:scale-[1.05]" />
+              <span className="absolute inset-0 bg-papachoa-sky/40 group-hover:bg-papachoa-sky/55 group-active:scale-[0.96] icon-blob-2 transition-all duration-300 group-hover:shadow-[0_0_14px_hsl(var(--papachoa-sky)/0.45)] group-hover:scale-[1.05]" />
               <Search className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75 relative z-10" />
               <span className="sr-only">Buscar</span>
             </button>
@@ -109,7 +109,7 @@ const Header = () => {
               onClick={() => setIsCartOpen(true)}
               className="relative p-3 group transition-all duration-300"
             >
-              <span className="absolute inset-0 bg-papachoa-sage/20 group-hover:bg-papachoa-sage/35 group-active:scale-[0.96] icon-blob-3 transition-all duration-300 group-hover:shadow-[0_0_12px_hsl(var(--papachoa-sage)/0.4)] group-hover:scale-[1.05]" />
+              <span className="absolute inset-0 bg-papachoa-sage/40 group-hover:bg-papachoa-sage/55 group-active:scale-[0.96] icon-blob-3 transition-all duration-300 group-hover:shadow-[0_0_14px_hsl(var(--papachoa-sage)/0.45)] group-hover:scale-[1.05]" />
               <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75 relative z-10" />
               {itemCount > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 z-20 bg-papachoa-warm-brown text-card text-[10px] font-bold min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center px-1">
