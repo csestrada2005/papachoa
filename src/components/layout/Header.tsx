@@ -4,6 +4,7 @@ import { Menu, Search, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import SearchModal from "@/components/SearchModal";
 import MiniCart from "@/components/MiniCart";
+import GlassBlobButton from "@/components/ui/GlassBlobButton";
 import { useCart } from "@/context/CartContext";
 import logo from "@/assets/logo-papachoa.webp";
 
@@ -62,10 +63,10 @@ const Header = () => {
           {/* Left column */}
           <div className="flex items-center justify-start">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger className="lg:hidden relative min-w-[44px] min-h-[44px] flex items-center justify-center group transition-all duration-300">
-                <span className="absolute inset-0 bg-papachoa-blush/40 group-hover:bg-papachoa-blush/55 group-active:scale-[0.96] icon-blob-1 transition-all duration-300 group-hover:shadow-[0_0_14px_hsl(var(--papachoa-blush)/0.45)] group-hover:scale-[1.05]" />
-                <Menu className="h-[22px] w-[22px] text-foreground/75 relative z-10" />
-                <span className="sr-only">Menú</span>
+              <SheetTrigger asChild>
+                <GlassBlobButton tint="blush" className="lg:hidden" aria-label="Menú">
+                  <Menu className="h-[22px] w-[22px] text-foreground/75" />
+                </GlassBlobButton>
               </SheetTrigger>
               <SheetContent side="left" className="w-[280px] bg-background border-r-0">
                 <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
@@ -114,27 +115,21 @@ const Header = () => {
 
           {/* Right column – Icons */}
           <div className="flex items-center justify-end gap-1.5">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="relative min-w-[44px] min-h-[44px] flex items-center justify-center group transition-all duration-300"
-            >
-              <span className="absolute inset-0 bg-papachoa-sky/40 group-hover:bg-papachoa-sky/55 group-active:scale-[0.96] icon-blob-2 transition-all duration-300 group-hover:shadow-[0_0_14px_hsl(var(--papachoa-sky)/0.45)] group-hover:scale-[1.05]" />
-              <Search className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75 relative z-10" />
-              <span className="sr-only">Buscar</span>
-            </button>
-            <button
+            <GlassBlobButton tint="sky" onClick={() => setIsSearchOpen(true)} aria-label="Buscar">
+              <Search className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75" />
+            </GlassBlobButton>
+            <GlassBlobButton
+              tint="sage"
               onClick={() => setIsCartOpen(true)}
-              className="relative min-w-[44px] min-h-[44px] flex items-center justify-center group transition-all duration-300"
-            >
-              <span className="absolute inset-0 bg-papachoa-sage/40 group-hover:bg-papachoa-sage/55 group-active:scale-[0.96] icon-blob-3 transition-all duration-300 group-hover:shadow-[0_0_14px_hsl(var(--papachoa-sage)/0.45)] group-hover:scale-[1.05]" />
-              <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75 relative z-10" />
-              {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 z-20 bg-papachoa-warm-brown text-card text-[10px] font-bold min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center px-1">
+              aria-label="Carrito"
+              badge={itemCount > 0 ? (
+                <span className="bg-papachoa-warm-brown text-card text-[10px] font-bold min-w-[18px] min-h-[18px] rounded-full flex items-center justify-center px-1">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
-              )}
-              <span className="sr-only">Carrito</span>
-            </button>
+              ) : undefined}
+            >
+              <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/75" />
+            </GlassBlobButton>
           </div>
         </div>
       </div>
