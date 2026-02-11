@@ -1,10 +1,15 @@
+import { useParallax } from "@/hooks/useParallax";
+import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
 import lifestyleImage from "@/assets/lifestyle-1.png";
 
 const Emotion = () => {
+  const parallaxRef = useParallax(0.1);
+  const stitchRef = useDrawOnScroll(0.4);
+
   return (
     <section className="py-24 md:py-32 relative overflow-hidden texture-linen texture-woven">
-      {/* Floating fabric shadow shapes */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Floating fabric shadow shapes — parallax */}
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
         <div className="absolute -top-16 -right-16 w-64 h-64 opacity-[0.06] animate-drift"
           style={{
             background: "radial-gradient(ellipse 60% 80%, hsl(38 60% 52% / 0.3), transparent 70%)",
@@ -25,7 +30,7 @@ const Emotion = () => {
               <div className="frame-fabric-2 overflow-hidden">
                 <img
                   src={lifestyleImage}
-                  alt="Beb&eacute; descansando con cobijo Papachoa"
+                  alt="Bebé descansando con cobijo Papachoa"
                   className="w-full aspect-[3/4] object-cover"
                   loading="lazy"
                   decoding="async"
@@ -44,7 +49,7 @@ const Emotion = () => {
           <div className="lg:col-span-7 lg:pl-8">
             <div className="max-w-xl">
               <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-6">
-                Nuestra filosof&iacute;a
+                Nuestra filosofía
               </p>
               
               <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-8">
@@ -57,11 +62,11 @@ const Emotion = () => {
               
               <p className="text-lg text-muted-foreground font-light leading-relaxed mb-10">
                 Creemos que cada momento de descanso merece sentirse especial. 
-                Por eso, cada prenda est&aacute; pensada para hacer tu hogar m&aacute;s suave, 
-                m&aacute;s c&aacute;lido, m&aacute;s tuyo.
+                Por eso, cada prenda está pensada para hacer tu hogar más suave, 
+                más cálido, más tuyo.
               </p>
 
-              <div className="divider-cross-stitch w-24 mb-8" />
+              <div ref={stitchRef} className="divider-cross-stitch w-24 mb-8" />
 
               <div className="flex flex-wrap gap-3">
                 {["Calma", "Ternura", "Apapacho"].map((tag) => (
@@ -70,7 +75,6 @@ const Emotion = () => {
                     className="border border-primary/20 text-foreground/70 px-5 py-2.5 text-sm font-medium tracking-wide relative"
                     style={{ borderRadius: "2px" }}
                   >
-                    {/* Mini stitch corners */}
                     <svg className="absolute -top-[3px] -left-[3px] w-[6px] h-[6px]" viewBox="0 0 6 6">
                       <line x1="0" y1="3" x2="6" y2="3" stroke="hsl(14 52% 46% / 0.3)" strokeWidth="1" />
                       <line x1="3" y1="0" x2="3" y2="6" stroke="hsl(14 52% 46% / 0.3)" strokeWidth="1" />

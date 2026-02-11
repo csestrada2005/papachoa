@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import { useParallax } from "@/hooks/useParallax";
+import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
 import type { Collection } from "@/data/products";
 
 const collections: {
@@ -46,9 +48,12 @@ const collections: {
 ];
 
 const Collections = () => {
+  const parallaxRef = useParallax(0.1);
+  const stitchRef = useDrawOnScroll(0.3);
+
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
         <div className="absolute -top-20 -right-20 w-72 h-72 opacity-[0.05] animate-drift"
           style={{
             background: "radial-gradient(circle, hsl(14 52% 46% / 0.3), transparent 70%)",
@@ -72,7 +77,7 @@ const Collections = () => {
           <p className="text-muted-foreground max-w-md mx-auto text-lg font-light">
             Encuentra el apapacho perfecto para cada etapa
           </p>
-          <div className="divider-cross-stitch w-16 mx-auto mt-8" />
+          <div ref={stitchRef} className="divider-cross-stitch w-16 mx-auto mt-8" />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto">

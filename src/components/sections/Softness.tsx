@@ -1,3 +1,5 @@
+import { useParallax } from "@/hooks/useParallax";
+import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
 import lifestyleImage from "@/assets/lifestyle-2.png";
 
 const qualities = [
@@ -19,9 +21,12 @@ const qualities = [
 ];
 
 const Softness = () => {
+  const parallaxRef = useParallax(0.1);
+  const stitchRef = useDrawOnScroll(0.4);
+
   return (
     <section className="py-24 md:py-32 section-terracotta relative overflow-hidden texture-linen texture-woven">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
         <div className="absolute top-32 -left-16 w-48 h-48 opacity-[0.06] animate-drift"
           style={{
             background: "radial-gradient(circle, hsl(38 60% 52% / 0.3), transparent 70%)",
@@ -42,7 +47,7 @@ const Softness = () => {
               <em className="text-primary">se siente</em>
             </h2>
 
-            <div className="divider-cross-stitch w-20 mb-10" />
+            <div ref={stitchRef} className="divider-cross-stitch w-20 mb-10" />
 
             <div className="space-y-4">
               {qualities.map((quality) => (

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useParallax } from "@/hooks/useParallax";
 import heroImage from "@/assets/hero-family.png";
 import hero2 from "@/assets/hero-2.jpg";
 import hero3 from "@/assets/hero-3.jpg";
@@ -14,6 +15,8 @@ const heroSlides = [
 ];
 
 const Hero = () => {
+  const parallaxRef = useParallax(0.12);
+
   return (
     <section className="relative min-h-[100svh] pt-24 pb-12 overflow-hidden flex flex-col section-terracotta texture-linen">
       {/* Preload */}
@@ -24,8 +27,8 @@ const Hero = () => {
       {/* Woven textile overlay */}
       <div className="absolute inset-0 pointer-events-none texture-woven" />
 
-      {/* Deep layered background — Oaxacan sunset + fabric shadows */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      {/* Deep layered background — parallax */}
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
         {/* Warm radial glow */}
         <div className="absolute inset-0" style={{
           background: "radial-gradient(ellipse 70% 60% at 30% 50%, hsl(14 52% 46% / 0.08), transparent 60%)"

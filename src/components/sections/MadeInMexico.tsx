@@ -1,3 +1,6 @@
+import { useParallax } from "@/hooks/useParallax";
+import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+
 const features = [
   { label: "Comercio justo", icon: "heart" },
   { label: "Hecho a mano", icon: "loom" },
@@ -5,9 +8,12 @@ const features = [
 ];
 
 const MadeInMexico = () => {
+  const parallaxRef = useParallax(0.12);
+  const stitchRef = useDrawOnScroll(0.4);
+
   return (
     <section className="py-24 md:py-32 relative overflow-hidden texture-linen texture-woven">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
         <div className="absolute -top-10 -right-10 w-40 h-40 opacity-[0.05] animate-drift"
           style={{
             background: "radial-gradient(circle, hsl(162 22% 42% / 0.3), transparent 70%)",
@@ -44,7 +50,7 @@ const MadeInMexico = () => {
             Cada pijama lleva el cuidado de artesanas que ponen el corazón en cada puntada.
           </p>
 
-          <div className="divider-cross-stitch w-20 mx-auto mb-14" />
+          <div ref={stitchRef} className="divider-cross-stitch w-20 mx-auto mb-14" />
 
           <div className="grid grid-cols-3 gap-4 md:gap-8">
             {features.map((item) => (

@@ -1,4 +1,6 @@
 import { Star } from "lucide-react";
+import { useParallax } from "@/hooks/useParallax";
+import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
 
 const testimonials = [
   {
@@ -19,9 +21,12 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
+  const parallaxRef = useParallax(0.08);
+  const stitchRef = useDrawOnScroll(0.3);
+
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none overflow-hidden will-change-transform">
         <div className="absolute top-20 -right-16 w-48 h-48 opacity-[0.05] animate-drift"
           style={{
             background: "radial-gradient(circle, hsl(14 52% 46% / 0.3), transparent 70%)",
@@ -40,7 +45,7 @@ const Testimonials = () => {
           <p className="text-muted-foreground max-w-md mx-auto text-lg font-light">
             Familias reales que ya viven la suavidad
           </p>
-          <div className="divider-cross-stitch w-16 mx-auto mt-8" />
+          <div ref={stitchRef} className="divider-cross-stitch w-16 mx-auto mt-8" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto items-stretch">

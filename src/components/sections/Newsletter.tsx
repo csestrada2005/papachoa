@@ -1,6 +1,8 @@
 import { useState, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
+import { useParallax } from "@/hooks/useParallax";
+import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
 
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
 const STORAGE_KEY = "papachoa_newsletter_subscribers";
@@ -19,6 +21,8 @@ const Newsletter = () => {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
+  const parallaxRef = useParallax(0.15);
+  const stitchRef = useDrawOnScroll(0.4);
 
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
@@ -60,10 +64,12 @@ const Newsletter = () => {
 
   return (
     <section className="py-24 md:py-32 section-indigo relative overflow-hidden texture-linen texture-woven">
-      <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] opacity-[0.04]" viewBox="0 0 200 200">
-        <circle cx="100" cy="100" r="60" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.6" strokeDasharray="3 5" />
-        <circle cx="100" cy="100" r="80" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.4" strokeDasharray="4 7" />
-      </svg>
+      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none will-change-transform">
+        <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] opacity-[0.04]" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="60" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.6" strokeDasharray="3 5" />
+          <circle cx="100" cy="100" r="80" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.4" strokeDasharray="4 7" />
+        </svg>
+      </div>
 
       <div className="container relative z-10">
         <div className="max-w-xl mx-auto text-center">
@@ -79,7 +85,7 @@ const Newsletter = () => {
             y consejos para el descanso familiar.
           </p>
 
-          <div className="embroidery-line w-16 mx-auto mb-8" />
+          <div ref={stitchRef} className="embroidery-line w-16 mx-auto mb-8" />
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
             <Input
