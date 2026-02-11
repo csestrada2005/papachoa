@@ -10,18 +10,19 @@ const BrandMarquee = () => {
   ];
 
   return (
-    <section className="py-5 bg-papachoa-cream/80 overflow-hidden border-y border-border/40">
+    <section className="py-4 bg-papachoa-warm-brown overflow-hidden">
       <div className="animate-marquee whitespace-nowrap flex">
         {[...Array(3)].map((_, setIndex) => (
           <div key={setIndex} className="flex items-center">
             {items.map((item, index) => (
               <div key={`${setIndex}-${index}`} className="flex items-center">
-                <span className="font-display text-2xl md:text-3xl text-foreground/60 italic px-6 md:px-10">
+                <span className="font-display text-xl md:text-2xl text-papachoa-cream/70 italic px-6 md:px-10">
                   {item}
                 </span>
-                {/* Embroidered-style diamond separator */}
-                <svg className="w-4 h-4 text-primary/30" viewBox="0 0 16 16">
-                  <path d="M8 1L15 8L8 15L1 8Z" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" />
+                {/* Cross-stitch dot separator */}
+                <svg className="w-3 h-3 text-papachoa-cream/25 flex-shrink-0" viewBox="0 0 12 12">
+                  <line x1="2" y1="2" x2="10" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                  <line x1="10" y1="2" x2="2" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
               </div>
             ))}

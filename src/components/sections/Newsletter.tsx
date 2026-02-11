@@ -27,7 +27,7 @@ const Newsletter = () => {
 
       if (!EMAIL_RE.test(trimmed)) {
         setStatus("error");
-        setMessage("Por favor, escribe un correo válido.");
+        setMessage("Por favor, escribe un correo v\u00e1lido.");
         return;
       }
 
@@ -39,9 +39,9 @@ const Newsletter = () => {
       const subs = getSubscribers();
       if (subs.includes(trimmed)) {
         setStatus("success");
-        setMessage("Ya estás en la lista.");
+        setMessage("Ya est\u00e1s en la lista.");
         setEmail("");
-        toast({ title: "Ya estás suscrito/a", description: "Este correo ya está en nuestra lista." });
+        toast({ title: "Ya est\u00e1s suscrito/a", description: "Este correo ya est\u00e1 en nuestra lista." });
         return;
       }
 
@@ -51,7 +51,7 @@ const Newsletter = () => {
       setStatus("success");
       setMessage("Listo. Te avisaremos con novedades suaves.");
       setEmail("");
-      toast({ title: "Suscripción exitosa", description: "Recibirás noticias en tu correo." });
+      toast({ title: "Suscripci\u00f3n exitosa", description: "Recibir\u00e1s noticias en tu correo." });
     },
     [email],
   );
@@ -59,17 +59,23 @@ const Newsletter = () => {
   const isLoading = status === "loading";
 
   return (
-    <section className="py-24 md:py-32 bg-papachoa-cream relative overflow-hidden texture-linen">
+    <section className="py-24 md:py-32 section-indigo relative overflow-hidden texture-linen texture-woven">
+      {/* Embroidered sun — subtle */}
+      <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] opacity-[0.04]" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="60" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.6" strokeDasharray="3 5" />
+        <circle cx="100" cy="100" r="80" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.4" strokeDasharray="4 7" />
+      </svg>
+
       <div className="container relative z-10">
         <div className="max-w-xl mx-auto text-center">
-          <p className="font-body text-xs tracking-[0.25em] uppercase text-primary mb-5">
+          <p className="font-body text-[10px] tracking-[0.3em] uppercase mb-5" style={{ color: "hsl(38 60% 62%)" }}>
             Newsletter
           </p>
 
-          <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
-            Recibe noticias <em>suaves</em>
+          <h2 className="font-display text-3xl md:text-4xl mb-4">
+            Recibe noticias <em style={{ color: "hsl(38 60% 62%)" }}>suaves</em>
           </h2>
-          <p className="text-muted-foreground mb-4 text-base font-light leading-relaxed">
+          <p className="mb-4 text-base font-light leading-relaxed" style={{ color: "hsl(38 20% 72%)" }}>
             Nuevos lanzamientos, colecciones especiales
             y consejos para el descanso familiar.
           </p>
@@ -89,7 +95,7 @@ const Newsletter = () => {
                 }
               }}
               disabled={isLoading}
-              className="flex-1 bg-card border border-border rounded-lg px-5 py-5 text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/30 focus:border-primary/40 disabled:opacity-60"
+              className="flex-1 bg-white/10 backdrop-blur-sm border border-white/15 rounded-sm px-5 py-5 text-white placeholder:text-white/40 focus:ring-2 focus:ring-white/20 focus:border-white/30 disabled:opacity-60"
               required
               aria-describedby="newsletter-msg"
             />
@@ -98,7 +104,7 @@ const Newsletter = () => {
               disabled={isLoading}
               className="btn-artisan disabled:opacity-70 disabled:hover:translate-y-0 whitespace-nowrap"
             >
-              {isLoading ? "Suscribiendo…" : "Suscribirme"}
+              {isLoading ? "Suscribiendo\u2026" : "Suscribirme"}
             </button>
           </form>
 
@@ -106,14 +112,14 @@ const Newsletter = () => {
           <div id="newsletter-msg" className="h-6 mt-4" aria-live="polite">
             {message && (
               <p className={`text-sm font-medium animate-fade-in ${
-                status === "error" ? "text-destructive" : "text-accent"
+                status === "error" ? "text-red-400" : "text-emerald-400"
               }`}>
                 {message}
               </p>
             )}
           </div>
 
-          <p className="text-xs text-muted-foreground mt-2 tracking-wide">
+          <p className="text-xs mt-2 tracking-wide" style={{ color: "hsl(38 20% 55%)" }}>
             Sin spam. Solo apapacho.
           </p>
         </div>
