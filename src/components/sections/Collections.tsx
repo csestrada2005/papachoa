@@ -9,15 +9,15 @@ const collections: {
   rotate: string;
 }[] = [
   {
-    title: "Reci\u00e9n nacido",
-    description: "Suavidad desde el primer d\u00eda",
+    title: "Recién nacido",
+    description: "Suavidad desde el primer día",
     bgGradient: "linear-gradient(145deg, hsl(14 38% 82%) 0%, hsl(14 32% 78%) 100%)",
     slug: "recien-nacido",
     rotate: "-1.2deg",
   },
   {
-    title: "Beb\u00e9 & Cobijo",
-    description: "Apapacho para los m\u00e1s peque\u00f1os",
+    title: "Bebé & Cobijo",
+    description: "Apapacho para los más pequeños",
     bgGradient: "linear-gradient(145deg, hsl(228 22% 80%) 0%, hsl(228 28% 76%) 100%)",
     slug: "bebe-cobijo",
     rotate: "0.8deg",
@@ -31,7 +31,7 @@ const collections: {
   },
   {
     title: "Sacos & Nidos",
-    description: "Sue\u00f1os seguros y calientitos",
+    description: "Sueños seguros y calientitos",
     bgGradient: "linear-gradient(145deg, hsl(38 40% 80%) 0%, hsl(35 38% 76%) 100%)",
     slug: "sacos-nidos",
     rotate: "1deg",
@@ -48,7 +48,6 @@ const collections: {
 const Collections = () => {
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
-      {/* Floating fabric shapes */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-20 -right-20 w-72 h-72 opacity-[0.05] animate-drift"
           style={{
@@ -76,13 +75,12 @@ const Collections = () => {
           <div className="divider-cross-stitch w-16 mx-auto mt-8" />
         </div>
 
-        {/* Editorial tilted grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto">
           {collections.map((collection, index) => (
             <Link
               key={collection.title}
               to={`/catalogo?categoria=${collection.slug}`}
-              aria-label={`Ver colecci\u00f3n ${collection.title}`}
+              aria-label={`Ver colección ${collection.title}`}
               className={`group card-tilt relative overflow-hidden transition-all duration-300 active:scale-[0.98] ${
                 index === 0 ? "md:col-span-2 md:row-span-2" : ""
               }`}
@@ -95,7 +93,6 @@ const Collections = () => {
                 className={`h-full p-6 md:p-7 ${index === 0 ? "min-h-[170px] md:min-h-[280px]" : "min-h-[130px] md:min-h-[150px]"} flex flex-col justify-between relative`}
                 style={{ background: collection.bgGradient }}
               >
-                {/* Stitched border inside */}
                 <div className="absolute inset-[4px] pointer-events-none" style={{
                   border: "1.5px dashed hsl(20 32% 20% / 0.1)",
                   borderRadius: "2px"
@@ -110,7 +107,6 @@ const Collections = () => {
                   </p>
                 </div>
 
-                {/* Arrow */}
                 <div className="mt-4 flex justify-end">
                   <div className="w-8 h-8 border border-foreground/15 rounded-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
                     <span className="text-foreground/50 text-sm">&rarr;</span>
@@ -122,7 +118,6 @@ const Collections = () => {
         </div>
       </div>
 
-      {/* Fabric fold divider */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path 
