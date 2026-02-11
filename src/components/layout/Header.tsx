@@ -65,7 +65,7 @@ const Header = () => {
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <GlassBlobButton tint="blush" className="lg:hidden" aria-label="Menú">
-                  <Menu className="h-[22px] w-[22px] text-foreground/90" />
+                  <Menu className="h-[22px] w-[22px] text-foreground/95" />
                 </GlassBlobButton>
               </SheetTrigger>
               <SheetContent side="left" className="w-[280px] bg-background border-r-0">
@@ -116,7 +116,7 @@ const Header = () => {
           {/* Right column – Icons */}
           <div className="flex items-center justify-end gap-1.5">
             <GlassBlobButton tint="sky" onClick={() => setIsSearchOpen(true)} aria-label="Buscar">
-              <Search className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/90" />
+              <Search className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/95" />
             </GlassBlobButton>
             <GlassBlobButton
               tint="sage"
@@ -128,7 +128,7 @@ const Header = () => {
                 </span>
               ) : undefined}
             >
-              <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/90" />
+              <ShoppingBag className="h-[22px] w-[22px] md:h-5 md:w-5 text-foreground/95" />
             </GlassBlobButton>
           </div>
         </div>
