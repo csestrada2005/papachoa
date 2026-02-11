@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import SearchModal from "@/components/SearchModal";
@@ -19,6 +19,21 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { itemCount } = useCart();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogoClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+    } else {
+      e.preventDefault();
+      navigate("/");
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      });
+    }
+  }, [location.pathname, navigate]);
 
   return (
     <>
@@ -72,7 +87,7 @@ const Header = () => {
           </Sheet>
 
           {/* Logo - priority loading */}
-          <Link to="/" className="flex-1 lg:flex-none flex justify-center lg:justify-start">
+          <Link to="/" onClick={handleLogoClick} className="flex-1 lg:flex-none flex justify-center lg:justify-start">
             <img 
               src={logo} 
               alt="Papachoa México" 
