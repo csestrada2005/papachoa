@@ -92,14 +92,26 @@ const Hero = () => {
       <div className="flex-1 flex flex-col justify-center items-center relative z-10 pt-28 pb-20 md:pb-28">
         <div className="container">
           <div className="max-w-2xl mx-auto text-center">
-            <p className="font-body text-[11px] tracking-[0.4em] uppercase text-white/70 mb-5">
-              Textiles artesanales para la familia
-            </p>
-
-            <h1 className="font-display text-5xl md:text-6xl lg:text-8xl text-white leading-[1.05] mb-6 drop-shadow-lg">
+            <h1
+              className="font-display text-5xl md:text-6xl lg:text-8xl leading-[1.05] mb-6"
+              style={{
+                color: "transparent",
+                backgroundImage: "linear-gradient(175deg, hsl(38 30% 96%) 0%, hsl(38 25% 82%) 50%, hsl(38 20% 70%) 100%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textShadow: "0 2px 20px hsl(0 0% 0% / 0.3)",
+                filter: "drop-shadow(0 4px 12px hsl(0 0% 0% / 0.25))",
+              }}
+            >
               Pensado por
               <br />
-              <em className="hero-mamas-word text-papachoa-marigold-light relative inline-block cursor-default">
+              <em className="hero-mamas-word relative inline-block cursor-default" style={{
+                backgroundImage: "linear-gradient(175deg, hsl(38 60% 80%) 0%, hsl(14 45% 65%) 100%)",
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}>
                 mamás,
                 <span className="absolute bottom-0 left-0 w-full h-[2px] origin-left scale-x-0 transition-transform duration-500 ease-out"
                   style={{
