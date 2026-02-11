@@ -18,14 +18,12 @@ const Catalogo = () => {
 
   const [selectedCollection, setSelectedCollection] = useState<Collection>(initial);
 
-  // Sync from URL → state (e.g. browser back/forward)
   useEffect(() => {
     const cat = searchParams.get("categoria") as Collection | null;
     const next = cat && validSlugs.has(cat) ? cat : "todos";
     setSelectedCollection((prev) => (prev === next ? prev : next));
   }, [searchParams]);
 
-  // When user picks a tab, update URL without reload
   const handleSelect = useCallback(
     (collection: Collection) => {
       if (collection === selectedCollection) return;
@@ -39,12 +37,10 @@ const Catalogo = () => {
     [selectedCollection, setSearchParams],
   );
 
-  // Scroll to filters when arriving with a specific category
   useEffect(() => {
     if (paramCategoria && validSlugs.has(paramCategoria) && paramCategoria !== "todos") {
       filterRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-    // only on mount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -57,25 +53,33 @@ const Catalogo = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      {/* Hero compacto */}
-      <section className="pt-28 md:pt-32 pb-8 md:pb-12 bg-papachoa-cream">
-        <div className="container text-center">
-          <span className="inline-block bg-papachoa-blush px-4 py-1.5 rounded-full text-xs font-semibold text-foreground/80 mb-4">
+      {/* Hero — editorial style */}
+      <section className="pt-28 md:pt-32 pb-10 md:pb-14 bg-papachoa-cream relative overflow-hidden texture-linen">
+        {/* Subtle background shapes */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-8"
+            style={{ background: "radial-gradient(circle, hsl(14 52% 46% / 0.12), transparent 70%)" }} />
+          <div className="absolute -bottom-12 -left-12 w-48 h-48 rounded-full opacity-8"
+            style={{ background: "radial-gradient(circle, hsl(162 22% 42% / 0.1), transparent 70%)" }} />
+        </div>
+
+        <div className="container text-center relative z-10">
+          <p className="font-body text-xs tracking-[0.25em] uppercase text-primary mb-4">
             Explora
-          </span>
+          </p>
           <h1 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-3">
-            Nuestra <span className="italic">Colección</span>
+            Nuestra <em>Colección</em>
           </h1>
-          <p className="text-muted-foreground max-w-md mx-auto">
+          <p className="text-muted-foreground max-w-md mx-auto font-light">
             Piezas únicas llenas de suavidad y amor para tu familia
           </p>
+          <div className="embroidery-line w-16 mx-auto mt-6" />
         </div>
       </section>
 
-      {/* Filtros y productos */}
+      {/* Filters & products */}
       <section className="py-8 md:py-12">
         <div className="container">
-          {/* Filtros */}
           <div ref={filterRef} className="mb-8 md:mb-12 scroll-mt-24">
             <CollectionFilter
               selected={selectedCollection}
@@ -83,17 +87,15 @@ const Catalogo = () => {
             />
           </div>
 
-          {/* Grid de productos */}
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
             {filteredProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
           </div>
 
-          {/* Empty state */}
           {filteredProducts.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-muted-foreground">
+              <p className="text-muted-foreground font-light">
                 No hay productos en esta colección aún.
               </p>
             </div>

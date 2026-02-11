@@ -12,7 +12,6 @@ const BundleSuggestion = ({ currentProduct }: BundleSuggestionProps) => {
   const { addItem } = useCart();
   const navigate = useNavigate();
 
-  // Pick 2 products from same collection or random, excluding current
   const suggestions = products
     .filter((p) => p.id !== currentProduct.id)
     .sort((a, b) => {
@@ -29,18 +28,18 @@ const BundleSuggestion = ({ currentProduct }: BundleSuggestionProps) => {
 
   return (
     <div className="max-w-3xl">
-      <h2 className="font-display text-xl md:text-2xl text-foreground mb-4">
-        Completa el <span className="italic">apapacho</span>
+      <h2 className="font-display text-xl md:text-2xl text-foreground mb-1">
+        Completa el <em>apapacho</em>
       </h2>
-      <p className="text-sm text-muted-foreground mb-5">
-        Combina perfecto con…
+      <p className="text-sm text-muted-foreground mb-5 font-light">
+        Combina perfecto con&hellip;
       </p>
       <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-2">
         {suggestions.map((item) => (
           <div
             key={item.id}
             onClick={() => navigate(`/producto/${item.slug}`)}
-            className="flex-shrink-0 w-48 bg-card rounded-2xl border border-border/30 overflow-hidden shadow-sm cursor-pointer hover:shadow-md transition-shadow"
+            className="flex-shrink-0 w-48 bg-card rounded-xl border border-border/30 overflow-hidden cursor-pointer hover:shadow-md transition-shadow"
           >
             <div className="aspect-square bg-papachoa-cream">
               <img
@@ -59,9 +58,9 @@ const BundleSuggestion = ({ currentProduct }: BundleSuggestionProps) => {
                 onClick={(e) => {
                   e.stopPropagation();
                   addItem(item);
-                  toast(`${item.name} agregado al carrito 🧸`, { duration: 3000 });
+                  toast(`${item.name} agregado al carrito`, { duration: 3000 });
                 }}
-                className="w-full flex items-center justify-center gap-1.5 text-xs font-semibold bg-papachoa-blush hover:bg-papachoa-blush-mid text-foreground rounded-full py-2 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-1.5 text-xs font-medium bg-primary/10 hover:bg-primary/20 text-primary rounded-lg py-2 active:scale-95 transition-all border border-primary/20"
               >
                 <ShoppingBag className="h-3.5 w-3.5" />
                 Agregar

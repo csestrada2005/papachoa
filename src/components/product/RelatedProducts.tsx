@@ -11,7 +11,6 @@ const RelatedProducts = ({ currentProduct }: RelatedProductsProps) => {
     .filter((p) => p.collection === currentProduct.collection)
     .slice(0, 4);
 
-  // If not enough from same collection, fill with others
   const backfill = related.length < 4
     ? products
         .filter((p) => p.id !== currentProduct.id && !related.includes(p))
@@ -27,6 +26,7 @@ const RelatedProducts = ({ currentProduct }: RelatedProductsProps) => {
       <h2 className="font-display text-xl md:text-2xl text-foreground mb-6">
         Productos relacionados
       </h2>
+      <div className="embroidery-line w-16 mb-6" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         {allRelated.map((product) => (
           <ProductCard key={product.id} product={product} />

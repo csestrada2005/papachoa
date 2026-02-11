@@ -6,7 +6,7 @@ const initialReviews = [
     id: 1,
     name: "María G.",
     rating: 5,
-    text: "La suavidad es increíble. Mi bebé duerme más tranquilo desde que usamos las pijamas Papachoa. ¡Las amo!",
+    text: "La suavidad es increíble. Mi bebé duerme más tranquilo desde que usamos las pijamas Papachoa.",
   },
   {
     id: 2,
@@ -44,24 +44,24 @@ const extraReviews = [
 ];
 
 const ReviewCard = ({ review }: { review: (typeof initialReviews)[0] }) => (
-  <div className="bg-card rounded-2xl p-5 border border-border/30 shadow-sm">
-    <div className="flex items-center gap-2 mb-2">
+  <div className="bg-card rounded-xl p-5 border border-border/30">
+    <div className="flex items-center gap-2 mb-3">
       <div className="flex">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star
             key={star}
             className={`h-3.5 w-3.5 ${
               star <= review.rating
-                ? "fill-papachoa-peach text-papachoa-peach"
+                ? "fill-papachoa-marigold text-papachoa-marigold"
                 : "text-border"
             }`}
           />
         ))}
       </div>
-      <span className="text-sm font-semibold text-foreground">{review.name}</span>
+      <span className="text-sm font-medium text-foreground">{review.name}</span>
     </div>
-    <p className="text-sm text-muted-foreground leading-relaxed">
-      {review.text}
+    <p className="text-sm text-muted-foreground leading-relaxed font-light italic">
+      &ldquo;{review.text}&rdquo;
     </p>
   </div>
 );
@@ -75,20 +75,18 @@ const ProductReviews = () => {
         Reseñas
       </h2>
 
-      {/* Summary */}
       <div className="flex items-center gap-2 mb-6">
         <div className="flex">
           {[1, 2, 3, 4, 5].map((star) => (
             <Star
               key={star}
-              className="h-4 w-4 fill-papachoa-peach text-papachoa-peach"
+              className="h-4 w-4 fill-papachoa-marigold text-papachoa-marigold"
             />
           ))}
         </div>
-        <span className="text-sm text-muted-foreground">4.9 de 5 · Reseñas destacadas</span>
+        <span className="text-sm text-muted-foreground font-light">4.9 de 5 &middot; Reseñas destacadas</span>
       </div>
 
-      {/* Review cards */}
       <div className="space-y-4">
         {initialReviews.map((review) => (
           <ReviewCard key={review.id} review={review} />
@@ -105,9 +103,9 @@ const ProductReviews = () => {
 
       <button
         onClick={() => setExpanded((v) => !v)}
-        className="mt-5 text-sm font-semibold text-papachoa-warm-brown hover:underline active:scale-95 transition-transform"
+        className="mt-5 text-sm font-medium text-primary hover:underline active:scale-95 transition-transform"
       >
-        {expanded ? "Ocultar reseñas ↑" : "Ver todas las reseñas →"}
+        {expanded ? "Ocultar reseñas" : "Ver todas las reseñas"}
       </button>
     </div>
   );

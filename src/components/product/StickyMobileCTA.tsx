@@ -18,7 +18,7 @@ const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
 
   const handleAdd = () => {
     addItem(product);
-    toast(`${product.name} agregado al carrito 🧸`, { duration: 3000 });
+    toast(`${product.name} agregado al carrito`, { duration: 3000 });
   };
 
   return (
@@ -30,7 +30,7 @@ const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
         </div>
         <button
           onClick={handleAdd}
-          className="flex items-center gap-2 bg-papachoa-warm-brown text-card px-5 py-2.5 rounded-full text-sm font-semibold hover:scale-[1.02] active:scale-[0.98] transition-transform shrink-0"
+          className="btn-artisan text-sm shrink-0"
         >
           <ShoppingBag className="h-4 w-4" />
           Agregar

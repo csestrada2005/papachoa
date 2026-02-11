@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Minus, Plus, ShoppingBag, Heart } from "lucide-react";
+import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
@@ -29,13 +29,13 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
-    toast(`${product.name} agregado al carrito 🧸`, { duration: 3000 });
+    toast(`${product.name} agregado al carrito`, { duration: 3000 });
   };
 
   return (
     <div className="flex flex-col gap-5 lg:py-4">
       {/* Collection badge */}
-      <span className="inline-block self-start bg-papachoa-blush px-3 py-1 rounded-full text-xs font-semibold text-foreground/70">
+      <span className="inline-block self-start border border-primary/30 px-3 py-1 rounded-md text-xs font-medium tracking-wide text-primary uppercase">
         {collectionLabel}
       </span>
 
@@ -49,24 +49,27 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
         {formattedPrice} <span className="text-sm font-body text-muted-foreground">MXN</span>
       </p>
 
+      {/* Divider */}
+      <div className="embroidery-line w-16" />
+
       {/* Short description */}
-      <p className="text-muted-foreground leading-relaxed">
+      <p className="text-muted-foreground leading-relaxed font-light">
         {product.shortDescription}
       </p>
 
       {/* Size selector */}
       {product.sizes.length > 0 && (
         <div>
-          <p className="text-sm font-semibold text-foreground mb-2">Talla</p>
+          <p className="text-sm font-medium text-foreground mb-2 tracking-wide">Talla</p>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((size) => (
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all active:scale-95 ${
+                className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all active:scale-95 ${
                   selectedSize === size
-                    ? "bg-papachoa-warm-brown text-card border-papachoa-warm-brown"
-                    : "bg-card text-foreground border-border hover:border-papachoa-warm-brown/40"
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card text-foreground border-border hover:border-primary/40"
                 }`}
               >
                 {size}
@@ -78,8 +81,8 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
 
       {/* Quantity stepper */}
       <div>
-        <p className="text-sm font-semibold text-foreground mb-2">Cantidad</p>
-        <div className="inline-flex items-center gap-0 border border-border rounded-full overflow-hidden">
+        <p className="text-sm font-medium text-foreground mb-2 tracking-wide">Cantidad</p>
+        <div className="inline-flex items-center gap-0 border border-border rounded-lg overflow-hidden">
           <button
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="p-2.5 hover:bg-muted transition-colors active:scale-90"
@@ -87,7 +90,7 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
           >
             <Minus className="h-4 w-4" />
           </button>
-          <span className="w-10 text-center text-sm font-semibold">{quantity}</span>
+          <span className="w-10 text-center text-sm font-medium">{quantity}</span>
           <button
             onClick={() => setQuantity((q) => q + 1)}
             className="p-2.5 hover:bg-muted transition-colors active:scale-90"
@@ -102,20 +105,20 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
       <div className="flex flex-col gap-3 mt-1">
         <Button
           onClick={handleAddToCart}
-          className="w-full bg-papachoa-warm-brown hover:bg-papachoa-warm-brown/90 text-card font-semibold py-6 rounded-full text-base hover:scale-[1.02] active:scale-[0.98] transition-transform"
+          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-6 rounded-lg text-base hover:shadow-md active:scale-[0.98] transition-all"
         >
           <ShoppingBag className="h-5 w-5 mr-2" />
           Agregar al carrito
         </Button>
       </div>
 
-      {/* Trust microcopy */}
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground pt-2">
-        <span>🇲🇽 Hecho en México</span>
-        <span>•</span>
-        <span>🧸 Ultra suave</span>
-        <span>•</span>
-        <span>📦 Envíos a toda la República</span>
+      {/* Trust microcopy — no emojis */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground pt-2 tracking-wide">
+        <span>Hecho en México</span>
+        <span className="text-border">&middot;</span>
+        <span>Ultra suave</span>
+        <span className="text-border">&middot;</span>
+        <span>Envíos a toda la República</span>
       </div>
     </div>
   );

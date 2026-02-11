@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -30,13 +30,10 @@ const Producto = () => {
             <h1 className="font-display text-3xl text-foreground mb-4">
               Producto no encontrado
             </h1>
-            <p className="text-muted-foreground mb-8">
+            <p className="text-muted-foreground mb-8 font-light">
               Lo sentimos, no pudimos encontrar este producto.
             </p>
-            <Link
-              to="/catalogo"
-              className="inline-flex items-center gap-2 bg-papachoa-warm-brown text-card px-6 py-3 rounded-full font-semibold hover:scale-[1.02] active:scale-[0.98] transition-transform"
-            >
+            <Link to="/catalogo" className="btn-artisan">
               Volver al catálogo
             </Link>
           </div>
@@ -51,20 +48,20 @@ const Producto = () => {
       <Header />
 
       <main className="pt-24 md:pt-28 pb-24 md:pb-16">
-        {/* Breadcrumbs */}
+        {/* Breadcrumbs — editorial */}
         <div className="container">
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 md:mb-8 flex-wrap">
-            <Link to="/" className="hover:text-foreground transition-colors">Inicio</Link>
-            <span>/</span>
-            <Link to="/catalogo" className="hover:text-foreground transition-colors">Catálogo</Link>
-            <span>/</span>
-            <span className="text-foreground">{product.name}</span>
+          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 md:mb-8 flex-wrap font-light">
+            <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
+            <span className="text-border">/</span>
+            <Link to="/catalogo" className="hover:text-primary transition-colors">Catálogo</Link>
+            <span className="text-border">/</span>
+            <span className="text-foreground/70">{product.name}</span>
           </nav>
         </div>
 
         {/* Main product section */}
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14">
             <ProductGallery images={product.images} name={product.name} />
             <div className="flex flex-col gap-5 lg:gap-8">
               <ProductInfo product={product} collectionLabel={collectionLabel} />
@@ -75,17 +72,17 @@ const Producto = () => {
           </div>
         </div>
 
-        {/* Texture section – mobile only */}
+        {/* Texture — mobile */}
         <div className="container mt-12 md:mt-16 lg:hidden">
           <TextureSection />
         </div>
 
-        {/* Product accordion */}
+        {/* Accordion */}
         <div className="container mt-12 md:mt-16">
           <ProductAccordion product={product} />
         </div>
 
-        {/* Bundle suggestion */}
+        {/* Bundle */}
         <div className="container mt-12 md:mt-16">
           <BundleSuggestion currentProduct={product} />
         </div>
@@ -95,7 +92,7 @@ const Producto = () => {
           <ProductReviews />
         </div>
 
-        {/* Related products */}
+        {/* Related */}
         <div className="container mt-12 md:mt-16">
           <RelatedProducts currentProduct={product} />
         </div>

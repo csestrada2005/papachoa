@@ -16,7 +16,6 @@ const CollectionFilter = ({ selected, onSelect }: CollectionFilterProps) => {
     else buttonRefs.current.delete(id);
   }, []);
 
-  // Auto-scroll so the active chip is visible on mobile
   useEffect(() => {
     const container = scrollRef.current;
     const activeBtn = buttonRefs.current.get(selected);
@@ -37,11 +36,11 @@ const CollectionFilter = ({ selected, onSelect }: CollectionFilterProps) => {
             ref={(el) => setButtonRef(collection.id, el)}
             onClick={() => onSelect(collection.id)}
             className={cn(
-              "px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 whitespace-nowrap",
+              "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap border",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
               selected === collection.id
-                ? cn(collection.color, "text-foreground shadow-sm")
-                : "bg-transparent text-muted-foreground hover:bg-muted hover:text-foreground"
+                ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                : "bg-transparent text-muted-foreground border-border/50 hover:border-primary/30 hover:text-foreground"
             )}
           >
             {collection.label}
