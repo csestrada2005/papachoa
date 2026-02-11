@@ -88,20 +88,19 @@ const Hero = () => {
 
       <ThreadParticles />
 
-      {/* Content positioned at bottom — editorial layout */}
-      <div className="flex-1 flex flex-col justify-end relative z-10 pb-16 md:pb-24 pt-28">
+      {/* Content — centered */}
+      <div className="flex-1 flex flex-col justify-center items-center relative z-10 pt-28 pb-20 md:pb-28">
         <div className="container">
-          <div className="max-w-xl lg:max-w-2xl">
-            <p className="font-body text-[10px] tracking-[0.4em] uppercase text-white/60 mb-4">
+          <div className="max-w-2xl mx-auto text-center">
+            <p className="font-body text-[11px] tracking-[0.4em] uppercase text-white/70 mb-5">
               Textiles artesanales para la familia
             </p>
 
-            <h1 className="font-display text-4xl md:text-5xl lg:text-7xl text-white leading-[1.05] mb-5">
+            <h1 className="font-display text-5xl md:text-6xl lg:text-8xl text-white leading-[1.05] mb-6 drop-shadow-lg">
               Pensado por
               <br />
               <em className="hero-mamas-word text-papachoa-marigold-light relative inline-block cursor-default">
                 mamás,
-                {/* Stitched underline on hover */}
                 <span className="absolute bottom-0 left-0 w-full h-[2px] origin-left scale-x-0 transition-transform duration-500 ease-out"
                   style={{
                     backgroundImage: "repeating-linear-gradient(90deg, hsl(38 60% 72%) 0px, hsl(38 60% 72%) 4px, transparent 4px, transparent 7px)",
@@ -111,13 +110,13 @@ const Hero = () => {
               para mamás
             </h1>
 
-            <p className="text-base md:text-lg text-white/70 font-light mb-8 max-w-md leading-relaxed">
+            <p className="text-lg md:text-xl text-white/80 font-light mb-10 max-w-lg mx-auto leading-relaxed">
               Pijamas y cobijos ultra suaves que apapachan a toda la familia
             </p>
 
-            <Link to="/catalogo" className="btn-artisan inline-flex">
+            <Link to="/catalogo" className="btn-artisan inline-flex text-base px-10 py-4">
               Ver colección
-              <span className="text-lg">→</span>
+              <span className="text-xl">→</span>
             </Link>
           </div>
 
