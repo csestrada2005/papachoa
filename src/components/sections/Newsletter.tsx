@@ -35,7 +35,6 @@ const Newsletter = () => {
       setStatus("loading");
       setMessage("");
 
-      // Simulate async registration
       await new Promise((r) => setTimeout(r, 800));
 
       const subs = getSubscribers();
@@ -61,23 +60,35 @@ const Newsletter = () => {
   const isLoading = status === "loading";
 
   return (
-    <section className="py-24 md:py-32 bg-papachoa-blush/40 relative overflow-hidden">
-      {/* Decorative blobs */}
-      <div className="absolute top-4 right-2 w-24 h-24 md:top-10 md:left-10 md:w-40 md:h-40 bg-papachoa-sky/40 blob-shape pointer-events-none" />
-      <div className="absolute -bottom-2 -left-4 w-24 h-24 md:bottom-10 md:right-10 md:w-32 md:h-32 bg-papachoa-sage/40 blob-shape-2 pointer-events-none" />
+    <section className="py-20 md:py-28 relative overflow-hidden"
+      style={{ background: "linear-gradient(180deg, hsl(15 50% 90%) 0%, hsl(195 50% 90%) 50%, hsl(145 35% 88%) 100%)" }}>
+      {/* Fun doodles */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-8 right-8 w-28 h-28 bg-papachoa-sky/30 blob-shape animate-float" />
+        <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-papachoa-sage/30 blob-shape-2" />
+        <span className="absolute top-12 left-12 text-3xl opacity-30 animate-wiggle hidden md:block">💌</span>
+        <span className="absolute bottom-16 right-12 text-2xl opacity-25 animate-float hidden md:block">✨</span>
+        <span className="absolute top-1/2 right-8 text-xl opacity-20 hidden md:block">⭐</span>
+      </div>
 
       <div className="container relative">
         <div className="max-w-xl mx-auto text-center">
-          <div className="inline-block bg-card px-4 py-2 rounded-full mb-8 shadow-sm">
-            <span className="text-2xl">💌</span>
+          <div className="inline-flex items-center justify-center bg-card w-16 h-16 rounded-full mb-8 shadow-md border-2 border-papachoa-blush/30 animate-wiggle">
+            <span className="text-3xl">💌</span>
           </div>
 
           <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
-            Recibe noticias <span className="italic">suaves</span>
+            Recibe noticias{" "}
+            <span className="italic text-papachoa-blush-dark relative inline-block">
+              suaves
+              <svg className="absolute -bottom-1 left-0 w-full h-3" viewBox="0 0 100 12" preserveAspectRatio="none">
+                <path d="M0 6 Q12 0 25 6 Q37 12 50 6 Q62 0 75 6 Q87 12 100 6" fill="none" stroke="hsl(15 40% 60%)" strokeWidth="2.5" />
+              </svg>
+            </span>
           </h2>
           <p className="text-muted-foreground mb-10 text-lg">
             Como nuestros productos. Nuevos lanzamientos, colecciones especiales
-            y consejos para el descanso familiar.
+            y consejos para el descanso familiar. ✨
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
@@ -93,16 +104,16 @@ const Newsletter = () => {
                 }
               }}
               disabled={isLoading}
-              className="flex-1 bg-card border-0 rounded-full px-6 py-6 text-foreground placeholder:text-muted-foreground shadow-sm focus:ring-2 focus:ring-papachoa-blush-dark disabled:opacity-60"
+              className="flex-1 bg-card border-2 border-papachoa-blush/30 rounded-full px-6 py-6 text-foreground placeholder:text-muted-foreground shadow-sm focus:ring-2 focus:ring-papachoa-blush-dark focus:border-papachoa-blush-mid disabled:opacity-60"
               required
               aria-describedby="newsletter-msg"
             />
             <Button
               type="submit"
               disabled={isLoading}
-              className="bg-papachoa-warm-brown text-card hover:bg-papachoa-warm-brown/90 rounded-full px-8 py-6 font-semibold shadow-lg hover:scale-105 transition-transform disabled:opacity-70 disabled:hover:scale-100"
+              className="bg-papachoa-warm-brown text-card hover:bg-papachoa-warm-brown/90 rounded-full px-8 py-6 font-bold shadow-lg hover:scale-105 transition-transform disabled:opacity-70 disabled:hover:scale-100"
             >
-              {isLoading ? "Suscribiendo…" : "Suscribirme"}
+              {isLoading ? "Suscribiendo…" : "Suscribirme 💛"}
             </Button>
           </form>
 
@@ -113,7 +124,7 @@ const Newsletter = () => {
                 className={`text-sm font-medium animate-fade-in ${
                   status === "error"
                     ? "text-papachoa-warm-brown"
-                    : "text-papachoa-sage-dark"
+                    : "text-accent-foreground"
                 }`}
               >
                 {message}

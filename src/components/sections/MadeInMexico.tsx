@@ -1,19 +1,28 @@
-import { Heart, Sparkles, MapPin } from "lucide-react";
+const features = [
+  { emoji: "💛", label: "Comercio justo", color: "bg-papachoa-blush" },
+  { emoji: "✋", label: "Hecho a mano", color: "bg-papachoa-sky" },
+  { emoji: "🇲🇽", label: "100% Mexicano", color: "bg-papachoa-sage" },
+];
 
 const MadeInMexico = () => {
   return (
-    <section className="py-24 md:py-32 relative overflow-hidden">
-      {/* Decorative blobs - positioned away from text with safe zones */}
-      <div className="absolute -top-10 -right-10 w-24 h-24 bg-papachoa-sage blob-shape opacity-40 pointer-events-none -z-10 md:top-0 md:right-0" />
-      <div className="absolute -bottom-20 -left-20 w-32 h-32 bg-papachoa-blush blob-shape-2 opacity-30 pointer-events-none -z-10 md:bottom-10 md:left-0" />
+    <section className="py-20 md:py-28 relative overflow-hidden">
+      {/* Playful background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute -top-8 -right-8 w-32 h-32 bg-papachoa-sage/30 blob-shape animate-float" />
+        <div className="absolute -bottom-12 -left-12 w-40 h-40 bg-papachoa-blush/25 blob-shape-2" />
+        <span className="absolute top-16 left-20 text-2xl opacity-25 animate-wiggle hidden md:block">🇲🇽</span>
+        <span className="absolute bottom-20 right-16 text-2xl opacity-20 animate-float hidden md:block">💫</span>
+      </div>
 
-      <div className="container">
+      <div className="container relative">
         <div className="max-w-3xl mx-auto">
           {/* Badge */}
           <div className="flex justify-center mb-10">
-            <div className="bg-papachoa-sage px-6 py-3 rounded-full flex items-center gap-3">
+            <div className="bg-papachoa-sage px-6 py-3 rounded-full flex items-center gap-3 shadow-md border-2 border-papachoa-sage-mid/30">
               <span className="text-2xl">🇲🇽</span>
-              <span className="font-semibold text-accent-foreground">Hecho en México con amor</span>
+              <span className="font-bold text-accent-foreground">Hecho en México con amor</span>
+              <span className="text-2xl">💛</span>
             </div>
           </div>
 
@@ -21,38 +30,43 @@ const MadeInMexico = () => {
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground text-center leading-tight mb-8">
             Cada prenda tiene
             <br />
-            <span className="italic text-papachoa-blush-dark">nombre y apellido</span>
+            <span className="italic text-papachoa-blush-dark relative inline-block">
+              nombre y apellido
+              <svg className="absolute -bottom-1 left-0 w-full h-3" viewBox="0 0 200 12" preserveAspectRatio="none">
+                <path d="M0 6 Q25 0 50 6 Q75 12 100 6 Q125 0 150 6 Q175 12 200 6" fill="none" stroke="hsl(145 30% 65%)" strokeWidth="2.5" />
+              </svg>
+            </span>
           </h2>
 
-          <p className="text-center text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto mb-16 leading-relaxed">
+          <p className="text-center text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto mb-14 leading-relaxed">
             Trabajamos con talleres locales bajo principios de comercio justo. 
-            Cada pijama lleva el cuidado de artesanas que ponen el corazón en cada puntada.
+            Cada pijama lleva el cuidado de artesanas que ponen el corazón en cada puntada. ✨
           </p>
 
-          {/* Features */}
-          <div className="grid grid-cols-3 gap-4 md:gap-8">
-            {[
-              { icon: Heart, label: "Comercio justo", color: "bg-papachoa-blush" },
-              { icon: Sparkles, label: "Hecho a mano", color: "bg-papachoa-sky" },
-              { icon: MapPin, label: "100% Mexicano", color: "bg-papachoa-sage" },
-            ].map((item) => (
-              <div key={item.label} className="text-center">
-                <div className={`${item.color} w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-4`}>
-                  <item.icon className="h-7 w-7 md:h-8 md:w-8 text-foreground/80" />
+          {/* Playful feature cards */}
+          <div className="grid grid-cols-3 gap-4 md:gap-6">
+            {features.map((item, i) => (
+              <div 
+                key={item.label} 
+                className="text-center group"
+                style={{ transform: i === 1 ? "rotate(-2deg)" : i === 2 ? "rotate(1deg)" : "rotate(-1deg)" }}
+              >
+                <div className={`${item.color} w-20 h-20 md:w-24 md:h-24 rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-md border-2 border-card/60 group-hover:scale-110 group-hover:rotate-3 transition-all duration-200`}>
+                  <span className="text-3xl md:text-4xl">{item.emoji}</span>
                 </div>
-                <p className="text-sm md:text-base font-medium text-foreground">{item.label}</p>
+                <p className="text-sm md:text-base font-bold text-foreground">{item.label}</p>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Wave divider */}
+      {/* Scalloped divider */}
       <div className="absolute bottom-0 left-0 right-0">
-        <svg viewBox="0 0 1440 80" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
+        <svg viewBox="0 0 1440 50" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full" preserveAspectRatio="none">
           <path 
-            d="M0 80L48 74.7C96 69 192 59 288 58.7C384 59 480 69 576 69.3C672 69 768 59 864 53.3C960 48 1056 48 1152 53.3C1248 59 1344 69 1392 74.7L1440 80V80H1392C1344 80 1248 80 1152 80C1056 80 960 80 864 80C768 80 672 80 576 80C480 80 384 80 288 80C192 80 96 80 48 80H0Z" 
-            className="fill-papachoa-blush/40"
+            d="M0,30 C80,10 160,50 240,30 C320,10 400,50 480,30 C560,10 640,50 720,30 C800,10 880,50 960,30 C1040,10 1120,50 1200,30 C1280,10 1360,50 1440,30 V50 H0 Z" 
+            fill="hsl(15 50% 88% / 0.4)"
           />
         </svg>
       </div>
