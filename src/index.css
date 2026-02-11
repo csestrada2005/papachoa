@@ -168,7 +168,7 @@
   transition: transform 0.25s cubic-bezier(.4,0,.2,1), filter 0.3s ease;
 }
 .glass-blob-btn:hover {
-  transform: scale(1.08);
+  transform: scale(1.10);
 }
 .glass-blob-btn:active {
   transform: scale(0.95);
@@ -183,39 +183,39 @@
   }
 }
 
-/* Shimmer sweep */
+/* Shimmer sweep – slow 6s */
 @keyframes glass-shimmer {
-  0%, 82%, 100% { background-position: -200% 0; }
-  88% { background-position: 200% 0; }
+  0%, 78%, 100% { background-position: -200% 0; }
+  85% { background-position: 200% 0; }
 }
 
 .glass-blob-shape {
   position: absolute;
-  inset: 0px;
-  /* Bold organic blob – clearly asymmetric, not a circle */
-  border-radius: 66% 34% 40% 60% / 44% 58% 42% 56%;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  /* Dual-layer glass: strong fill + inner gradient highlight */
+  inset: -1px;
+  /* Strongly organic blob – clearly NOT a circle */
+  border-radius: 68% 32% 38% 62% / 42% 60% 40% 58%;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  /* Triple-layer glass: radial highlight + fill + ambient */
   background:
     radial-gradient(
-      ellipse 70% 60% at 28% 25%,
-      rgba(255,255,255,0.40) 0%,
-      transparent 70%
+      ellipse 65% 55% at 25% 22%,
+      rgba(255,255,255,0.50) 0%,
+      transparent 65%
     ),
     linear-gradient(
       140deg,
-      rgba(255,255,255,0.58) 0%,
-      rgba(255,255,255,0.32) 35%,
-      rgba(255,255,255,0.15) 100%
+      rgba(255,255,255,0.65) 0%,
+      rgba(255,255,255,0.45) 30%,
+      rgba(255,255,255,0.22) 100%
     );
-  border: 1.5px solid rgba(255,255,255,0.48);
+  border: 1.5px solid rgba(255,255,255,0.55);
   box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.60),
-    inset 0 -1px 2px rgba(0,0,0,0.05),
-    0 6px 20px rgba(0,0,0,0.09),
-    0 2px 4px rgba(0,0,0,0.06),
-    0 0 14px rgba(255,255,255,0.22);
+    inset 0 2.5px 5px rgba(255,255,255,0.65),
+    inset 0 -1.5px 3px rgba(0,0,0,0.06),
+    0 12px 30px rgba(0,0,0,0.14),
+    0 4px 12px rgba(0,0,0,0.10),
+    0 0 18px rgba(255,255,255,0.32);
   animation: icon-morph-1 8s ease-in-out infinite;
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
@@ -228,95 +228,68 @@
     border-radius: inherit;
     background: linear-gradient(
       105deg,
-      transparent 38%,
-      rgba(255,255,255,0.30) 46%,
-      rgba(255,255,255,0.42) 50%,
-      rgba(255,255,255,0.30) 54%,
-      transparent 62%
+      transparent 35%,
+      rgba(255,255,255,0.35) 44%,
+      rgba(255,255,255,0.50) 50%,
+      rgba(255,255,255,0.35) 56%,
+      transparent 65%
     );
     background-size: 250% 100%;
-    animation: glass-shimmer 7s ease-in-out infinite;
+    animation: glass-shimmer 6s ease-in-out infinite;
     pointer-events: none;
   }
 }
 
-/* Brand tints – clearly tinted glass */
+/* Brand tints – visible tinted glass with glow halo */
 .glass-blob-blush .glass-blob-shape {
   background:
-    radial-gradient(
-      ellipse 70% 60% at 28% 25%,
-      rgba(255,255,255,0.42) 0%,
-      transparent 70%
-    ),
-    linear-gradient(
-      140deg,
-      hsla(15,60%,82%,0.55) 0%,
-      hsla(15,45%,88%,0.30) 35%,
-      rgba(255,255,255,0.12) 100%
-    );
-  border-color: hsla(15,55%,88%,0.50);
+    radial-gradient(ellipse 65% 55% at 25% 22%, rgba(255,255,255,0.48) 0%, transparent 65%),
+    linear-gradient(140deg, hsla(15,65%,80%,0.62) 0%, hsla(15,50%,86%,0.38) 30%, rgba(255,255,255,0.18) 100%);
+  border-color: hsla(15,60%,85%,0.55);
   box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.58),
-    inset 0 -1px 2px rgba(0,0,0,0.04),
-    0 6px 20px hsla(15,50%,70%,0.16),
-    0 2px 4px rgba(0,0,0,0.06),
-    0 0 16px hsla(15,50%,82%,0.18);
+    inset 0 2.5px 5px rgba(255,255,255,0.62),
+    inset 0 -1.5px 3px rgba(0,0,0,0.05),
+    0 12px 30px hsla(15,50%,65%,0.18),
+    0 4px 12px rgba(0,0,0,0.08),
+    0 0 20px hsla(15,55%,80%,0.22);
   animation-name: icon-morph-1;
 }
 .glass-blob-sky .glass-blob-shape {
   background:
-    radial-gradient(
-      ellipse 70% 60% at 28% 25%,
-      rgba(255,255,255,0.42) 0%,
-      transparent 70%
-    ),
-    linear-gradient(
-      140deg,
-      hsla(195,60%,82%,0.55) 0%,
-      hsla(195,45%,88%,0.30) 35%,
-      rgba(255,255,255,0.12) 100%
-    );
-  border-color: hsla(195,55%,88%,0.50);
+    radial-gradient(ellipse 65% 55% at 25% 22%, rgba(255,255,255,0.48) 0%, transparent 65%),
+    linear-gradient(140deg, hsla(195,65%,80%,0.62) 0%, hsla(195,50%,86%,0.38) 30%, rgba(255,255,255,0.18) 100%);
+  border-color: hsla(195,60%,85%,0.55);
   box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.58),
-    inset 0 -1px 2px rgba(0,0,0,0.04),
-    0 6px 20px hsla(195,50%,70%,0.16),
-    0 2px 4px rgba(0,0,0,0.06),
-    0 0 16px hsla(195,50%,82%,0.18);
+    inset 0 2.5px 5px rgba(255,255,255,0.62),
+    inset 0 -1.5px 3px rgba(0,0,0,0.05),
+    0 12px 30px hsla(195,50%,65%,0.18),
+    0 4px 12px rgba(0,0,0,0.08),
+    0 0 20px hsla(195,55%,80%,0.22);
   animation-name: icon-morph-2;
 }
 .glass-blob-sage .glass-blob-shape {
   background:
-    radial-gradient(
-      ellipse 70% 60% at 28% 25%,
-      rgba(255,255,255,0.42) 0%,
-      transparent 70%
-    ),
-    linear-gradient(
-      140deg,
-      hsla(145,45%,76%,0.55) 0%,
-      hsla(145,35%,85%,0.30) 35%,
-      rgba(255,255,255,0.12) 100%
-    );
-  border-color: hsla(145,40%,82%,0.50);
+    radial-gradient(ellipse 65% 55% at 25% 22%, rgba(255,255,255,0.48) 0%, transparent 65%),
+    linear-gradient(140deg, hsla(145,50%,74%,0.62) 0%, hsla(145,40%,82%,0.38) 30%, rgba(255,255,255,0.18) 100%);
+  border-color: hsla(145,45%,80%,0.55);
   box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.58),
-    inset 0 -1px 2px rgba(0,0,0,0.04),
-    0 6px 20px hsla(145,38%,68%,0.16),
-    0 2px 4px rgba(0,0,0,0.06),
-    0 0 16px hsla(145,38%,76%,0.18);
+    inset 0 2.5px 5px rgba(255,255,255,0.62),
+    inset 0 -1.5px 3px rgba(0,0,0,0.05),
+    0 12px 30px hsla(145,42%,62%,0.18),
+    0 4px 12px rgba(0,0,0,0.08),
+    0 0 20px hsla(145,42%,74%,0.22);
   animation-name: icon-morph-3;
 }
 
-/* Hover glow boost */
+/* Hover – stronger glow + deeper shadow */
 .glass-blob-btn:hover .glass-blob-shape {
   box-shadow:
-    inset 0 2.5px 5px rgba(255,255,255,0.70),
-    inset 0 -1px 2px rgba(0,0,0,0.06),
-    0 8px 28px rgba(0,0,0,0.12),
-    0 3px 8px rgba(0,0,0,0.08),
-    0 0 24px rgba(255,255,255,0.25);
-  border-color: rgba(255,255,255,0.60);
+    inset 0 3px 6px rgba(255,255,255,0.75),
+    inset 0 -1.5px 3px rgba(0,0,0,0.07),
+    0 14px 36px rgba(0,0,0,0.18),
+    0 5px 14px rgba(0,0,0,0.10),
+    0 0 28px rgba(255,255,255,0.35);
+  border-color: rgba(255,255,255,0.68);
 }
 
 /* Blob shapes */
