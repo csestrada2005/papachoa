@@ -18,7 +18,7 @@ const Index = () => {
   usePrefetchRoutes();
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <Header />
+      <Header transparent />
       <main>
         <Hero />
         <BrandMarquee />

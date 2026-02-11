@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, Search, ShoppingBag } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
@@ -15,13 +15,26 @@ const navLinks = [
   { label: "Contacto", href: "/contacto" },
 ];
 
-const Header = () => {
+interface HeaderProps {
+  transparent?: boolean;
+}
+
+const Header = ({ transparent = false }: HeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { itemCount } = useCart();
   const location = useLocation();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!transparent) return;
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [transparent]);
 
   const handleLogoClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
     if (location.pathname === "/") {
@@ -36,11 +49,21 @@ const Header = () => {
     }
   }, [location.pathname, navigate]);
 
+  const isTransparent = transparent && !scrolled;
+
   return (
     <>
     <header className="w-full fixed top-0 left-0 right-0 z-50">
-      {/* Top banner */}
-      <div className="bg-papachoa-warm-brown overflow-hidden py-1.5">
+      {/* Top banner — integrated, no box separation */}
+      <div
+        className="overflow-hidden py-1.5 transition-colors duration-500"
+        style={{
+          background: isTransparent
+            ? "hsl(20 32% 20% / 0.6)"
+            : "hsl(20 32% 20%)",
+          backdropFilter: isTransparent ? "blur(8px)" : undefined,
+        }}
+      >
         <div className="animate-marquee whitespace-nowrap flex">
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex items-center gap-8 px-4">
@@ -57,8 +80,19 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Main header */}
-      <div className="bg-background/95 backdrop-blur-md border-b border-border/30">
+      {/* Main header — transparent on hero, solid on scroll */}
+      <div
+        className="transition-all duration-500"
+        style={{
+          background: isTransparent
+            ? "transparent"
+            : "hsl(var(--background) / 0.95)",
+          backdropFilter: isTransparent ? undefined : "blur(12px)",
+          borderBottom: isTransparent
+            ? "1px solid transparent"
+            : "1px solid hsl(var(--border) / 0.3)",
+        }}
+      >
         <div className="container grid grid-cols-[1fr_auto_1fr] items-center py-2.5 min-h-[56px] md:min-h-[60px]">
           {/* Left column */}
           <div className="flex items-center justify-start">
@@ -106,7 +140,11 @@ const Header = () => {
                 <Link
                   key={link.label}
                   to={link.href}
-                  className="nav-textile-link text-sm font-body font-medium text-foreground/70 hover:text-foreground px-4 py-2 transition-colors"
+                  className={`nav-textile-link text-sm font-body font-medium px-4 py-2 transition-colors ${
+                    isTransparent
+                      ? "text-white/80 hover:text-white"
+                      : "text-foreground/70 hover:text-foreground"
+                  }`}
                 >
                   {link.label}
                 </Link>
@@ -118,7 +156,9 @@ const Header = () => {
             <img 
               src={logo} 
               alt="Papachoa México" 
-              className="h-9 md:h-10 w-auto"
+              className={`h-9 md:h-10 w-auto transition-all duration-500 ${
+                isTransparent ? "brightness-[2] drop-shadow-md" : ""
+              }`}
               loading="eager"
               fetchPriority="high"
             />

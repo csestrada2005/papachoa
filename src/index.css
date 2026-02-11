@@ -591,6 +591,15 @@
   animation: thread-float linear infinite;
 }
 
+/* Hero "mamás" word hover */
+.hero-mamas-word:hover {
+  color: hsl(38 60% 82%);
+  transition: color 0.4s ease;
+}
+.hero-mamas-word:hover span {
+  transform: scaleX(1) !important;
+}
+
 /* Collection card editorial tilt */
 .card-tilt {
   transition: transform 0.4s cubic-bezier(.22,1,.36,1), box-shadow 0.4s ease;
