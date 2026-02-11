@@ -10,7 +10,7 @@ import logo from "@/assets/logo-papachoa.webp";
 
 const navLinks = [
   { label: "Inicio", href: "/" },
-  { label: "Cat\u00e1logo", href: "/catalogo" },
+  { label: "Catálogo", href: "/catalogo" },
   { label: "Nosotros", href: "/nosotros" },
   { label: "Contacto", href: "/contacto" },
 ];
@@ -44,11 +44,11 @@ const Header = () => {
         <div className="animate-marquee whitespace-nowrap flex">
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex items-center gap-8 px-4">
-              <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Enviamos a toda la Rep&uacute;blica</span>
+              <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Enviamos a toda la República</span>
               <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
               <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Textiles ultra suaves</span>
               <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
-              <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Hecho en M&eacute;xico</span>
+              <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Hecho en México</span>
               <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
               <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">El regalo perfecto</span>
               <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
@@ -64,16 +64,14 @@ const Header = () => {
           <div className="flex items-center justify-start">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <GlassBlobButton tint="blush" className="lg:hidden" aria-label="Men&uacute;">
+                <GlassBlobButton tint="blush" className="lg:hidden" aria-label="Menú">
                   <Menu className="h-[20px] w-[20px] text-foreground" strokeWidth={2} />
                 </GlassBlobButton>
               </SheetTrigger>
-              {/* TEXTILE MENU — full fabric experience */}
+              {/* TEXTILE MENU */}
               <SheetContent side="left" className="w-[300px] border-r-0 relative overflow-hidden texture-linen" style={{ background: "hsl(38 32% 94%)" }}>
-                <SheetTitle className="sr-only">Men&uacute; de navegaci&oacute;n</SheetTitle>
-                {/* Woven texture overlay */}
+                <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
                 <div className="absolute inset-0 pointer-events-none texture-woven" />
-                {/* Decorative embroidered sun */}
                 <svg className="absolute bottom-10 right-4 w-32 h-32 opacity-[0.04]" viewBox="0 0 200 200">
                   <circle cx="100" cy="100" r="60" fill="none" stroke="hsl(14 52% 46%)" strokeWidth="1" strokeDasharray="3 5" />
                   <circle cx="100" cy="100" r="80" fill="none" stroke="hsl(38 60% 52%)" strokeWidth="0.8" strokeDasharray="4 7" />
@@ -90,7 +88,6 @@ const Header = () => {
                         onClick={() => setIsOpen(false)}
                       >
                         {link.label}
-                        {/* Stitched underline on hover */}
                         <span className="absolute bottom-2 left-4 right-4 h-[1px] bg-primary/0 group-hover:bg-primary/20 transition-colors" style={{
                           backgroundImage: "repeating-linear-gradient(90deg, hsl(14 52% 46% / 0.25) 0px, hsl(14 52% 46% / 0.25) 4px, transparent 4px, transparent 7px)",
                           backgroundSize: "100% 1px",
@@ -104,7 +101,6 @@ const Header = () => {
               </SheetContent>
             </Sheet>
 
-            {/* Desktop nav — textile stitched underline */}
             <nav className="hidden lg:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
@@ -118,18 +114,16 @@ const Header = () => {
             </nav>
           </div>
 
-          {/* Center — Logo */}
           <Link to="/" onClick={handleLogoClick} className="justify-self-center flex items-center">
             <img 
               src={logo} 
-              alt="Papachoa M&eacute;xico" 
+              alt="Papachoa México" 
               className="h-9 md:h-10 w-auto"
               loading="eager"
               fetchPriority="high"
             />
           </Link>
 
-          {/* Right — Icons */}
           <div className="flex items-center justify-end gap-1.5">
             <GlassBlobButton tint="sky" onClick={() => setIsSearchOpen(true)} aria-label="Buscar">
               <Search className="h-[20px] w-[20px] md:h-[18px] md:w-[18px] text-foreground" strokeWidth={2} />

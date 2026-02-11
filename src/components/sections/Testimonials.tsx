@@ -3,17 +3,17 @@ import { Star } from "lucide-react";
 const testimonials = [
   {
     name: "Fernanda C.",
-    text: "La calidad es incre\u00edble. Mis hijos no quieren quitarse las pijamas y el cobijo es lo m\u00e1s suave que hemos tenido en casa.",
+    text: "La calidad es increíble. Mis hijos no quieren quitarse las pijamas y el cobijo es lo más suave que hemos tenido en casa.",
     rating: 5,
   },
   {
     name: "Ofe S.",
-    text: "Compr\u00e9 para regalar y ahora toda la familia tiene Papachoa. Los pijamas familiares son un hit en Navidad.",
+    text: "Compré para regalar y ahora toda la familia tiene Papachoa. Los pijamas familiares son un hit en Navidad.",
     rating: 5,
   },
   {
-    name: "Mar\u00eda Elena M.",
-    text: "El saco de dormir fue lo mejor que compr\u00e9 para mi beb\u00e9. Duerme toda la noche y yo tambi\u00e9n.",
+    name: "María Elena M.",
+    text: "El saco de dormir fue lo mejor que compré para mi bebé. Duerme toda la noche y yo también.",
     rating: 5,
   },
 ];
@@ -21,7 +21,6 @@ const testimonials = [
 const Testimonials = () => {
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
-      {/* Floating fabric shape */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-20 -right-16 w-48 h-48 opacity-[0.05] animate-drift"
           style={{
@@ -33,7 +32,7 @@ const Testimonials = () => {
       <div className="container relative z-10">
         <div className="text-center mb-16">
           <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-5">
-            Lo que dicen las mam&aacute;s
+            Lo que dicen las mamás
           </p>
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground mb-4">
             Historias de <em>apapacho</em>
@@ -54,16 +53,13 @@ const Testimonials = () => {
                 transform: `rotate(${i === 0 ? "-0.8" : i === 1 ? "0.5" : "-0.3"}deg)`,
               }}
             >
-              {/* Inner stitched border */}
               <div className="absolute inset-[5px] pointer-events-none" style={{
                 border: "1.5px dashed hsl(14 52% 46% / 0.08)",
                 borderRadius: "2px"
               }} />
 
-              {/* Large editorial quote mark */}
               <div className="font-display text-7xl text-primary/8 leading-none select-none absolute top-3 right-5">&ldquo;</div>
 
-              {/* Stars */}
               <div className="flex gap-0.5 mb-6">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star
@@ -73,12 +69,10 @@ const Testimonials = () => {
                 ))}
               </div>
 
-              {/* Quote — editorial italic */}
               <blockquote className="text-foreground/75 font-light leading-relaxed mb-8 text-base flex-1 italic font-display text-lg">
                 &ldquo;{testimonial.text}&rdquo;
               </blockquote>
 
-              {/* Author */}
               <div className="flex items-center gap-3 mt-auto pt-4" style={{ borderTop: "1px dashed hsl(var(--border) / 0.4)" }}>
                 <div className="w-8 h-8 bg-papachoa-terracotta-light/25 flex items-center justify-center font-display text-sm text-primary" style={{ borderRadius: "2px" }}>
                   {testimonial.name[0]}

@@ -7,7 +7,6 @@ const features = [
 const MadeInMexico = () => {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden texture-linen texture-woven">
-      {/* Background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute -top-10 -right-10 w-40 h-40 opacity-[0.05] animate-drift"
           style={{
@@ -20,7 +19,6 @@ const MadeInMexico = () => {
             borderRadius: "45% 55% 50% 50% / 55% 45% 55% 45%"
           }} />
 
-        {/* Mexico map silhouette — subtle embroidered */}
         <svg className="absolute bottom-8 right-8 w-48 h-64 opacity-[0.025] hidden md:block" viewBox="0 0 100 140">
           <path d="M50 5 C65 8 78 15 82 30 C86 45 80 55 85 70 C90 85 75 95 70 105 C65 115 55 120 50 130 C45 120 35 115 30 105 C25 95 10 85 15 70 C20 55 14 45 18 30 C22 15 35 8 50 5Z" 
             fill="none" stroke="hsl(20 32% 20%)" strokeWidth="1.5" strokeDasharray="3 4" />
@@ -29,14 +27,12 @@ const MadeInMexico = () => {
 
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto">
-          {/* Badge — stitched label style */}
           <div className="flex justify-center mb-10">
             <div className="px-6 py-2.5 relative" style={{ border: "1.5px dashed hsl(14 52% 46% / 0.25)", borderRadius: "2px" }}>
-              <span className="font-body text-[10px] tracking-[0.3em] uppercase text-primary font-medium">Hecho en M&eacute;xico con amor</span>
+              <span className="font-body text-[10px] tracking-[0.3em] uppercase text-primary font-medium">Hecho en México con amor</span>
             </div>
           </div>
 
-          {/* Headline */}
           <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground text-center leading-tight mb-8">
             Cada prenda tiene
             <br />
@@ -45,22 +41,19 @@ const MadeInMexico = () => {
 
           <p className="text-center text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto mb-6 leading-relaxed">
             Trabajamos con talleres locales bajo principios de comercio justo. 
-            Cada pijama lleva el cuidado de artesanas que ponen el coraz&oacute;n en cada puntada.
+            Cada pijama lleva el cuidado de artesanas que ponen el corazón en cada puntada.
           </p>
 
           <div className="divider-cross-stitch w-20 mx-auto mb-14" />
 
-          {/* Features — with embroidered icons */}
           <div className="grid grid-cols-3 gap-4 md:gap-8">
             {features.map((item) => (
               <div key={item.label} className="text-center">
                 <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 flex items-center justify-center relative" style={{ borderRadius: "3px" }}>
-                  {/* Stitched border */}
                   <div className="absolute inset-0" style={{
                     border: "1.5px dashed hsl(var(--border) / 0.5)",
                     borderRadius: "3px"
                   }} />
-                  {/* Embroidered icon */}
                   <svg className="w-7 h-7 md:w-8 md:h-8" viewBox="0 0 24 24" fill="none" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="2 3">
                     {item.icon === "heart" && (
                       <path d="M12 21C12 21 4 15 4 9.5C4 7 6 4 8.5 4C10 4 11.5 5 12 6.5C12.5 5 14 4 15.5 4C18 4 20 7 20 9.5C20 15 12 21 12 21Z" stroke="hsl(14 52% 46%)" />
@@ -98,7 +91,6 @@ const MadeInMexico = () => {
         </div>
       </div>
 
-      {/* Fabric fold divider */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg viewBox="0 0 1440 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full">
           <path 

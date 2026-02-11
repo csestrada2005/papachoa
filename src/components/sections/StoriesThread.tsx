@@ -1,18 +1,18 @@
 const StoriesThread = () => {
   const stories = [
     {
-      title: "Reci\u00e9n nacido",
-      description: "Cada hilo es un primer abrazo. Suavidad que envuelve desde el d\u00eda uno.",
+      title: "Recién nacido",
+      description: "Cada hilo es un primer abrazo. Suavidad que envuelve desde el día uno.",
       accent: "hsl(14 52% 46%)",
     },
     {
       title: "Familia",
-      description: "Momentos que se tejen juntos. Pijamas que unen a quienes m\u00e1s amas.",
+      description: "Momentos que se tejen juntos. Pijamas que unen a quienes más amas.",
       accent: "hsl(38 60% 52%)",
     },
     {
       title: "Descanso",
-      description: "El ritual de cada noche merece textiles pensados con intenci\u00f3n.",
+      description: "El ritual de cada noche merece textiles pensados con intención.",
       accent: "hsl(162 22% 42%)",
     },
   ];
@@ -20,7 +20,6 @@ const StoriesThread = () => {
   return (
     <section className="py-24 md:py-32 relative overflow-hidden section-indigo texture-linen texture-woven">
 
-      {/* Embroidered sun motif — atmospheric */}
       <svg className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] opacity-[0.04] animate-drift-slow" viewBox="0 0 200 200">
         <circle cx="100" cy="100" r="50" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.6" strokeDasharray="3 5" />
         <circle cx="100" cy="100" r="70" fill="none" stroke="hsl(38 60% 62%)" strokeWidth="0.5" strokeDasharray="4 6" />
@@ -49,18 +48,15 @@ const StoriesThread = () => {
 
         <div className="embroidery-line max-w-lg mx-auto mb-16" />
 
-        {/* Stories — large editorial layout */}
         <div className="grid md:grid-cols-3 gap-10 md:gap-16 max-w-5xl mx-auto">
           {stories.map((story, i) => (
             <div key={story.title} className="text-center md:text-left relative">
-              {/* Vertical stitch connector on left */}
               <div className="hidden md:block absolute -left-8 top-0 bottom-0 w-[1px]"
                 style={{
                   backgroundImage: `repeating-linear-gradient(180deg, ${story.accent}33 0px, ${story.accent}33 4px, transparent 4px, transparent 8px)`
                 }}
               />
               
-              {/* Story number — large, editorial */}
               <span className="font-display text-6xl md:text-7xl block mb-3 leading-none" style={{ color: `${story.accent}20` }}>
                 {String(i + 1).padStart(2, "0")}
               </span>
