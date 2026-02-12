@@ -5,29 +5,28 @@ import { useEffect, useRef, useCallback } from "react";
  * 
  * Elements start arranged (when section is centered in viewport),
  * and organically shift/rotate/scale as the user scrolls away.
- * When scrolling back, they smoothly rearrange.
- * 
- * Each child with [data-disarrange] gets a unique organic transform
- * based on its index and the scroll distance from center.
+ * Uses linear interpolation for buttery smooth updates.
  */
 
 interface DisarrangeOptions {
-  /** Max rotation in degrees (default: 4) */
   maxRotate?: number;
-  /** Max translation in px (default: 20) */
   maxTranslate?: number;
-  /** Max scale deviation from 1 (default: 0.03) */
   maxScale?: number;
-  /** How far (in vh fraction 0-1) from center to reach full effect (default: 0.6) */
   range?: number;
-  /** CSS transition for smoothness (default provided) */
-  transition?: string;
+  /** Lerp factor 0-1 — lower = smoother/laggier (default 0.08) */
+  smoothing?: number;
 }
 
-// Seeded pseudo-random for deterministic per-element variation
 function seededRandom(seed: number) {
   const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
   return x - Math.floor(x);
+}
+
+interface ElementState {
+  currentTx: number;
+  currentTy: number;
+  currentRot: number;
+  currentScale: number;
 }
 
 export function useScrollDisarrange(options: DisarrangeOptions = {}) {
@@ -36,13 +35,17 @@ export function useScrollDisarrange(options: DisarrangeOptions = {}) {
     maxTranslate = 45,
     maxScale = 0.07,
     range = 2.0,
-    transition = "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+    smoothing = 0.08,
   } = options;
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const tickingRef = useRef(false);
+  const rafRef = useRef<number>(0);
+  const statesRef = useRef<Map<HTMLElement, ElementState>>(new Map());
+  const runningRef = useRef(false);
 
-  const update = useCallback(() => {
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
+  const tick = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
 
@@ -51,51 +54,75 @@ export function useScrollDisarrange(options: DisarrangeOptions = {}) {
     const sectionCenter = rect.top + rect.height / 2;
     const viewCenter = viewH / 2;
 
-    // Progress: 0 = section centered, 1 = fully away
     const distance = Math.abs(sectionCenter - viewCenter);
     const maxDistance = viewH * range;
     const progress = Math.min(distance / maxDistance, 1);
 
-    // Smooth easing (ease-out cubic)
+    // Smooth easing
     const eased = 1 - Math.pow(1 - progress, 3);
 
     const children = container.querySelectorAll<HTMLElement>("[data-disarrange]");
+    let needsMore = false;
+
     children.forEach((child, i) => {
       const seed = i + 1;
-      // Deterministic but varied per element
       const rotDir = seededRandom(seed) > 0.5 ? 1 : -1;
       const xDir = seededRandom(seed * 2) > 0.5 ? 1 : -1;
       const yDir = seededRandom(seed * 3) > 0.5 ? 1 : -1;
 
-      const rotate = rotDir * seededRandom(seed * 5) * maxRotate * eased;
-      const tx = xDir * seededRandom(seed * 7) * maxTranslate * eased;
-      const ty = yDir * seededRandom(seed * 11) * maxTranslate * 0.6 * eased;
-      const scale = 1 - seededRandom(seed * 13) * maxScale * eased;
+      const targetRot = rotDir * seededRandom(seed * 5) * maxRotate * eased;
+      const targetTx = xDir * seededRandom(seed * 7) * maxTranslate * eased;
+      const targetTy = yDir * seededRandom(seed * 11) * maxTranslate * 0.6 * eased;
+      const targetScale = 1 - seededRandom(seed * 13) * maxScale * eased;
 
-      child.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) rotate(${rotate.toFixed(2)}deg) scale(${scale.toFixed(4)})`;
-
-      if (!child.style.transition) {
-        child.style.transition = transition;
+      let state = statesRef.current.get(child);
+      if (!state) {
+        state = { currentTx: 0, currentTy: 0, currentRot: 0, currentScale: 1 };
+        statesRef.current.set(child, state);
       }
+
+      state.currentTx = lerp(state.currentTx, targetTx, smoothing);
+      state.currentTy = lerp(state.currentTy, targetTy, smoothing);
+      state.currentRot = lerp(state.currentRot, targetRot, smoothing);
+      state.currentScale = lerp(state.currentScale, targetScale, smoothing);
+
+      child.style.transform = `translate3d(${state.currentTx.toFixed(2)}px, ${state.currentTy.toFixed(2)}px, 0) rotate(${state.currentRot.toFixed(2)}deg) scale(${state.currentScale.toFixed(4)})`;
+      child.style.willChange = "transform";
+
+      // Check if still converging
+      const diff =
+        Math.abs(state.currentTx - targetTx) +
+        Math.abs(state.currentTy - targetTy) +
+        Math.abs(state.currentRot - targetRot) +
+        Math.abs(state.currentScale - targetScale);
+      if (diff > 0.01) needsMore = true;
     });
-  }, [maxRotate, maxTranslate, maxScale, range, transition]);
+
+    if (needsMore) {
+      rafRef.current = requestAnimationFrame(tick);
+    } else {
+      runningRef.current = false;
+    }
+  }, [maxRotate, maxTranslate, maxScale, range, smoothing]);
+
+  const startLoop = useCallback(() => {
+    if (!runningRef.current) {
+      runningRef.current = true;
+      rafRef.current = requestAnimationFrame(tick);
+    }
+  }, [tick]);
 
   useEffect(() => {
-    const onScroll = () => {
-      if (tickingRef.current) return;
-      tickingRef.current = true;
-      requestAnimationFrame(() => {
-        update();
-        tickingRef.current = false;
-      });
-    };
+    const onScroll = () => startLoop();
 
     window.addEventListener("scroll", onScroll, { passive: true });
-    // Initial position
-    requestAnimationFrame(update);
+    startLoop();
 
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [update]);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [startLoop]);
 
   return containerRef;
 }
