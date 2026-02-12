@@ -528,24 +528,23 @@
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
 }
 
-/* Hero crossfade — 5 slides */
+/* Hero crossfade — 4 slides, 10s total (2.5s per slide) */
 @keyframes hero-crossfade {
   0%      { opacity: 1; }
-  16%     { opacity: 1; }
-  20%     { opacity: 0; }
-  96%     { opacity: 0; }
+  20%     { opacity: 1; }
+  25%     { opacity: 0; }
+  95%     { opacity: 0; }
   100%    { opacity: 1; }
 }
 
 .hero-slide {
   opacity: 0;
-  animation: hero-crossfade 12.5s infinite;
+  animation: hero-crossfade 10s infinite;
 }
 .hero-slide-0 { animation-delay: 0s; opacity: 1; }
 .hero-slide-1 { animation-delay: 2.5s; }
 .hero-slide-2 { animation-delay: 5s; }
 .hero-slide-3 { animation-delay: 7.5s; }
-.hero-slide-4 { animation-delay: 10s; }
 
 /* Fade in */
 @keyframes fade-in {
