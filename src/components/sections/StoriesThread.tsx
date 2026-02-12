@@ -1,9 +1,11 @@
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
 
 const StoriesThread = () => {
   const parallaxRef = useParallax(0.18);
   const stitchRef = useDrawOnScroll(0.3);
+  const disarrangeRef = useScrollDisarrange({ maxRotate: 4, maxTranslate: 22, maxScale: 0.03 });
 
   const stories = [
     {
@@ -55,9 +57,9 @@ const StoriesThread = () => {
 
         <div ref={stitchRef} className="embroidery-line max-w-lg mx-auto mb-16" />
 
-        <div className="grid md:grid-cols-3 gap-10 md:gap-16 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-10 md:gap-16 max-w-5xl mx-auto" ref={disarrangeRef}>
           {stories.map((story, i) => (
-            <div key={story.title} className="text-center md:text-left relative">
+            <div key={story.title} className="text-center md:text-left relative" data-disarrange>
               <div className="hidden md:block absolute -left-8 top-0 bottom-0 w-[1px]"
                 style={{
                   backgroundImage: `repeating-linear-gradient(180deg, ${story.accent}33 0px, ${story.accent}33 4px, transparent 4px, transparent 8px)`

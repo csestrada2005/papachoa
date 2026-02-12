@@ -1,10 +1,12 @@
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
 import lifestyleImage from "@/assets/lifestyle-1.png";
 
 const Emotion = () => {
   const parallaxRef = useParallax(0.1);
   const stitchRef = useDrawOnScroll(0.4);
+  const disarrangeRef = useScrollDisarrange({ maxRotate: 3, maxTranslate: 15 });
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden texture-linen texture-woven">
@@ -22,10 +24,10 @@ const Emotion = () => {
           }} />
       </div>
 
-      <div className="container relative z-10">
+      <div className="container relative z-10" ref={disarrangeRef}>
         <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Image with fabric-cut frame + paper shadows */}
-          <div className="lg:col-span-5 relative">
+          <div className="lg:col-span-5 relative" data-disarrange>
             <div className="relative max-w-sm mx-auto lg:max-w-none paper-shadow">
               <div className="frame-fabric-2 overflow-hidden">
                 <img
@@ -38,7 +40,6 @@ const Emotion = () => {
                   height={533}
                 />
               </div>
-              {/* Stitched frame overlay */}
               <svg className="absolute inset-[-4px] w-[calc(100%+8px)] h-[calc(100%+8px)] pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none">
                 <rect x="2" y="2" width="96" height="96" rx="2" fill="none" stroke="hsl(14 52% 46% / 0.18)" strokeWidth="0.5" strokeDasharray="2 3.5" />
               </svg>
@@ -46,13 +47,13 @@ const Emotion = () => {
           </div>
 
           {/* Editorial text */}
-          <div className="lg:col-span-7 lg:pl-8">
+          <div className="lg:col-span-7 lg:pl-8" data-disarrange>
             <div className="max-w-xl">
-              <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-6">
+              <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-6" data-disarrange>
                 Nuestra filosofía
               </p>
               
-              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-8">
+              <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-8" data-disarrange>
                 Papachoa no vende pijamas.
                 <br />
                 <em className="text-primary">
@@ -60,7 +61,7 @@ const Emotion = () => {
                 </em>
               </h2>
               
-              <p className="text-lg text-muted-foreground font-light leading-relaxed mb-10">
+              <p className="text-lg text-muted-foreground font-light leading-relaxed mb-10" data-disarrange>
                 Creemos que cada momento de descanso merece sentirse especial. 
                 Por eso, cada prenda está pensada para hacer tu hogar más suave, 
                 más cálido, más tuyo.
@@ -72,6 +73,7 @@ const Emotion = () => {
                 {["Calma", "Ternura", "Apapacho"].map((tag) => (
                   <span 
                     key={tag}
+                    data-disarrange
                     className="border border-primary/20 text-foreground/70 px-5 py-2.5 text-sm font-medium tracking-wide relative"
                     style={{ borderRadius: "2px" }}
                   >

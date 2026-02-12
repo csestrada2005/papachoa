@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
 import type { Collection } from "@/data/products";
 
 const collections: {
@@ -50,6 +51,7 @@ const collections: {
 const Collections = () => {
   const parallaxRef = useParallax(0.1);
   const stitchRef = useDrawOnScroll(0.3);
+  const disarrangeRef = useScrollDisarrange({ maxRotate: 5, maxTranslate: 18, maxScale: 0.04 });
 
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
@@ -80,12 +82,13 @@ const Collections = () => {
           <div ref={stitchRef} className="divider-cross-stitch w-16 mx-auto mt-8" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto" ref={disarrangeRef}>
           {collections.map((collection, index) => (
             <Link
               key={collection.title}
               to={`/catalogo?categoria=${collection.slug}`}
               aria-label={`Ver colección ${collection.title}`}
+              data-disarrange
               className={`group card-tilt relative overflow-hidden transition-all duration-300 active:scale-[0.98] ${
                 index === 0 ? "md:col-span-2 md:row-span-2" : ""
               }`}

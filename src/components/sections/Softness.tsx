@@ -1,5 +1,6 @@
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
 import lifestyleImage from "@/assets/lifestyle-2.png";
 
 const qualities = [
@@ -23,6 +24,7 @@ const qualities = [
 const Softness = () => {
   const parallaxRef = useParallax(0.1);
   const stitchRef = useDrawOnScroll(0.4);
+  const disarrangeRef = useScrollDisarrange({ maxRotate: 3, maxTranslate: 16, maxScale: 0.02 });
 
   return (
     <section className="py-24 md:py-32 section-terracotta relative overflow-hidden texture-linen texture-woven">
@@ -34,14 +36,14 @@ const Softness = () => {
           }} />
       </div>
 
-      <div className="container relative z-10">
+      <div className="container relative z-10" ref={disarrangeRef}>
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div className="order-2 lg:order-1">
-            <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-6">
+            <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-6" data-disarrange>
               La prueba de suavidad
             </p>
 
-            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground leading-tight mb-4" data-disarrange>
               Suavidad que
               <br />
               <em className="text-primary">se siente</em>
@@ -53,6 +55,7 @@ const Softness = () => {
               {qualities.map((quality) => (
                 <div
                   key={quality.title}
+                  data-disarrange
                   className="p-5 bg-card/80 backdrop-blur-sm border border-border/30 hover:shadow-md transition-shadow relative"
                   style={{ borderRadius: "3px", borderLeft: `3px solid ${quality.stitch}` }}
                 >
@@ -71,7 +74,7 @@ const Softness = () => {
             </div>
           </div>
 
-          <div className="order-1 lg:order-2 relative">
+          <div className="order-1 lg:order-2 relative" data-disarrange>
             <div className="relative max-w-md mx-auto lg:max-w-none paper-shadow">
               <div className="frame-fabric overflow-hidden">
                 <img

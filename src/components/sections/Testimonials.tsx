@@ -1,6 +1,7 @@
 import { Star } from "lucide-react";
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
 
 const testimonials = [
   {
@@ -23,6 +24,7 @@ const testimonials = [
 const Testimonials = () => {
   const parallaxRef = useParallax(0.08);
   const stitchRef = useDrawOnScroll(0.3);
+  const disarrangeRef = useScrollDisarrange({ maxRotate: 5, maxTranslate: 20, maxScale: 0.04 });
 
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
@@ -48,10 +50,11 @@ const Testimonials = () => {
           <div ref={stitchRef} className="divider-cross-stitch w-16 mx-auto mt-8" />
         </div>
 
-        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto items-stretch">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-5xl mx-auto items-stretch" ref={disarrangeRef}>
           {testimonials.map((testimonial, i) => (
             <div
               key={testimonial.name}
+              data-disarrange
               className="bg-card/80 backdrop-blur-sm p-8 relative overflow-hidden border border-border/30 flex flex-col min-h-[280px] hover:shadow-md transition-all card-tilt"
               style={{
                 borderRadius: "3px",

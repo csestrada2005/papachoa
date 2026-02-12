@@ -1,5 +1,6 @@
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
+import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
 
 const features = [
   { label: "Comercio justo", icon: "heart" },
@@ -10,6 +11,7 @@ const features = [
 const MadeInMexico = () => {
   const parallaxRef = useParallax(0.12);
   const stitchRef = useDrawOnScroll(0.4);
+  const disarrangeRef = useScrollDisarrange({ maxRotate: 4, maxTranslate: 18, maxScale: 0.03 });
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden texture-linen texture-woven">
@@ -31,21 +33,21 @@ const MadeInMexico = () => {
         </svg>
       </div>
 
-      <div className="container relative z-10">
+      <div className="container relative z-10" ref={disarrangeRef}>
         <div className="max-w-3xl mx-auto">
-          <div className="flex justify-center mb-10">
+          <div className="flex justify-center mb-10" data-disarrange>
             <div className="px-6 py-2.5 relative" style={{ border: "1.5px dashed hsl(14 52% 46% / 0.25)", borderRadius: "2px" }}>
               <span className="font-body text-[10px] tracking-[0.3em] uppercase text-primary font-medium">Hecho en México con amor</span>
             </div>
           </div>
 
-          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground text-center leading-tight mb-8">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl text-foreground text-center leading-tight mb-8" data-disarrange>
             Cada prenda tiene
             <br />
             <em className="text-primary">nombre y apellido</em>
           </h2>
 
-          <p className="text-center text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto mb-6 leading-relaxed">
+          <p className="text-center text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto mb-6 leading-relaxed" data-disarrange>
             Trabajamos con talleres locales bajo principios de comercio justo. 
             Cada pijama lleva el cuidado de artesanas que ponen el corazón en cada puntada.
           </p>
@@ -54,7 +56,7 @@ const MadeInMexico = () => {
 
           <div className="grid grid-cols-3 gap-4 md:gap-8">
             {features.map((item) => (
-              <div key={item.label} className="text-center">
+              <div key={item.label} className="text-center" data-disarrange>
                 <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 flex items-center justify-center relative" style={{ borderRadius: "3px" }}>
                   <div className="absolute inset-0" style={{
                     border: "1.5px dashed hsl(var(--border) / 0.5)",
