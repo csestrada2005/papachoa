@@ -32,11 +32,11 @@ function seededRandom(seed: number) {
 
 export function useScrollDisarrange(options: DisarrangeOptions = {}) {
   const {
-    maxRotate = 12,
-    maxTranslate = 50,
-    maxScale = 0.08,
-    range = 0.4,
-    transition = "transform 0.25s cubic-bezier(0.22, 1, 0.36, 1)",
+    maxRotate = 8,
+    maxTranslate = 35,
+    maxScale = 0.05,
+    range = 0.45,
+    transition = "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
   } = options;
 
   const containerRef = useRef<HTMLDivElement>(null);
