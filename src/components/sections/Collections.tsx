@@ -1,57 +1,109 @@
+import { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useParallax } from "@/hooks/useParallax";
 import { useDrawOnScroll } from "@/hooks/useDrawOnScroll";
-import { useScrollDisarrange } from "@/hooks/useScrollDisarrange";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Collection } from "@/data/products";
+import { products } from "@/data/products";
 
 const collections: {
   title: string;
   description: string;
   bgGradient: string;
   slug: Collection;
-  rotate: string;
+  icon: string;
+  productCount: number;
 }[] = [
   {
     title: "Recién nacido",
     description: "Suavidad desde el primer día",
     bgGradient: "linear-gradient(145deg, hsl(14 38% 82%) 0%, hsl(14 32% 78%) 100%)",
     slug: "recien-nacido",
-    rotate: "-1.2deg",
+    icon: "🌙",
+    productCount: products.filter(p => p.collection === "recien-nacido").length,
   },
   {
     title: "Bebé & Cobijo",
     description: "Apapacho para los más pequeños",
     bgGradient: "linear-gradient(145deg, hsl(228 22% 80%) 0%, hsl(228 28% 76%) 100%)",
     slug: "bebe-cobijo",
-    rotate: "0.8deg",
+    icon: "☁️",
+    productCount: products.filter(p => p.collection === "bebe-cobijo").length,
   },
   {
     title: "Pijamas Familiares",
     description: "Momentos juntos, vestidos igual",
     bgGradient: "linear-gradient(145deg, hsl(162 16% 78%) 0%, hsl(162 18% 74%) 100%)",
     slug: "pijamas-familiares",
-    rotate: "-0.5deg",
+    icon: "🤍",
+    productCount: products.filter(p => p.collection === "pijamas-familiares").length,
   },
   {
     title: "Sacos & Nidos",
     description: "Sueños seguros y calientitos",
     bgGradient: "linear-gradient(145deg, hsl(38 40% 80%) 0%, hsl(35 38% 76%) 100%)",
     slug: "sacos-nidos",
-    rotate: "1deg",
+    icon: "🪹",
+    productCount: products.filter(p => p.collection === "sacos-nidos").length,
   },
   {
     title: "Listo para Regalar",
     description: "El regalo perfecto para dar amor",
     bgGradient: "linear-gradient(145deg, hsl(348 22% 82%) 0%, hsl(348 20% 78%) 100%)",
     slug: "regalo",
-    rotate: "-0.7deg",
+    icon: "🎁",
+    productCount: products.filter(p => p.collection === "regalo").length,
   },
 ];
 
 const Collections = () => {
   const parallaxRef = useParallax(0.1);
   const stitchRef = useDrawOnScroll(0.3);
-  const disarrangeRef = useScrollDisarrange({ maxRotate: 5, maxTranslate: 18, maxScale: 0.04 });
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const scrollStartX = useRef(0);
+
+  // Track active slide
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const cardWidth = el.children[0]?.clientWidth || 300;
+      const gap = 20;
+      const idx = Math.round(el.scrollLeft / (cardWidth + gap));
+      setActiveIndex(Math.min(idx, collections.length - 1));
+    };
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const scrollTo = (dir: "prev" | "next") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cardWidth = el.children[0]?.clientWidth || 300;
+    const gap = 20;
+    el.scrollBy({ left: dir === "next" ? cardWidth + gap : -(cardWidth + gap), behavior: "smooth" });
+  };
+
+  // Drag-to-scroll
+  const onPointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    dragStartX.current = e.clientX;
+    scrollStartX.current = scrollRef.current?.scrollLeft || 0;
+    (e.target as HTMLElement).setPointerCapture(e.pointerId);
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging || !scrollRef.current) return;
+    const dx = e.clientX - dragStartX.current;
+    scrollRef.current.scrollLeft = scrollStartX.current - dx;
+  };
+  const onPointerUp = () => setIsDragging(false);
+
+  // Featured product per collection
+  const getFeatured = (slug: Collection) =>
+    products.find(p => p.collection === slug && p.featured) || products.find(p => p.collection === slug);
 
   return (
     <section className="py-24 md:py-32 section-marigold relative overflow-hidden texture-linen texture-woven">
@@ -61,15 +113,10 @@ const Collections = () => {
             background: "radial-gradient(circle, hsl(14 52% 46% / 0.3), transparent 70%)",
             borderRadius: "55% 45% 40% 60% / 50% 50% 50% 50%"
           }} />
-        <div className="absolute -bottom-16 -left-16 w-56 h-56 opacity-[0.04] animate-drift-slow"
-          style={{
-            background: "radial-gradient(circle, hsl(162 22% 42% / 0.3), transparent 70%)",
-            borderRadius: "40% 60% 55% 45% / 45% 55% 45% 55%"
-          }} />
       </div>
 
       <div className="container relative z-10">
-        <div className="text-center mb-16">
+        <div className="text-center mb-12">
           <p className="font-body text-[10px] tracking-[0.3em] uppercase text-primary mb-5">
             Explora
           </p>
@@ -82,46 +129,124 @@ const Collections = () => {
           <div ref={stitchRef} className="divider-cross-stitch w-16 mx-auto mt-8" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-5 max-w-4xl mx-auto" ref={disarrangeRef}>
-          {collections.map((collection, index) => (
-            <Link
-              key={collection.title}
-              to={`/catalogo?categoria=${collection.slug}`}
-              aria-label={`Ver colección ${collection.title}`}
-              data-disarrange
-              className={`group card-tilt relative overflow-hidden transition-all duration-300 active:scale-[0.98] ${
-                index === 0 ? "md:col-span-2 md:row-span-2" : ""
-              }`}
-              style={{
-                transform: `rotate(${collection.rotate})`,
-                borderRadius: "4px",
-              }}
+        {/* Navigation arrows + Counter */}
+        <div className="flex items-center justify-between mb-6 max-w-5xl mx-auto px-2">
+          <div className="flex gap-2">
+            <button
+              onClick={() => scrollTo("prev")}
+              className="w-10 h-10 flex items-center justify-center border border-border/40 bg-card/60 backdrop-blur-sm hover:bg-card transition-all active:scale-95"
+              style={{ borderRadius: "3px" }}
+              aria-label="Anterior"
             >
-              <div
-                className={`h-full p-6 md:p-7 ${index === 0 ? "min-h-[170px] md:min-h-[280px]" : "min-h-[130px] md:min-h-[150px]"} flex flex-col justify-between relative`}
-                style={{ background: collection.bgGradient }}
+              <ChevronLeft className="w-4 h-4 text-foreground/60" />
+            </button>
+            <button
+              onClick={() => scrollTo("next")}
+              className="w-10 h-10 flex items-center justify-center border border-border/40 bg-card/60 backdrop-blur-sm hover:bg-card transition-all active:scale-95"
+              style={{ borderRadius: "3px" }}
+              aria-label="Siguiente"
+            >
+              <ChevronRight className="w-4 h-4 text-foreground/60" />
+            </button>
+          </div>
+          <p className="font-body text-sm text-muted-foreground tracking-wide">
+            <span className="text-foreground font-medium">{activeIndex + 1}</span>
+            <span className="mx-1">/</span>
+            <span>{collections.length} colecciones</span>
+          </p>
+        </div>
+
+        {/* Horizontal carousel */}
+        <div
+          ref={scrollRef}
+          className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4 md:mx-0 md:px-0 cursor-grab active:cursor-grabbing select-none"
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          style={{ WebkitOverflowScrolling: "touch" }}
+        >
+          {collections.map((collection, index) => {
+            const featured = getFeatured(collection.slug as Exclude<Collection, "todos">);
+            return (
+              <Link
+                key={collection.title}
+                to={`/catalogo?categoria=${collection.slug}`}
+                aria-label={`Ver colección ${collection.title}`}
+                className="group flex-none w-[280px] md:w-[320px] snap-start"
+                onClick={e => isDragging && e.preventDefault()}
+                draggable={false}
               >
-                <div className="absolute inset-[4px] pointer-events-none" style={{
-                  border: "1.5px dashed hsl(20 32% 20% / 0.1)",
-                  borderRadius: "2px"
-                }} />
+                <div
+                  className="h-full relative overflow-hidden transition-all duration-300 hover:shadow-lg active:scale-[0.98]"
+                  style={{ borderRadius: "4px" }}
+                >
+                  <div
+                    className="p-6 pb-5 min-h-[320px] md:min-h-[360px] flex flex-col justify-between relative"
+                    style={{ background: collection.bgGradient }}
+                  >
+                    {/* Stitched inner border */}
+                    <div className="absolute inset-[4px] pointer-events-none" style={{
+                      border: "1.5px dashed hsl(20 32% 20% / 0.1)",
+                      borderRadius: "2px"
+                    }} />
 
-                <div>
-                  <h3 className={`font-display ${index === 0 ? "text-2xl md:text-3xl" : "text-lg md:text-xl"} text-foreground mb-1.5 leading-tight`}>
-                    {collection.title}
-                  </h3>
-                  <p className={`text-foreground/55 font-light text-sm leading-snug ${index === 0 ? "" : "line-clamp-2"}`}>
-                    {collection.description}
-                  </p>
-                </div>
+                    <div>
+                      <span className="text-3xl mb-3 block">{collection.icon}</span>
+                      <h3 className="font-display text-2xl text-foreground mb-1.5 leading-tight">
+                        {collection.title}
+                      </h3>
+                      <p className="text-foreground/55 font-light text-sm leading-snug line-clamp-2">
+                        {collection.description}
+                      </p>
+                    </div>
 
-                <div className="mt-4 flex justify-end">
-                  <div className="w-8 h-8 border border-foreground/15 rounded-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
-                    <span className="text-foreground/50 text-sm">&rarr;</span>
+                    {/* Featured product preview */}
+                    {featured && (
+                      <div className="mt-4 bg-background/40 backdrop-blur-sm p-3 border border-border/20 flex items-center gap-3 transition-all group-hover:bg-background/60" style={{ borderRadius: "3px" }}>
+                        <div className="w-10 h-10 bg-background/60 flex items-center justify-center flex-shrink-0" style={{ borderRadius: "2px" }}>
+                          <span className="text-xs text-primary font-display">★</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-xs font-medium text-foreground truncate">{featured.name}</p>
+                          <p className="text-xs text-foreground/50">${featured.price.toLocaleString("es-MX")}</p>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="mt-4 flex items-center justify-between">
+                      <span className="text-xs text-foreground/40 font-body tracking-wide">
+                        {collection.productCount} productos
+                      </span>
+                      <div className="w-8 h-8 border border-foreground/15 rounded-sm flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all transform translate-x-2 group-hover:translate-x-0">
+                        <span className="text-foreground/50 text-sm">→</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Link>
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Dot indicators */}
+        <div className="flex justify-center gap-2 mt-6">
+          {collections.map((_, i) => (
+            <button
+              key={i}
+              className="w-2 h-2 rounded-full transition-all duration-300"
+              style={{
+                background: i === activeIndex ? "hsl(14 52% 46%)" : "hsl(14 52% 46% / 0.2)",
+                transform: i === activeIndex ? "scale(1.3)" : "scale(1)",
+              }}
+              onClick={() => {
+                const el = scrollRef.current;
+                if (!el) return;
+                const cardWidth = el.children[0]?.clientWidth || 300;
+                el.scrollTo({ left: i * (cardWidth + 20), behavior: "smooth" });
+              }}
+              aria-label={`Ir a colección ${i + 1}`}
+            />
           ))}
         </div>
       </div>

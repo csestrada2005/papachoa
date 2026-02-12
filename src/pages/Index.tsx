@@ -8,6 +8,7 @@ import Collections from "@/components/sections/Collections";
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 
 // Below-fold sections – lazy loaded
+const ApatachoSelector = lazy(() => import("@/components/sections/ApatachoSelector"));
 const StoriesThread = lazy(() => import("@/components/sections/StoriesThread"));
 const Softness = lazy(() => import("@/components/sections/Softness"));
 const Testimonials = lazy(() => import("@/components/sections/Testimonials"));
@@ -25,6 +26,7 @@ const Index = () => {
         <Emotion />
         <Collections />
         <Suspense fallback={null}>
+          <ApatachoSelector />
           <StoriesThread />
           <Softness />
           <Testimonials />
