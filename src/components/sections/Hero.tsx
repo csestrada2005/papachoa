@@ -89,7 +89,7 @@ const Hero = () => {
         />
       </div>
 
-      <ThreadParticles />
+      
 
       {/* Content — centered */}
       <div className="flex-1 flex flex-col justify-center items-center relative z-10 pt-28 pb-20 md:pb-28">
