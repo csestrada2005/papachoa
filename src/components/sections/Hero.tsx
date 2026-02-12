@@ -8,7 +8,7 @@ import hero4 from "@/assets/hero-4.jpg";
 import hero5 from "@/assets/hero-5.jpg";
 
 const heroSlides = [
-  { src: heroImage, alt: "Familia usando pijamas Papachoa", pos: "52% 60%" },
+  { src: heroImage, alt: "Familia usando pijamas Papachoa", pos: "48% 60%" },
   { src: hero2, alt: "Pijamas Papachoa estilo 2", pos: "50% 35%" },
   { src: hero3, alt: "Pijamas Papachoa estilo 3", pos: "50% 30%" },
   { src: hero4, alt: "Pijamas Papachoa estilo 4", pos: "50% 40%" },
@@ -74,16 +74,20 @@ const Hero = () => {
 
       {/* Parallax floating decorative elements */}
       <div ref={parallaxRef} className="absolute inset-0 pointer-events-none will-change-transform z-[1]">
-        <div className="absolute -top-10 -right-24 w-72 h-72 opacity-[0.08] animate-drift"
+        <div
+          className="absolute -top-10 -right-24 w-72 h-72 opacity-[0.08] animate-drift"
           style={{
             background: "radial-gradient(ellipse 60% 80%, hsl(38 60% 52% / 0.5), transparent 70%)",
-            borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%"
-          }} />
-        <div className="absolute bottom-32 -left-16 w-56 h-56 opacity-[0.06] animate-drift-slow"
+            borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%",
+          }}
+        />
+        <div
+          className="absolute bottom-32 -left-16 w-56 h-56 opacity-[0.06] animate-drift-slow"
           style={{
             background: "radial-gradient(ellipse 70% 50%, hsl(14 52% 46% / 0.4), transparent 70%)",
-            borderRadius: "55% 45% 40% 60% / 45% 55% 45% 55%"
-          }} />
+            borderRadius: "55% 45% 40% 60% / 45% 55% 45% 55%",
+          }}
+        />
       </div>
 
       <ThreadParticles />
@@ -96,7 +100,8 @@ const Hero = () => {
               className="font-display text-5xl md:text-6xl lg:text-8xl leading-[1.05] mb-6"
               style={{
                 color: "transparent",
-                backgroundImage: "linear-gradient(175deg, hsl(38 30% 96%) 0%, hsl(38 25% 82%) 50%, hsl(38 20% 70%) 100%)",
+                backgroundImage:
+                  "linear-gradient(175deg, hsl(38 30% 96%) 0%, hsl(38 25% 82%) 50%, hsl(38 20% 70%) 100%)",
                 backgroundClip: "text",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
@@ -106,16 +111,21 @@ const Hero = () => {
             >
               Pensado por
               <br />
-              <em className="hero-mamas-word relative inline-block cursor-default" style={{
-                backgroundImage: "linear-gradient(175deg, hsl(38 60% 80%) 0%, hsl(14 45% 65%) 100%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}>
+              <em
+                className="hero-mamas-word relative inline-block cursor-default"
+                style={{
+                  backgroundImage: "linear-gradient(175deg, hsl(38 60% 80%) 0%, hsl(14 45% 65%) 100%)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                }}
+              >
                 mamás,
-                <span className="absolute bottom-0 left-0 w-full h-[2px] origin-left scale-x-0 transition-transform duration-500 ease-out"
+                <span
+                  className="absolute bottom-0 left-0 w-full h-[2px] origin-left scale-x-0 transition-transform duration-500 ease-out"
                   style={{
-                    backgroundImage: "repeating-linear-gradient(90deg, hsl(38 60% 72%) 0px, hsl(38 60% 72%) 4px, transparent 4px, transparent 7px)",
+                    backgroundImage:
+                      "repeating-linear-gradient(90deg, hsl(38 60% 72%) 0px, hsl(38 60% 72%) 4px, transparent 4px, transparent 7px)",
                   }}
                 />
               </em>{" "}
@@ -139,7 +149,11 @@ const Hero = () => {
           >
             <rect
               ref={stitchRef}
-              x="5" y="5" width="90" height="90" rx="3"
+              x="5"
+              y="5"
+              width="90"
+              height="90"
+              rx="3"
               fill="none"
               stroke="hsl(38 60% 72%)"
               strokeWidth="0.8"
@@ -151,7 +165,11 @@ const Hero = () => {
             />
             {/* Inner stitch */}
             <rect
-              x="12" y="12" width="76" height="76" rx="2"
+              x="12"
+              y="12"
+              width="76"
+              height="76"
+              rx="2"
               fill="none"
               stroke="hsl(14 52% 60%)"
               strokeWidth="0.5"
@@ -166,7 +184,8 @@ const Hero = () => {
       </div>
 
       {/* Organic gradient transition to next section — no hard line */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+      <div
+        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
         style={{
           background: "linear-gradient(to bottom, transparent 0%, hsl(var(--background)) 100%)",
         }}
