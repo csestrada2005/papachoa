@@ -609,6 +609,46 @@
   box-shadow: 0 12px 32px -8px hsl(20 32% 20% / 0.2);
 }
 
+/* ═══════════════════════════════════════════
+   FALLING BLOB MENU
+   ═══════════════════════════════════════════ */
+.blob-menu-item {
+  padding: 1.5rem 4rem;
+  min-width: 280px;
+  text-align: center;
+  font-size: 2.8rem;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .blob-menu-item {
+    padding: 2rem 5.5rem;
+    min-width: 340px;
+    font-size: 3.8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .blob-menu-item {
+    padding: 2.2rem 7rem;
+    min-width: 420px;
+    font-size: 4.5rem;
+  }
+}
+
+.blob-menu-item:hover {
+  transform: scale(1.02) !important;
+  box-shadow:
+    0 12px 48px -12px hsl(20 30% 15% / 0.3),
+    0 4px 14px -6px hsl(20 30% 15% / 0.12) !important;
+}
+
+.blob-menu-item:active {
+  transform: scale(0.98) !important;
+  transition-duration: 0.1s !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glass-blob-btn,
   .glass-blob-shape,
