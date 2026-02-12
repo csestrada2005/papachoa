@@ -345,6 +345,25 @@
     color: hsl(var(--primary));
   }
 
+  /* Premium Terracotta CTA */
+  .cta-premium-terracotta {
+    @apply inline-flex items-center gap-2 px-8 py-4 rounded-full font-semibold text-base;
+    background-color: #C7745A;
+    color: #F6EFE7;
+    box-shadow: 0 6px 18px rgba(80, 40, 30, 0.15);
+    transition: all 220ms ease;
+  }
+  .cta-premium-terracotta:hover {
+    background-color: #B8644C;
+    box-shadow: 0 8px 22px rgba(80, 40, 30, 0.22);
+    transform: scale(1.02);
+  }
+  .cta-premium-terracotta:active {
+    background-color: #A95641;
+    box-shadow: 0 4px 12px rgba(80, 40, 30, 0.12);
+    transform: scale(0.98);
+  }
+
   /* ═══════════════════════════════════════════
      DIVIDERS — Embroidery lines & organic curves
      ═══════════════════════════════════════════ */
