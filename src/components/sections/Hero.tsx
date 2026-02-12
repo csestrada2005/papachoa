@@ -8,8 +8,8 @@ import hero4 from "@/assets/hero-4.jpg";
 import hero5 from "@/assets/hero-5.jpg";
 
 const heroSlides = [
-  { src: heroImage, alt: "Familia usando pijamas Papachoa", pos: "48% 60%" },
-  { src: hero2, alt: "Pijamas Papachoa estilo 2", pos: "50% 35%" },
+  { src: heroImage, alt: "Familia usando pijamas Papachoa", pos: "52% 60%" },
+  { src: hero2, alt: "Pijamas Papachoa estilo 2", pos: "45% 30%" },
   { src: hero3, alt: "Pijamas Papachoa estilo 3", pos: "50% 30%" },
   { src: hero4, alt: "Pijamas Papachoa estilo 4", pos: "50% 40%" },
   { src: hero5, alt: "Pijamas Papachoa estilo 5", pos: "50% 55%" },
