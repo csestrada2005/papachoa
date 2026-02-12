@@ -35,7 +35,7 @@ export function useScrollDisarrange(options: DisarrangeOptions = {}) {
     maxRotate = 12,
     maxTranslate = 45,
     maxScale = 0.07,
-    range = 1.2,
+    range = 2.0,
     transition = "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
   } = options;
 
