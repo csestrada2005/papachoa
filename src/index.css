@@ -648,10 +648,18 @@
 }
 
 @media (min-width: 1024px) {
+  .blob-menu-nav {
+    max-height: 68vh;
+    gap: 28px !important;
+    padding-top: clamp(40px, 10vh, 100px) !important;
+    padding-bottom: clamp(40px, 10vh, 100px) !important;
+    margin: auto 0;
+  }
+
   .blob-menu-item {
-    padding: 2.2rem 7rem;
-    min-width: 420px;
-    font-size: 4.5rem;
+    padding: 1.6rem 5.5rem;
+    min-width: 340px;
+    font-size: 3.85rem;
   }
 }
 

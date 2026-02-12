@@ -120,7 +120,7 @@ const FallingBlobMenu = ({ isOpen, onClose }: FallingBlobMenuProps) => {
 
       {/* Nav items with safe vertical padding */}
       <nav
-        className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6"
+        className="blob-menu-nav absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-6"
         style={{
           paddingTop: "clamp(24px, 8vh, 80px)",
           paddingBottom: "clamp(24px, 8vh, 80px)",
