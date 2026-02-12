@@ -30,18 +30,15 @@ const Footer = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleTiendaClick = useCallback(
+  const handleFooterLink = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      e.preventDefault();
       if (location.pathname === href) {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
       } else {
-        // Let Link navigate; ScrollToTop handles reset, but we also
-        // schedule a smooth scroll after the next paint for premium feel.
-        e.preventDefault();
         navigate(href);
         requestAnimationFrame(() => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
         });
       }
     },
@@ -118,7 +115,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
-                    onClick={(e) => handleTiendaClick(e, link.href)}
+                    onClick={(e) => handleFooterLink(e, link.href)}
                     onMouseEnter={() => prefetchRoute(link.href)}
                     onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm transition-colors hover:opacity-100 opacity-55"
@@ -138,6 +135,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
+                    onClick={(e) => handleFooterLink(e, link.href)}
                     onMouseEnter={() => prefetchRoute(link.href)}
                     onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm transition-colors hover:opacity-100 opacity-55"
@@ -157,6 +155,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
+                    onClick={(e) => handleFooterLink(e, link.href)}
                     onMouseEnter={() => prefetchRoute(link.href)}
                     onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm transition-colors hover:opacity-100 opacity-55"
