@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Instagram, Facebook } from "lucide-react";
 import logo from "@/assets/logo-papachoa.webp";
 import { brand } from "@/data/brand";
 import { openExternal } from "@/lib/openExternal";
 import { prefetchRoute } from "@/hooks/usePrefetch";
+import { useCallback } from "react";
 
 const footerLinks = {
   tienda: [
@@ -26,6 +27,27 @@ const footerLinks = {
 const paymentMethods = ["Visa", "Mastercard", "AMEX", "OXXO", "SPEI"];
 
 const Footer = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleTiendaClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (location.pathname === href) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        // Let Link navigate; ScrollToTop handles reset, but we also
+        // schedule a smooth scroll after the next paint for premium feel.
+        e.preventDefault();
+        navigate(href);
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    },
+    [location.pathname, navigate],
+  );
+
   return (
     <footer className="relative overflow-hidden texture-linen texture-woven" style={{
       background: "linear-gradient(165deg, hsl(20 32% 18%) 0%, hsl(20 28% 15%) 50%, hsl(228 25% 16%) 100%)"
@@ -96,6 +118,7 @@ const Footer = () => {
                 <li key={link.label}>
                   <Link
                     to={link.href}
+                    onClick={(e) => handleTiendaClick(e, link.href)}
                     onMouseEnter={() => prefetchRoute(link.href)}
                     onTouchStart={() => prefetchRoute(link.href)}
                     className="text-sm transition-colors hover:opacity-100 opacity-55"
