@@ -1,3 +1,4 @@
+import pijamaRosa0 from "@/assets/pijama-rosa-0-familia-azul.jpg";
 import pijamaRosa1 from "@/assets/pijama-rosa-1-abrazo.jpg";
 import pijamaRosa2 from "@/assets/pijama-rosa-2-ternura.jpg";
 import pijamaRosa3 from "@/assets/pijama-rosa-3-jugando.jpg";
@@ -28,6 +29,7 @@ export interface Product {
   longDescription: string;
   tags: string[];
   sizes: string[];
+  sizesSecondary?: string[];
   material: string;
   care: string[];
   shippingSummary: string;
@@ -179,12 +181,13 @@ export const products: Product[] = [
     name: "Pijama Mamá + Bebé",
     price: 1290,
     collection: "pijamas-familiares",
-    image: pijamaRosa1,
-    images: [pijamaRosa1, pijamaRosa2, pijamaRosa3, pijamaRosa4, pijamaRosa5, pijamaRosa6, pijamaRosa7, pijamaRosa8, pijamaRosa9],
+    image: pijamaRosa0,
+    images: [pijamaRosa0, pijamaRosa1, pijamaRosa2, pijamaRosa3, pijamaRosa4, pijamaRosa5, pijamaRosa6, pijamaRosa7, pijamaRosa8, pijamaRosa9],
     shortDescription: "Combina con tu bebé en suavidad y estilo. Momentos que se quedan.",
     longDescription: "El set Mamá + Bebé es uno de nuestros más queridos. Pijamas iguales para mamá y su pequeño, confeccionadas en la misma tela ultra suave. Perfectas para sesiones de fotos, noches de película o simplemente para sentirse conectadas. Porque vestirse igual nunca se sintió tan bonito.",
     tags: ["pijama", "mamá", "bebé", "matching"],
-    sizes: ["Mamá: CH/M/G/XG", "Bebé: 0-3M/3-6M/6-12M/12-18M"],
+    sizes: ["CH", "M", "G", "XG"],
+    sizesSecondary: ["0-3M", "3-6M", "6-12M", "12-18M"],
     material: "Jersey de algodón peinado con elastano para comodidad total. Suave y con excelente caída.",
     care: ["Lavar con agua fría", "No mezclar con colores oscuros", "Secar al aire para mantener suavidad"],
     shippingSummary: "Envío a toda la República Mexicana. Entrega estimada: 3 a 7 días hábiles.",

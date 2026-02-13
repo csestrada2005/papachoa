@@ -12,6 +12,7 @@ interface ProductInfoProps {
 
 const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedSizeSecondary, setSelectedSizeSecondary] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const { addItem } = useCart();
 
@@ -23,7 +24,11 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
 
   const handleAddToCart = () => {
     if (product.sizes.length > 1 && !selectedSize) {
-      toast("Selecciona una talla antes de agregar al carrito.", { duration: 3000 });
+      toast("Selecciona una talla de Mamá antes de agregar al carrito.", { duration: 3000 });
+      return;
+    }
+    if (product.sizesSecondary && product.sizesSecondary.length > 0 && !selectedSizeSecondary) {
+      toast("Selecciona una talla de Bebé antes de agregar al carrito.", { duration: 3000 });
       return;
     }
     for (let i = 0; i < quantity; i++) {
@@ -57,10 +62,12 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
         {product.shortDescription}
       </p>
 
-      {/* Size selector */}
+      {/* Size selector — Mamá */}
       {product.sizes.length > 0 && (
         <div>
-          <p className="text-sm font-medium text-foreground mb-2 tracking-wide">Talla</p>
+          <p className="text-sm font-medium text-foreground mb-2 tracking-wide">
+            {product.sizesSecondary ? "Talla Mamá" : "Talla"}
+          </p>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((size) => (
               <button
@@ -68,6 +75,28 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
                 onClick={() => setSelectedSize(size)}
                 className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all active:scale-95 ${
                   selectedSize === size
+                    ? "bg-primary text-primary-foreground border-primary"
+                    : "bg-card text-foreground border-border hover:border-primary/40"
+                }`}
+              >
+                {size}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Size selector — Bebé */}
+      {product.sizesSecondary && product.sizesSecondary.length > 0 && (
+        <div>
+          <p className="text-sm font-medium text-foreground mb-2 tracking-wide">Talla Bebé</p>
+          <div className="flex flex-wrap gap-2">
+            {product.sizesSecondary.map((size) => (
+              <button
+                key={size}
+                onClick={() => setSelectedSizeSecondary(size)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all active:scale-95 ${
+                  selectedSizeSecondary === size
                     ? "bg-primary text-primary-foreground border-primary"
                     : "bg-card text-foreground border-border hover:border-primary/40"
                 }`}
