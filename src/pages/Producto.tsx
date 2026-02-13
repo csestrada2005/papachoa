@@ -19,7 +19,6 @@ const Producto = () => {
   const { slug } = useParams<{ slug: string }>();
   const product = products.find((p) => p.slug === slug);
   const isMobile = useIsMobile();
-  const isMamaBebe = product?.slug === "pijama-mama-bebe";
 
   const collectionLabel = useMemo(() => {
     if (!product) return "";
@@ -104,7 +103,7 @@ const Producto = () => {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
             {/* LEFT — Gallery */}
-            {isMobile && isMamaBebe ? (
+            {isMobile ? (
               <MobileHeroGallery images={product.images} name={product.name} />
             ) : (
               <ProductGallery images={topImages} name={product.name} thumbnailExtras={remainingImages} />
