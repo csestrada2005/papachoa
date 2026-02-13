@@ -62,13 +62,13 @@ const Header = ({ transparent = false }: HeaderProps) => {
           {[...Array(2)].map((_, i) => (
             <div key={i} className="flex items-center gap-8 px-4">
               <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Enviamos a toda la República</span>
-              <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
+              <span className="text-papachoa-cream/60 text-[0.9em] px-3 leading-none">•</span>
               <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Textiles ultra suaves</span>
-              <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
+              <span className="text-papachoa-cream/60 text-[0.9em] px-3 leading-none">•</span>
               <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">Hecho en México</span>
-              <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
+              <span className="text-papachoa-cream/60 text-[0.9em] px-3 leading-none">•</span>
               <span className="text-xs font-medium text-papachoa-cream/70 tracking-wide">El regalo perfecto</span>
-              <svg className="w-2 h-2 text-papachoa-cream/20" viewBox="0 0 8 8"><line x1="1" y1="1" x2="7" y2="7" stroke="currentColor" strokeWidth="1.2" /><line x1="7" y1="1" x2="1" y2="7" stroke="currentColor" strokeWidth="1.2" /></svg>
+              <span className="text-papachoa-cream/60 text-[0.9em] px-3 leading-none">•</span>
             </div>
           ))}
         </div>
