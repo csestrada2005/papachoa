@@ -186,7 +186,7 @@ const Nosotros = () => {
                 borderRadius: "2px"
               }} />
               <div className="relative text-center p-10 md:p-14">
-                <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🎁</span>
+                
                 <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
                   Ser parte de Papachoa
                 </h2>
