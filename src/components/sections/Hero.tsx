@@ -49,18 +49,24 @@ const Hero = () => {
   useEffect(() => {
     const el = mamasRef.current;
     if (!el || window.matchMedia("(min-width: 1024px)").matches) return;
+    let timeoutId: ReturnType<typeof setTimeout>;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add("animate-fall-once");
-          el.addEventListener("animationend", () => el.classList.remove("animate-fall-once"), { once: true });
+          timeoutId = setTimeout(() => {
+            el.classList.add("animate-fall-once");
+            el.addEventListener("animationend", () => el.classList.remove("animate-fall-once"), { once: true });
+          }, 1000);
           observer.disconnect();
         }
       },
       { threshold: 0.5 }
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
   }, []);
 
   return (

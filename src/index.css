@@ -704,7 +704,7 @@
 }
 @media (max-width: 1023px) {
   .hero-mamas-word.animate-fall-once {
-    animation: fallOnce 0.8s cubic-bezier(.34,1.56,.64,1) forwards;
+    animation: fallOnce 1s cubic-bezier(.34,1.56,.64,1) forwards;
   }
 }
 
