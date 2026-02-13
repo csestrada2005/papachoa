@@ -25,25 +25,38 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
+  const [isAnimating, setIsAnimating] = useState(false);
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const didSwipe = useRef(false);
+  const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const goPrev = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      if (isAnimating) return;
+      setIsAnimating(true);
+      setDirection('backward');
       setActiveIndex((i) => (i - 1 + realImages.length) % realImages.length);
+      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
     },
-    [realImages.length],
+    [realImages.length, isAnimating],
   );
 
   const goNext = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
+      if (isAnimating) return;
+      setIsAnimating(true);
+      setDirection('forward');
       setActiveIndex((i) => (i + 1) % realImages.length);
+      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
     },
-    [realImages.length],
+    [realImages.length, isAnimating],
   );
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
@@ -53,17 +66,25 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
 
   const onPointerUp = useCallback(
     (e: React.PointerEvent) => {
-      if (!pointerStart.current || !hasMultiple) return;
+      if (!pointerStart.current || !hasMultiple || isAnimating) return;
       const dx = e.clientX - pointerStart.current.x;
       const dy = e.clientY - pointerStart.current.y;
       if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
         didSwipe.current = true;
-        if (dx < 0) setActiveIndex((i) => (i + 1) % realImages.length);
-        else setActiveIndex((i) => (i - 1 + realImages.length) % realImages.length);
+        setIsAnimating(true);
+        if (dx < 0) {
+          setDirection('forward');
+          setActiveIndex((i) => (i + 1) % realImages.length);
+        } else {
+          setDirection('backward');
+          setActiveIndex((i) => (i - 1 + realImages.length) % realImages.length);
+        }
+        if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+        animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
       }
       pointerStart.current = null;
     },
-    [hasMultiple, realImages.length],
+    [hasMultiple, realImages.length, isAnimating],
   );
 
   const handleClick = useCallback((e: React.MouseEvent) => {
@@ -74,6 +95,11 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
   }, []);
 
   const currentImage = hasMultiple ? realImages[activeIndex] : product.image;
+
+  const getAnimationClass = () => {
+    if (!isAnimating) return '';
+    return direction === 'forward' ? 'enter-forward' : 'enter-backward';
+  };
 
   return (
     <Link
@@ -92,9 +118,10 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
         onPointerUp={hasMultiple ? onPointerUp : undefined}
       >
         <img
+          key={`${product.id}-${activeIndex}`}
           src={currentImage}
           alt={product.name}
-          className="w-full h-full object-cover transition-opacity duration-300"
+          className={`carousel-image w-full h-full object-cover ${getAnimationClass()}`}
           loading="lazy"
           decoding="async"
           width={300}
@@ -115,6 +142,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
                 ${isActive ? "opacity-100" : "opacity-0 pointer-events-none"}`}
               aria-label="Imagen anterior"
               tabIndex={isActive ? 0 : -1}
+              disabled={isAnimating}
             >
               <ChevronLeft className="w-4 h-4 text-foreground/70" />
             </button>
@@ -126,6 +154,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
                 ${isActive ? "opacity-100" : "opacity-0 pointer-events-none"}`}
               aria-label="Imagen siguiente"
               tabIndex={isActive ? 0 : -1}
+              disabled={isAnimating}
             >
               <ChevronRight className="w-4 h-4 text-foreground/70" />
             </button>
