@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useRef, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -10,16 +10,34 @@ import BundleSuggestion from "@/components/product/BundleSuggestion";
 import ProductReviews from "@/components/product/ProductReviews";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import StickyMobileCTA from "@/components/product/StickyMobileCTA";
+import { useIsMobile } from "@/hooks/use-mobile";
 import { products, collections } from "@/data/products";
 
 const Producto = () => {
   const { slug } = useParams<{ slug: string }>();
   const product = products.find((p) => p.slug === slug);
+  const isMobile = useIsMobile();
 
   const collectionLabel = useMemo(() => {
     if (!product) return "";
     return collections.find((c) => c.id === product.collection)?.label ?? "";
   }, [product]);
+
+  // ── Scroll-driven title shrink (desktop only) ──
+  const titleRef = useRef<HTMLDivElement>(null);
+  const [titleProgress, setTitleProgress] = useState(0);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const handleScroll = () => {
+      const y = window.scrollY;
+      // Animate over the first 200px of scroll
+      const progress = Math.min(y / 200, 1);
+      setTitleProgress(progress);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMobile]);
 
   if (!product) {
     return (
@@ -43,6 +61,11 @@ const Producto = () => {
     );
   }
 
+  // Title animation values (desktop only)
+  const titleScale = isMobile ? 1 : 1 - titleProgress * 0.08; // 1 → 0.92
+  const titleTranslateY = isMobile ? 0 : -titleProgress * 6; // 0 → -6px
+  const titleOpacity = isMobile ? 1 : 1 - titleProgress * 0.15; // 1 → 0.85
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -59,12 +82,32 @@ const Producto = () => {
           </nav>
         </div>
 
-        {/* Main product section */}
+        {/* Main product section — sticky right column on desktop */}
         <div className="container">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
+            {/* LEFT — Scrollable gallery */}
             <ProductGallery images={product.images} name={product.name} />
-            <div className="flex flex-col gap-5 lg:gap-8">
-              <ProductInfo product={product} collectionLabel={collectionLabel} />
+
+            {/* RIGHT — Sticky info */}
+            <div
+              className={`flex flex-col gap-5 lg:gap-8 ${
+                !isMobile ? "lg:sticky lg:top-28 lg:self-start" : ""
+              }`}
+            >
+              {/* Animated title wrapper (desktop) */}
+              <div
+                ref={titleRef}
+                style={{
+                  transform: `scale(${titleScale}) translateY(${titleTranslateY}px)`,
+                  opacity: titleOpacity,
+                  transition: "transform 0.4s ease-out, opacity 0.4s ease-out",
+                  transformOrigin: "left top",
+                  willChange: "transform, opacity",
+                }}
+              >
+                <ProductInfo product={product} collectionLabel={collectionLabel} />
+              </div>
+
               <div className="hidden lg:block">
                 <TextureSection />
               </div>

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 interface ProductGalleryProps {
@@ -6,178 +6,154 @@ interface ProductGalleryProps {
   name: string;
 }
 
-const AUTOPLAY_INTERVAL = 3000;
-const RESUME_DELAY = 5000;
-const SWIPE_THRESHOLD = 50;
+const INITIAL_VISIBLE = 4;
 
 const ProductGallery = ({ images, name }: ProductGalleryProps) => {
-  const [activeIndex, setActiveIndex] = useState(0);
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
-  const [isPaused, setIsPaused] = useState(false);
-  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const autoplayRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [revealedAll, setRevealedAll] = useState(false);
+  const revealRef = useRef<HTMLDivElement>(null);
 
-  // Touch / pointer tracking
-  const pointerStart = useRef<{ x: number; y: number } | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const initialImages = images.slice(0, INITIAL_VISIBLE);
+  const extraImages = images.slice(INITIAL_VISIBLE);
+  const hasExtra = extraImages.length > 0;
 
-  const total = images.length;
-
-  // ── Autoplay ──
-  const startAutoplay = useCallback(() => {
-    if (autoplayRef.current) clearInterval(autoplayRef.current);
-    autoplayRef.current = setInterval(() => {
-      setActiveIndex((i) => (i + 1) % total);
-    }, AUTOPLAY_INTERVAL);
-  }, [total]);
-
-  const pauseAutoplay = useCallback(() => {
-    setIsPaused(true);
-    if (autoplayRef.current) clearInterval(autoplayRef.current);
-    if (resumeTimer.current) clearTimeout(resumeTimer.current);
-    resumeTimer.current = setTimeout(() => {
-      setIsPaused(false);
-    }, RESUME_DELAY);
-  }, []);
-
+  // Preload first 2 images eagerly
   useEffect(() => {
-    if (!isPaused) startAutoplay();
-    return () => {
-      if (autoplayRef.current) clearInterval(autoplayRef.current);
-    };
-  }, [isPaused, startAutoplay]);
+    images.slice(0, 2).forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [images]);
 
+  // Intersection observer for extra images reveal
   useEffect(() => {
-    return () => {
-      if (resumeTimer.current) clearTimeout(resumeTimer.current);
-    };
-  }, []);
+    if (!hasExtra || revealedAll) return;
+    const el = revealRef.current;
+    if (!el) return;
 
-  const goTo = useCallback(
-    (idx: number) => {
-      setActiveIndex(idx);
-      pauseAutoplay();
-    },
-    [pauseAutoplay]
-  );
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealedAll(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "100px 0px", threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasExtra, revealedAll]);
 
-  // ── Swipe / drag handling ──
-  const onPointerDown = (e: React.PointerEvent) => {
-    pointerStart.current = { x: e.clientX, y: e.clientY };
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-  };
-
-  const onPointerUp = (e: React.PointerEvent) => {
-    if (!pointerStart.current) return;
-    const dx = e.clientX - pointerStart.current.x;
-    const dy = e.clientY - pointerStart.current.y;
-    // Only trigger if horizontal movement dominates
-    if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0 && activeIndex < total - 1) goTo(activeIndex + 1);
-      else if (dx > 0 && activeIndex > 0) goTo(activeIndex - 1);
-    }
-    pointerStart.current = null;
-  };
-
-  // ── Wheel (trackpad) ──
-  const wheelTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const wheelAccum = useRef(0);
-
-  const onWheel = useCallback(
-    (e: React.WheelEvent) => {
-      // Detect horizontal scroll (trackpad gesture)
-      if (Math.abs(e.deltaX) < 5) return;
-      e.preventDefault();
-      wheelAccum.current += e.deltaX;
-      if (wheelTimeout.current) clearTimeout(wheelTimeout.current);
-      wheelTimeout.current = setTimeout(() => {
-        if (wheelAccum.current > SWIPE_THRESHOLD && activeIndex < total - 1) goTo(activeIndex + 1);
-        else if (wheelAccum.current < -SWIPE_THRESHOLD && activeIndex > 0) goTo(activeIndex - 1);
-        wheelAccum.current = 0;
-      }, 80);
-    },
-    [activeIndex, total, goTo]
-  );
-
-  const handleImageLoad = (idx: number) => {
+  const handleImageLoad = useCallback((idx: number) => {
     setLoadedImages((prev) => new Set(prev).add(idx));
-  };
+  }, []);
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* Main image — crossfade stack */}
-      <div
-        ref={containerRef}
-        className="relative aspect-[4/5] overflow-hidden rounded-xl bg-papachoa-cream border border-border/30 select-none touch-pan-y"
-        onPointerDown={onPointerDown}
-        onPointerUp={onPointerUp}
-        onWheel={onWheel}
-        style={{ cursor: "grab" }}
-      >
-        {/* Loading skeleton for first image */}
-        {!loadedImages.has(0) && (
-          <Skeleton className="absolute inset-0 rounded-xl" />
-        )}
+    <div className="flex flex-col gap-3 md:gap-4">
+      {/* Initial images — always visible */}
+      {initialImages.map((img, idx) => (
+        <GalleryImage
+          key={idx}
+          src={img}
+          alt={`${name} - imagen ${idx + 1}`}
+          index={idx}
+          loaded={loadedImages.has(idx)}
+          onLoad={() => handleImageLoad(idx)}
+          animateIn
+        />
+      ))}
 
-        {images.map((img, idx) => (
-          <img
-            key={idx}
-            src={img}
-            alt={`${name} - imagen ${idx + 1}`}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out"
-            style={{ opacity: idx === activeIndex ? 1 : 0 }}
-            width={600}
-            height={750}
-            onLoad={() => handleImageLoad(idx)}
-            loading={idx === 0 ? "eager" : "lazy"}
-            fetchPriority={idx === 0 ? "high" : undefined}
-            decoding="async"
-            draggable={false}
-          />
-        ))}
-
-        {/* Progress dots — minimal */}
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-          {images.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => goTo(idx)}
-              className={`rounded-full transition-all duration-300 ${
-                idx === activeIndex
-                  ? "w-5 h-1.5 bg-foreground/60"
-                  : "w-1.5 h-1.5 bg-foreground/20 hover:bg-foreground/30"
-              }`}
-              aria-label={`Ver imagen ${idx + 1}`}
-            />
-          ))}
+      {/* Reveal trigger sentinel */}
+      {hasExtra && !revealedAll && (
+        <div ref={revealRef} className="relative h-24 -mt-20 pointer-events-none">
+          {/* Gradient fade hint */}
+          <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent rounded-b-xl" />
         </div>
-      </div>
+      )}
 
-      {/* Thumbnails */}
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
-        {images.map((img, idx) => (
-          <button
-            key={idx}
-            onClick={() => goTo(idx)}
-            className={`relative aspect-square w-16 md:w-20 rounded-lg overflow-hidden bg-papachoa-cream flex-shrink-0 border-2 transition-all duration-200 ${
-              idx === activeIndex
-                ? "border-primary/50 shadow-sm"
-                : "border-transparent hover:border-border"
-            }`}
-          >
-            <img
+      {/* Extra images — revealed on scroll */}
+      {hasExtra && revealedAll &&
+        extraImages.map((img, idx) => {
+          const globalIdx = INITIAL_VISIBLE + idx;
+          return (
+            <GalleryImage
+              key={globalIdx}
               src={img}
-              alt={`${name} - miniatura ${idx + 1}`}
-              className="w-full h-full object-cover"
-              width={80}
-              height={80}
-              loading="lazy"
-              decoding="async"
-              draggable={false}
+              alt={`${name} - imagen ${globalIdx + 1}`}
+              index={globalIdx}
+              loaded={loadedImages.has(globalIdx)}
+              onLoad={() => handleImageLoad(globalIdx)}
+              animateIn
+              delayMs={idx * 120}
             />
-          </button>
-        ))}
-      </div>
+          );
+        })}
+    </div>
+  );
+};
+
+/* ── Individual gallery image with viewport fade-in ── */
+
+interface GalleryImageProps {
+  src: string;
+  alt: string;
+  index: number;
+  loaded: boolean;
+  onLoad: () => void;
+  animateIn?: boolean;
+  delayMs?: number;
+}
+
+const GalleryImage = ({ src, alt, index, loaded, onLoad, animateIn, delayMs = 0 }: GalleryImageProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    if (!animateIn) {
+      setInView(true);
+      return;
+    }
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "50px 0px", threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [animateIn]);
+
+  return (
+    <div
+      ref={ref}
+      className="relative aspect-[4/5] overflow-hidden rounded-xl bg-papachoa-cream border border-border/30"
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(20px)",
+        transition: `opacity 0.5s ease-out ${delayMs}ms, transform 0.5s ease-out ${delayMs}ms`,
+        willChange: "opacity, transform",
+      }}
+    >
+      {!loaded && <Skeleton className="absolute inset-0 rounded-xl" />}
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover"
+        width={600}
+        height={750}
+        onLoad={onLoad}
+        loading={index < 2 ? "eager" : "lazy"}
+        fetchPriority={index === 0 ? "high" : undefined}
+        decoding="async"
+        draggable={false}
+        style={{ opacity: loaded ? 1 : 0, transition: "opacity 0.3s ease-out" }}
+      />
     </div>
   );
 };
