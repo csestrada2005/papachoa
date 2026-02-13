@@ -102,7 +102,7 @@ const Producto = () => {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
             {/* LEFT — Scrollable gallery */}
-            <ProductGallery images={topImages} name={product.name} />
+            <ProductGallery images={topImages} name={product.name} thumbnailExtras={remainingImages} />
 
             {/* RIGHT — Sticky info */}
             <div
@@ -151,9 +151,9 @@ const Producto = () => {
           <ProductReviews />
         </div>
 
-        {/* Remaining images gallery (pijama-mama-bebe only) */}
+        {/* Remaining images gallery (mobile only, pijama-mama-bebe) */}
         {remainingImages.length > 0 && (
-          <div className="container mt-12 md:mt-16">
+          <div className="container mt-12 md:mt-16 lg:hidden">
             <SimpleGallery images={remainingImages} name={product.name} />
           </div>
         )}

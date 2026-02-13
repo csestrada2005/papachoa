@@ -4,18 +4,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface ProductGalleryProps {
   images: string[];
   name: string;
+  thumbnailExtras?: string[];
 }
 
 const INITIAL_VISIBLE = 4;
 
-const ProductGallery = ({ images, name }: ProductGalleryProps) => {
+const ProductGallery = ({ images, name, thumbnailExtras = [] }: ProductGalleryProps) => {
   const [loadedImages, setLoadedImages] = useState<Set<number>>(new Set());
   const [revealedAll, setRevealedAll] = useState(false);
   const revealRef = useRef<HTMLDivElement>(null);
+  const [activeExtraIdx, setActiveExtraIdx] = useState<number | null>(null);
+  const [extraLoaded, setExtraLoaded] = useState<Set<number>>(new Set());
 
   const initialImages = images.slice(0, INITIAL_VISIBLE);
-  const extraImages = images.slice(INITIAL_VISIBLE);
-  const hasExtra = extraImages.length > 0;
+  const overflowImages = images.slice(INITIAL_VISIBLE);
+  const hasExtra = overflowImages.length > 0;
 
   // Preload first 2 images eagerly
   useEffect(() => {
@@ -71,9 +74,9 @@ const ProductGallery = ({ images, name }: ProductGalleryProps) => {
         </div>
       )}
 
-      {/* Extra images — revealed on scroll */}
+      {/* Extra images from main array — revealed on scroll */}
       {hasExtra && revealedAll &&
-        extraImages.map((img, idx) => {
+        overflowImages.map((img, idx) => {
           const globalIdx = INITIAL_VISIBLE + idx;
           return (
             <GalleryImage
@@ -88,6 +91,45 @@ const ProductGallery = ({ images, name }: ProductGalleryProps) => {
             />
           );
         })}
+
+      {/* Active thumbnail image — shown full size when clicked (desktop only) */}
+      {activeExtraIdx !== null && thumbnailExtras.length > 0 && (
+        <GalleryImage
+          key={`thumb-active-${activeExtraIdx}`}
+          src={thumbnailExtras[activeExtraIdx]}
+          alt={`${name} - imagen ${images.length + activeExtraIdx + 1}`}
+          index={100 + activeExtraIdx}
+          loaded={extraLoaded.has(activeExtraIdx)}
+          onLoad={() => setExtraLoaded(prev => new Set(prev).add(activeExtraIdx))}
+          animateIn={false}
+        />
+      )}
+
+      {/* Thumbnail strip for remaining product images (desktop only) */}
+      {thumbnailExtras.length > 0 && (
+        <div className="hidden lg:flex flex-wrap gap-2 mt-1">
+          {thumbnailExtras.map((img, idx) => (
+            <button
+              key={idx}
+              onClick={() => setActiveExtraIdx(activeExtraIdx === idx ? null : idx)}
+              className={`relative w-16 h-20 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                activeExtraIdx === idx
+                  ? "border-primary/60 shadow-md scale-105"
+                  : "border-border/30 hover:border-primary/30 hover:scale-105"
+              }`}
+            >
+              <img
+                src={img}
+                alt={`${name} - miniatura ${idx + 5}`}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                decoding="async"
+                draggable={false}
+              />
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
