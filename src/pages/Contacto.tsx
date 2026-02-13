@@ -91,7 +91,7 @@ const Contacto = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-6 pt-7">
-                    <span className="absolute top-2.5 right-3 text-[11px] opacity-25 select-none">✨</span>
+                    
                     <MessageCircle className="h-6 w-6 mb-3" style={{ color: "hsl(162 22% 35%)" }} />
                     <p className="font-display text-foreground text-lg">WhatsApp</p>
                     <p className="text-sm text-muted-foreground font-light">{brand.contact.whatsappDisplay}</p>
@@ -114,7 +114,7 @@ const Contacto = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-6 pt-7">
-                    <span className="absolute top-2.5 right-3 text-[11px] opacity-25 select-none">🧵</span>
+                    
                     <Mail className="h-6 w-6 mb-3" style={{ color: "hsl(14 52% 36%)" }} />
                     <p className="font-display text-foreground text-lg">Email</p>
                     <p className="text-sm text-muted-foreground font-light">{brand.contact.email}</p>
@@ -139,7 +139,7 @@ const Contacto = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-6 pt-7">
-                    <span className="absolute top-2.5 right-3 text-[11px] opacity-25 select-none">☁️</span>
+                    
                     <MessageCircle className="h-6 w-6 mb-3" style={{ color: "hsl(230 30% 40%)" }} />
                     <p className="font-display text-foreground text-lg">Messenger</p>
                     <p className="text-sm text-muted-foreground font-light">Facebook Chat</p>
@@ -162,7 +162,7 @@ const Contacto = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-6 pt-7">
-                    <span className="absolute top-2.5 right-3 text-[11px] opacity-25 select-none">🌙</span>
+                    
                     <Phone className="h-6 w-6 mb-3" style={{ color: "hsl(30 30% 40%)" }} />
                     <p className="font-display text-foreground text-lg">Teléfono</p>
                     <p className="text-sm text-muted-foreground font-light">{brand.contact.phoneDisplay}</p>

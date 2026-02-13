@@ -86,7 +86,7 @@ const Nosotros = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-8 md:p-10">
-                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">✨</span>
+                    
                     <Sparkles className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(14 52% 36%)" }} />
                     <h3 className="font-display text-xl text-foreground mb-2">Telas ultra suaves</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed font-light">
@@ -107,7 +107,7 @@ const Nosotros = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-8 md:p-10">
-                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🧵</span>
+                    
                     <Home className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(230 30% 40%)" }} />
                     <h3 className="font-display text-xl text-foreground mb-2">Hecho en México</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed font-light">
@@ -128,7 +128,7 @@ const Nosotros = () => {
                     borderRadius: "2px"
                   }} />
                   <div className="relative p-8 md:p-10">
-                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🤍</span>
+                    
                     <Heart className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(162 22% 35%)" }} />
                     <h3 className="font-display text-xl text-foreground mb-2">Pensado para ti</h3>
                     <p className="text-sm text-muted-foreground leading-relaxed font-light">
@@ -159,7 +159,7 @@ const Nosotros = () => {
                   borderRadius: "2px"
                 }} />
                 <div className="relative p-8 md:p-12">
-                  <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🌙</span>
+                  
                   <p className="text-lg text-muted-foreground font-light leading-relaxed mb-4">
                     Cada pijama lleva el nombre y el cuidado de artesanas que trabajan desde talleres locales en México. Para nosotros, no son proveedoras. Son colaboradoras. Son las manos que traen nuestros sueños a la realidad.
                   </p>
