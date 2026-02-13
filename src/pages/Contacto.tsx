@@ -71,22 +71,30 @@ const Contacto = () => {
         <section className="pb-16 md:pb-24">
           <div className="container">
             <div className="max-w-xl mx-auto">
-              {/* Quick contact buttons */}
-              <div className="grid sm:grid-cols-2 gap-4 mb-8">
-                {/* WhatsApp - Primary */}
+              {/* Quick contact cards */}
+              <div className="grid sm:grid-cols-2 gap-5 mb-8">
+                {/* WhatsApp */}
                 <a
                   href={brand.whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Contáctanos por WhatsApp"
-                  className="flex items-center gap-4 p-5 bg-papachoa-sage rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
+                  className="relative block overflow-hidden hover:shadow-lg active:scale-[0.98] transition-all duration-200"
+                  style={{
+                    background: "#BFDAD2",
+                    borderRadius: "4px",
+                    boxShadow: "0 6px 20px rgba(0,0,0,0.035)",
+                  }}
                 >
-                  <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
-                    <MessageCircle className="h-6 w-6 text-accent-foreground" />
-                  </div>
-                  <div>
-                    <p className="font-display text-foreground">WhatsApp</p>
-                    <p className="text-sm text-muted-foreground">{brand.contact.whatsappDisplay}</p>
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(162 22% 50% / 0.22)",
+                    borderRadius: "2px"
+                  }} />
+                  <div className="relative p-6">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">💬</span>
+                    <MessageCircle className="h-6 w-6 mb-3" style={{ color: "hsl(162 22% 35%)" }} />
+                    <p className="font-display text-foreground text-lg">WhatsApp</p>
+                    <p className="text-sm text-muted-foreground font-light">{brand.contact.whatsappDisplay}</p>
                   </div>
                 </a>
 
@@ -94,14 +102,22 @@ const Contacto = () => {
                 <a
                   href={brand.emailUrl}
                   aria-label="Envíanos un correo"
-                  className="flex items-center gap-4 p-5 bg-papachoa-blush/50 rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
+                  className="relative block overflow-hidden hover:shadow-lg active:scale-[0.98] transition-all duration-200"
+                  style={{
+                    background: "#E8B8A6",
+                    borderRadius: "4px",
+                    boxShadow: "0 6px 20px rgba(0,0,0,0.035)",
+                  }}
                 >
-                  <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
-                    <Mail className="h-6 w-6 text-papachoa-blush-dark" />
-                  </div>
-                  <div>
-                    <p className="font-display text-foreground">Email</p>
-                    <p className="text-sm text-muted-foreground">{brand.contact.email}</p>
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(14 52% 46% / 0.18)",
+                    borderRadius: "2px"
+                  }} />
+                  <div className="relative p-6">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">✉️</span>
+                    <Mail className="h-6 w-6 mb-3" style={{ color: "hsl(14 52% 36%)" }} />
+                    <p className="font-display text-foreground text-lg">Email</p>
+                    <p className="text-sm text-muted-foreground font-light">{brand.contact.email}</p>
                   </div>
                 </a>
 
@@ -111,14 +127,22 @@ const Contacto = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Contáctanos por Messenger"
-                  className="flex items-center gap-4 p-5 bg-papachoa-sky/50 rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
+                  className="relative block overflow-hidden hover:shadow-lg active:scale-[0.98] transition-all duration-200"
+                  style={{
+                    background: "#BFC8E6",
+                    borderRadius: "4px",
+                    boxShadow: "0 6px 20px rgba(0,0,0,0.035)",
+                  }}
                 >
-                  <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
-                    <MessageCircle className="h-6 w-6 text-foreground/70" />
-                  </div>
-                  <div>
-                    <p className="font-display text-foreground">Messenger</p>
-                    <p className="text-sm text-muted-foreground">Facebook Chat</p>
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(230 30% 60% / 0.22)",
+                    borderRadius: "2px"
+                  }} />
+                  <div className="relative p-6">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">💜</span>
+                    <MessageCircle className="h-6 w-6 mb-3" style={{ color: "hsl(230 30% 40%)" }} />
+                    <p className="font-display text-foreground text-lg">Messenger</p>
+                    <p className="text-sm text-muted-foreground font-light">Facebook Chat</p>
                   </div>
                 </a>
 
@@ -126,14 +150,22 @@ const Contacto = () => {
                 <a
                   href={`tel:+52${brand.contact.whatsappE164.slice(2)}`}
                   aria-label="Llámanos por teléfono"
-                  className="flex items-center gap-4 p-5 bg-papachoa-cream rounded-2xl hover:scale-[1.02] hover:shadow-md active:scale-[0.98] transition-all"
+                  className="relative block overflow-hidden hover:shadow-lg active:scale-[0.98] transition-all duration-200"
+                  style={{
+                    background: "#F4EDE6",
+                    borderRadius: "4px",
+                    boxShadow: "0 6px 20px rgba(0,0,0,0.035)",
+                  }}
                 >
-                  <div className="w-12 h-12 bg-card/60 rounded-xl flex items-center justify-center">
-                    <Phone className="h-6 w-6 text-foreground/70" />
-                  </div>
-                  <div>
-                    <p className="font-display text-foreground">Teléfono</p>
-                    <p className="text-sm text-muted-foreground">{brand.contact.phoneDisplay}</p>
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(30 30% 60% / 0.25)",
+                    borderRadius: "2px"
+                  }} />
+                  <div className="relative p-6">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">📞</span>
+                    <Phone className="h-6 w-6 mb-3" style={{ color: "hsl(30 30% 40%)" }} />
+                    <p className="font-display text-foreground text-lg">Teléfono</p>
+                    <p className="text-sm text-muted-foreground font-light">{brand.contact.phoneDisplay}</p>
                   </div>
                 </a>
               </div>
