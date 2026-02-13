@@ -59,10 +59,6 @@ const Softness = () => {
                   className="p-5 bg-card/80 backdrop-blur-sm border border-border/30 hover:shadow-md transition-shadow relative"
                   style={{ borderRadius: "3px", borderLeft: `3px solid ${quality.stitch}` }}
                 >
-                  <svg className="absolute top-1 right-1 w-3 h-3 opacity-20" viewBox="0 0 8 8">
-                    <line x1="0" y1="4" x2="8" y2="4" stroke={quality.stitch} strokeWidth="1" />
-                    <line x1="4" y1="0" x2="4" y2="8" stroke={quality.stitch} strokeWidth="1" />
-                  </svg>
                   <h3 className="font-display text-xl text-foreground mb-1">
                     {quality.title}
                   </h3>
