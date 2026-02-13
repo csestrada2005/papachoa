@@ -74,7 +74,7 @@ const Emotion = () => {
                   <span 
                     key={tag}
                     data-disarrange
-                    className="w-full min-h-[48px] flex items-center justify-center border border-primary/20 text-foreground/70 text-sm font-medium tracking-wide relative"
+                    className="w-full min-w-0 h-12 flex items-center justify-center text-center border border-primary/20 text-foreground/70 text-sm font-medium tracking-wide relative whitespace-nowrap"
                     style={{ borderRadius: "2px" }}
                   >
                     <svg className="absolute -top-[3px] -left-[3px] w-[6px] h-[6px]" viewBox="0 0 6 6">
