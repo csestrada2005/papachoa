@@ -6,13 +6,15 @@ interface RelatedProductsProps {
 }
 
 const RelatedProducts = ({ currentProduct }: RelatedProductsProps) => {
-  const related = products
+  const realProducts = products.filter((p) => p.image !== "/placeholder.svg");
+  
+  const related = realProducts
     .filter((p) => p.id !== currentProduct.id)
     .filter((p) => p.collection === currentProduct.collection)
     .slice(0, 4);
 
   const backfill = related.length < 4
-    ? products
+    ? realProducts
         .filter((p) => p.id !== currentProduct.id && !related.includes(p))
         .slice(0, 4 - related.length)
     : [];

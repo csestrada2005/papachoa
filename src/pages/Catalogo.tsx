@@ -45,8 +45,9 @@ const Catalogo = () => {
   }, []);
 
   const filteredProducts = useMemo(() => {
-    if (selectedCollection === "todos") return products;
-    return products.filter((p) => p.collection === selectedCollection);
+    const realProducts = products.filter((p) => p.image !== "/placeholder.svg");
+    if (selectedCollection === "todos") return realProducts;
+    return realProducts.filter((p) => p.collection === selectedCollection);
   }, [selectedCollection]);
 
   return (
