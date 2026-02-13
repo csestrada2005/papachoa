@@ -76,47 +76,65 @@ const Nosotros = () => {
               <div className="grid md:grid-cols-3 gap-5 md:gap-7 mt-10">
                 {/* Card 1 */}
                 <div
-                  className="relative text-center p-8 md:p-10 cursor-default"
-                  style={{ ...cardBase, background: "#E8B8A6", border: "1.5px dashed hsl(14 52% 46% / 0.18)" }}
+                  className="relative text-center cursor-default"
+                  style={{ ...cardBase, background: "#E8B8A6" }}
                   onMouseEnter={(e) => hoverProps(e, true)}
                   onMouseLeave={(e) => hoverProps(e, false)}
                 >
-                  <span className="absolute top-3 left-4 text-sm opacity-30 select-none">✨</span>
-                  <Sparkles className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(14 52% 36%)" }} />
-                  <h3 className="font-display text-xl text-foreground mb-2">Telas ultra suaves</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                    Seleccionadas con cuidado para acariciar la piel desde el primer contacto.
-                  </p>
+                  <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(14 52% 46% / 0.18)",
+                    borderRadius: "10px"
+                  }} />
+                  <div className="relative p-8 md:p-10">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">✨</span>
+                    <Sparkles className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(14 52% 36%)" }} />
+                    <h3 className="font-display text-xl text-foreground mb-2">Telas ultra suaves</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed font-light">
+                      Seleccionadas con cuidado para acariciar la piel desde el primer contacto.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Card 2 */}
                 <div
-                  className="relative text-center p-8 md:p-10 cursor-default"
-                  style={{ ...cardBase, background: "#BFC8E6", border: "1.5px dashed hsl(230 30% 60% / 0.22)" }}
+                  className="relative text-center cursor-default"
+                  style={{ ...cardBase, background: "#BFC8E6" }}
                   onMouseEnter={(e) => hoverProps(e, true)}
                   onMouseLeave={(e) => hoverProps(e, false)}
                 >
-                  <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🧵</span>
-                  <Home className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(230 30% 40%)" }} />
-                  <h3 className="font-display text-xl text-foreground mb-2">Hecho en México</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                    Confeccionado con manos y corazón de artesanas mexicanas bajo principios de comercio justo.
-                  </p>
+                  <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(230 30% 60% / 0.22)",
+                    borderRadius: "10px"
+                  }} />
+                  <div className="relative p-8 md:p-10">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🧵</span>
+                    <Home className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(230 30% 40%)" }} />
+                    <h3 className="font-display text-xl text-foreground mb-2">Hecho en México</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed font-light">
+                      Confeccionado con manos y corazón de artesanas mexicanas bajo principios de comercio justo.
+                    </p>
+                  </div>
                 </div>
 
                 {/* Card 3 */}
                 <div
-                  className="relative text-center p-8 md:p-10 cursor-default"
-                  style={{ ...cardBase, background: "#BFDAD2", border: "1.5px dashed hsl(162 22% 50% / 0.22)" }}
+                  className="relative text-center cursor-default"
+                  style={{ ...cardBase, background: "#BFDAD2" }}
                   onMouseEnter={(e) => hoverProps(e, true)}
                   onMouseLeave={(e) => hoverProps(e, false)}
                 >
-                  <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🤍</span>
-                  <Heart className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(162 22% 35%)" }} />
-                  <h3 className="font-display text-xl text-foreground mb-2">Pensado para ti</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed font-light">
-                    Diseñado por mamás y papás que entienden lo que tu familia necesita.
-                  </p>
+                  <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                    border: "1.5px dashed hsl(162 22% 50% / 0.22)",
+                    borderRadius: "10px"
+                  }} />
+                  <div className="relative p-8 md:p-10">
+                    <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🤍</span>
+                    <Heart className="h-7 w-7 mx-auto mb-4" style={{ color: "hsl(162 22% 35%)" }} />
+                    <h3 className="font-display text-xl text-foreground mb-2">Pensado para ti</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed font-light">
+                      Diseñado por mamás y papás que entienden lo que tu familia necesita.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -131,18 +149,24 @@ const Nosotros = () => {
                 Quiénes confeccionan
               </h2>
               <div
-                className="relative p-8 md:p-12"
-                style={{ ...cardBase, background: "#F4EDE6", border: "1.5px dashed hsl(30 30% 60% / 0.25)" }}
+                className="relative"
+                style={{ ...cardBase, background: "#F4EDE6" }}
                 onMouseEnter={(e) => hoverProps(e, true)}
                 onMouseLeave={(e) => hoverProps(e, false)}
               >
-                <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🌙</span>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed mb-4">
-                  Cada pijama lleva el nombre y el cuidado de artesanas que trabajan desde talleres locales en México. Para nosotros, no son proveedoras. Son colaboradoras. Son las manos que traen nuestros sueños a la realidad.
-                </p>
-                <p className="text-lg text-muted-foreground font-light leading-relaxed">
-                  Cuando compras Papachoa, apoyas a mamás y papás mexicanos que merecen trabajar con dignidad, con tiempo para su familia, y con el reconocimiento de que su trabajo es valioso.
-                </p>
+                <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                  border: "1.5px dashed hsl(30 30% 60% / 0.25)",
+                  borderRadius: "10px"
+                }} />
+                <div className="relative p-8 md:p-12">
+                  <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🌙</span>
+                  <p className="text-lg text-muted-foreground font-light leading-relaxed mb-4">
+                    Cada pijama lleva el nombre y el cuidado de artesanas que trabajan desde talleres locales en México. Para nosotros, no son proveedoras. Son colaboradoras. Son las manos que traen nuestros sueños a la realidad.
+                  </p>
+                  <p className="text-lg text-muted-foreground font-light leading-relaxed">
+                    Cuando compras Papachoa, apoyas a mamás y papás mexicanos que merecen trabajar con dignidad, con tiempo para su familia, y con el reconocimiento de que su trabajo es valioso.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -152,25 +176,31 @@ const Nosotros = () => {
         <section className="py-11 md:py-[72px]">
           <div className="container">
             <div
-              className="relative max-w-[900px] mx-auto text-center p-10 md:p-14"
-              style={{ ...cardBase, background: "#E8B8A6", border: "1.5px dashed hsl(14 52% 46% / 0.18)" }}
+              className="relative max-w-[900px] mx-auto"
+              style={{ ...cardBase, background: "#E8B8A6" }}
               onMouseEnter={(e) => hoverProps(e, true)}
               onMouseLeave={(e) => hoverProps(e, false)}
             >
-              <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🎁</span>
-              <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
-                Ser parte de Papachoa
-              </h2>
-              <p className="text-lg text-muted-foreground font-light leading-relaxed mb-8">
-                Cada compra es un voto por un hogar más bonito, por la maternidad consciente, por el descanso que todos merecemos.
-              </p>
-              <Link
-                to="/catalogo"
-                className="cta-premium-terracotta"
-              >
-                Ver colección
-                <span className="text-lg">→</span>
-              </Link>
+              <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                border: "1.5px dashed hsl(14 52% 46% / 0.18)",
+                borderRadius: "10px"
+              }} />
+              <div className="relative text-center p-10 md:p-14">
+                <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🎁</span>
+                <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
+                  Ser parte de Papachoa
+                </h2>
+                <p className="text-lg text-muted-foreground font-light leading-relaxed mb-8">
+                  Cada compra es un voto por un hogar más bonito, por la maternidad consciente, por el descanso que todos merecemos.
+                </p>
+                <Link
+                  to="/catalogo"
+                  className="cta-premium-terracotta"
+                >
+                  Ver colección
+                  <span className="text-lg">→</span>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
