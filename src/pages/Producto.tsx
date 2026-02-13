@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductGallery from "@/components/product/ProductGallery";
+import SimpleGallery from "@/components/product/SimpleGallery";
 import ProductInfo from "@/components/product/ProductInfo";
 import ProductAccordion from "@/components/product/ProductAccordion";
 import TextureSection from "@/components/product/TextureSection";
@@ -21,6 +22,21 @@ const Producto = () => {
   const collectionLabel = useMemo(() => {
     if (!product) return "";
     return collections.find((c) => c.id === product.collection)?.label ?? "";
+  }, [product]);
+
+  // For pijama-mama-bebe only: split images into top (creative scroll) and remaining
+  const { topImages, remainingImages } = useMemo(() => {
+    if (!product) return { topImages: [], remainingImages: [] };
+    if (product.slug === "pijama-mama-bebe") {
+      return {
+        topImages: product.images.slice(0, 4),
+        remainingImages: product.images.slice(4),
+      };
+    }
+    return {
+      topImages: product.images,
+      remainingImages: [],
+    };
   }, [product]);
 
   // ── Scroll-driven title shrink (desktop only) ──
@@ -86,7 +102,7 @@ const Producto = () => {
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
             {/* LEFT — Scrollable gallery */}
-            <ProductGallery images={product.images} name={product.name} />
+            <ProductGallery images={topImages} name={product.name} />
 
             {/* RIGHT — Sticky info */}
             <div
@@ -134,6 +150,13 @@ const Producto = () => {
         <div className="container mt-12 md:mt-16">
           <ProductReviews />
         </div>
+
+        {/* Remaining images gallery (pijama-mama-bebe only) */}
+        {remainingImages.length > 0 && (
+          <div className="container mt-12 md:mt-16">
+            <SimpleGallery images={remainingImages} name={product.name} />
+          </div>
+        )}
 
         {/* Related */}
         <div className="container mt-12 md:mt-16">
