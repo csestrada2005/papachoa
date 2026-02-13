@@ -1,5 +1,5 @@
-import { memo, useMemo, useState, useCallback, useRef } from "react";
-import { Link } from "react-router-dom";
+import { memo, useMemo, useState, useCallback, useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Product } from "@/data/products";
 
@@ -15,7 +15,32 @@ const priceFormatter = new Intl.NumberFormat("es-MX", {
 
 const SWIPE_THRESHOLD = 40;
 
+/* ── Preload cache (shared across all cards) ── */
+const preloadedUrls = new Set<string>();
+
+function preloadImage(src: string): Promise<void> {
+  if (preloadedUrls.has(src)) return Promise.resolve();
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = img.onerror = () => {
+      preloadedUrls.add(src);
+      resolve();
+    };
+    img.src = src;
+  });
+}
+
+function preloadNeighbors(images: string[], currentIndex: number) {
+  const len = images.length;
+  if (len <= 1) return;
+  const next = (currentIndex + 1) % len;
+  const prev = (currentIndex - 1 + len) % len;
+  preloadImage(images[next]);
+  preloadImage(images[prev]);
+}
+
 const ProductCard = memo(({ product }: ProductCardProps) => {
+  const navigate = useNavigate();
   const formattedPrice = useMemo(() => priceFormatter.format(product.price), [product.price]);
   const realImages = useMemo(
     () => product.images.filter((img) => img !== "/placeholder.svg"),
@@ -27,36 +52,68 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
   const [isActive, setIsActive] = useState(false);
   const [direction, setDirection] = useState<'forward' | 'backward'>('forward');
   const [isAnimating, setIsAnimating] = useState(false);
+  /* Track which image is visually displayed (deferred until loaded) */
+  const [displayedIndex, setDisplayedIndex] = useState(0);
+  const [imageReady, setImageReady] = useState(true);
+
   const pointerStart = useRef<{ x: number; y: number } | null>(null);
   const didSwipe = useRef(false);
   const animationTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  /* Mobile: track if card was just activated by this tap */
+  const justActivated = useRef(false);
+
+  /* Preload neighbors when card becomes active or index changes */
+  useEffect(() => {
+    if (isActive && hasMultiple) {
+      preloadNeighbors(realImages, activeIndex);
+    }
+  }, [isActive, activeIndex, hasMultiple, realImages]);
+
+  /* When activeIndex changes, wait for image to be ready before swapping */
+  useEffect(() => {
+    if (activeIndex === displayedIndex) return;
+    const src = realImages[activeIndex];
+    if (preloadedUrls.has(src)) {
+      setDisplayedIndex(activeIndex);
+      setImageReady(true);
+    } else {
+      setImageReady(false);
+      preloadImage(src).then(() => {
+        setDisplayedIndex(activeIndex);
+        setImageReady(true);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeIndex]);
+
+  const changeIndex = useCallback(
+    (newIndex: number, dir: 'forward' | 'backward') => {
+      if (isAnimating) return;
+      setIsAnimating(true);
+      setDirection(dir);
+      setActiveIndex(newIndex);
+      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
+      animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
+    },
+    [isAnimating],
+  );
 
   const goPrev = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      if (isAnimating) return;
-      setIsAnimating(true);
-      setDirection('backward');
-      setActiveIndex((i) => (i - 1 + realImages.length) % realImages.length);
-      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
-      animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
+      changeIndex((activeIndex - 1 + realImages.length) % realImages.length, 'backward');
     },
-    [realImages.length, isAnimating],
+    [activeIndex, realImages.length, changeIndex],
   );
 
   const goNext = useCallback(
     (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      if (isAnimating) return;
-      setIsAnimating(true);
-      setDirection('forward');
-      setActiveIndex((i) => (i + 1) % realImages.length);
-      if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
-      animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
+      changeIndex((activeIndex + 1) % realImages.length, 'forward');
     },
-    [realImages.length, isAnimating],
+    [activeIndex, realImages.length, changeIndex],
   );
 
   const onPointerDown = useCallback((e: React.PointerEvent) => {
@@ -71,43 +128,82 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
       const dy = e.clientY - pointerStart.current.y;
       if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > Math.abs(dy)) {
         didSwipe.current = true;
-        setIsAnimating(true);
         if (dx < 0) {
-          setDirection('forward');
-          setActiveIndex((i) => (i + 1) % realImages.length);
+          changeIndex((activeIndex + 1) % realImages.length, 'forward');
         } else {
-          setDirection('backward');
-          setActiveIndex((i) => (i - 1 + realImages.length) % realImages.length);
+          changeIndex((activeIndex - 1 + realImages.length) % realImages.length, 'backward');
         }
-        if (animationTimeoutRef.current) clearTimeout(animationTimeoutRef.current);
-        animationTimeoutRef.current = setTimeout(() => setIsAnimating(false), 250);
       }
       pointerStart.current = null;
     },
-    [hasMultiple, realImages.length, isAnimating],
+    [hasMultiple, activeIndex, realImages.length, isAnimating, changeIndex],
   );
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    if (didSwipe.current) {
-      e.preventDefault();
-      didSwipe.current = false;
+  /* ── Mobile tap-to-activate logic ── */
+  const activate = useCallback(() => {
+    if (!isActive) {
+      setIsActive(true);
+      justActivated.current = true;
+      /* Reset after a tick so the same tap doesn't navigate */
+      requestAnimationFrame(() => {
+        justActivated.current = false;
+      });
     }
-  }, []);
+  }, [isActive]);
 
-  const currentImage = hasMultiple ? realImages[activeIndex] : product.image;
+  const handleClick = useCallback(
+    (e: React.MouseEvent) => {
+      /* If swiped, block navigation */
+      if (didSwipe.current) {
+        e.preventDefault();
+        didSwipe.current = false;
+        return;
+      }
+      /* Mobile: first tap activates, doesn't navigate */
+      if (justActivated.current) {
+        e.preventDefault();
+        return;
+      }
+      /* If not active yet on touch, activate instead of navigating */
+      if (!isActive && 'ontouchstart' in window) {
+        e.preventDefault();
+        activate();
+        return;
+      }
+    },
+    [isActive, activate],
+  );
+
+  /* Deactivate when tapping outside — use a global listener */
+  useEffect(() => {
+    if (!isActive) return;
+    const handler = (e: PointerEvent) => {
+      const card = cardRef.current;
+      if (card && !card.contains(e.target as Node)) {
+        setIsActive(false);
+      }
+    };
+    document.addEventListener("pointerdown", handler, true);
+    return () => document.removeEventListener("pointerdown", handler, true);
+  }, [isActive]);
+
+  const cardRef = useRef<HTMLAnchorElement>(null);
+
+  const currentImage = hasMultiple ? realImages[displayedIndex] : product.image;
 
   const getAnimationClass = () => {
-    if (!isAnimating) return '';
+    if (!isAnimating || !imageReady) return '';
     return direction === 'forward' ? 'enter-forward' : 'enter-backward';
   };
 
   return (
     <Link
+      ref={cardRef}
       to={`/producto/${product.slug}`}
       className="group block"
       onClick={handleClick}
       onMouseEnter={() => setIsActive(true)}
-      onMouseLeave={() => { setIsActive(false); }}
+      onMouseLeave={() => setIsActive(false)}
       onFocus={() => setIsActive(true)}
       onBlur={() => setIsActive(false)}
     >
@@ -118,7 +214,7 @@ const ProductCard = memo(({ product }: ProductCardProps) => {
         onPointerUp={hasMultiple ? onPointerUp : undefined}
       >
         <img
-          key={`${product.id}-${activeIndex}`}
+          key={`${product.id}-${displayedIndex}`}
           src={currentImage}
           alt={product.name}
           className={`carousel-image w-full h-full object-cover ${getAnimationClass()}`}
