@@ -81,9 +81,9 @@ const Nosotros = () => {
                   onMouseEnter={(e) => hoverProps(e, true)}
                   onMouseLeave={(e) => hoverProps(e, false)}
                 >
-                  <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
                     border: "1.5px dashed hsl(14 52% 46% / 0.18)",
-                    borderRadius: "10px"
+                    borderRadius: "2px"
                   }} />
                   <div className="relative p-8 md:p-10">
                     <span className="absolute top-3 left-4 text-sm opacity-30 select-none">✨</span>
@@ -102,9 +102,9 @@ const Nosotros = () => {
                   onMouseEnter={(e) => hoverProps(e, true)}
                   onMouseLeave={(e) => hoverProps(e, false)}
                 >
-                  <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
                     border: "1.5px dashed hsl(230 30% 60% / 0.22)",
-                    borderRadius: "10px"
+                    borderRadius: "2px"
                   }} />
                   <div className="relative p-8 md:p-10">
                     <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🧵</span>
@@ -123,9 +123,9 @@ const Nosotros = () => {
                   onMouseEnter={(e) => hoverProps(e, true)}
                   onMouseLeave={(e) => hoverProps(e, false)}
                 >
-                  <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                  <div className="absolute inset-[4px] pointer-events-none" style={{
                     border: "1.5px dashed hsl(162 22% 50% / 0.22)",
-                    borderRadius: "10px"
+                    borderRadius: "2px"
                   }} />
                   <div className="relative p-8 md:p-10">
                     <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🤍</span>
@@ -154,9 +154,9 @@ const Nosotros = () => {
                 onMouseEnter={(e) => hoverProps(e, true)}
                 onMouseLeave={(e) => hoverProps(e, false)}
               >
-                <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+                <div className="absolute inset-[4px] pointer-events-none" style={{
                   border: "1.5px dashed hsl(30 30% 60% / 0.25)",
-                  borderRadius: "10px"
+                  borderRadius: "2px"
                 }} />
                 <div className="relative p-8 md:p-12">
                   <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🌙</span>
@@ -181,9 +181,9 @@ const Nosotros = () => {
               onMouseEnter={(e) => hoverProps(e, true)}
               onMouseLeave={(e) => hoverProps(e, false)}
             >
-              <div className="absolute inset-[18px] md:inset-[20px] pointer-events-none" style={{
+              <div className="absolute inset-[4px] pointer-events-none" style={{
                 border: "1.5px dashed hsl(14 52% 46% / 0.18)",
-                borderRadius: "10px"
+                borderRadius: "2px"
               }} />
               <div className="relative text-center p-10 md:p-14">
                 <span className="absolute top-3 left-4 text-sm opacity-30 select-none">🎁</span>
