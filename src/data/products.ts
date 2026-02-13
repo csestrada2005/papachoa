@@ -13,6 +13,10 @@ import pijamaBlanca2 from "@/assets/pijama-blanca-2-nina-dibuja.jpg";
 import pijamaBlanca3 from "@/assets/pijama-blanca-3-familia.jpg";
 import pijamaBlanca4 from "@/assets/pijama-blanca-4-abrazo.jpg";
 import pijamaBlanca5 from "@/assets/pijama-blanca-5-detalle.jpg";
+import pijamadinosaurio1 from "@/assets/pijama-dinosaurio-1-papa-nina.jpg";
+import pijamadinosaurio2 from "@/assets/pijama-dinosaurio-2-papa-lift.jpg";
+import pijamadinosaurio3 from "@/assets/pijama-dinosaurio-3-papa-upside.jpg";
+import pijamadinosaurio4 from "@/assets/pijama-dinosaurio-4-standing.jpg";
 
 export type Collection =
   | "todos"
@@ -219,6 +223,26 @@ export const products: Product[] = [
     returnSummary: "30 días para cambios y devoluciones. Prenda sin usar, con etiqueta intacta.",
     featured: true,
     colorway: "Blanco doodle",
+  },
+  {
+    id: "pijama-dinosaurio-papa-nina",
+    slug: "pijama-dinosaurio-papa-nina",
+    name: "Pijama Dinosaurio Papá + Niña",
+    price: 1490,
+    collection: "pijamas-familiares",
+    image: pijamadinosaurio1,
+    images: [pijamadinosaurio1, pijamadinosaurio2, pijamadinosaurio3, pijamadinosaurio4],
+    shortDescription: "Dinosaurios y diversión. Pijama para papá y su pequeña aventurera.",
+    longDescription: "El set Dinosaurio Papá + Niña celebra la aventura y el juego compartido. Con un estampado de dinosaurios amigables sobre tela blanca ultra suave, estas pijamas son perfectas para esas noches de historias fantásticas y abrazos largos. Cada detalle está diseñado para que papá y su pequeña se sientan cómodos, unidos y listos para los mejores sueños.",
+    tags: ["pijama", "papá", "niña", "matching", "dinosaurio", "aventura"],
+    sizes: ["XS", "S", "M", "L", "XL"],
+    sizesSecondary: ["2A", "4A", "6A", "8A", "10A", "12A"],
+    material: "Jersey de algodón peinado con elastano para comodidad total. Suave y con excelente caída.",
+    care: ["Lavar con agua fría", "No mezclar con colores oscuros", "Secar al aire para mantener suavidad"],
+    shippingSummary: "Envío a toda la República Mexicana. Entrega estimada: 3 a 7 días hábiles.",
+    returnSummary: "30 días para cambios y devoluciones. Prenda sin usar, con etiqueta intacta.",
+    featured: true,
+    colorway: "Azul dinosaurio",
   },
   {
     id: "pijama-papa-oso",
