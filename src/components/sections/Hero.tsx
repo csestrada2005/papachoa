@@ -36,12 +36,31 @@ const ThreadParticles = () => (
 const Hero = () => {
   const parallaxRef = useParallax(0.08);
   const stitchRef = useRef<SVGRectElement>(null);
+  const mamasRef = useRef<HTMLElement>(null);
   const [stitchVisible, setStitchVisible] = useState(false);
 
   /* Animate stitched border on load */
   useEffect(() => {
     const timer = setTimeout(() => setStitchVisible(true), 400);
     return () => clearTimeout(timer);
+  }, []);
+
+  /* Mobile: one-time fall animation when hero enters viewport */
+  useEffect(() => {
+    const el = mamasRef.current;
+    if (!el || window.matchMedia("(min-width: 1024px)").matches) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("animate-fall-once");
+          el.addEventListener("animationend", () => el.classList.remove("animate-fall-once"), { once: true });
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -111,6 +130,7 @@ const Hero = () => {
               Pensado por
               <br />
               <em
+                ref={mamasRef}
                 className="hero-mamas-word relative inline-block cursor-default"
                 style={{
                   backgroundImage: "linear-gradient(175deg, hsl(38 60% 80%) 0%, hsl(14 45% 65%) 100%)",

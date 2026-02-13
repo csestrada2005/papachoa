@@ -683,13 +683,28 @@
   animation: thread-float linear infinite;
 }
 
-/* Hero "mamás" word hover – playful fall effect (desktop only) */
+/* Hero "mamás" word – shared base */
 .hero-mamas-word {
   transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+  will-change: transform;
 }
+/* Desktop: hover effect */
 @media (min-width: 1024px) {
   .hero-mamas-word:hover {
     transform: rotate(-8deg) translateX(-6px) translateY(4px);
+  }
+}
+/* Mobile: one-time fall animation */
+@keyframes fallOnce {
+  0%   { transform: rotate(0) translateX(0) translateY(0); }
+  40%  { transform: rotate(-8deg) translateX(-6px) translateY(4px); }
+  65%  { transform: rotate(2deg) translateX(1px) translateY(-1px); }
+  85%  { transform: rotate(-1deg) translateX(-1px) translateY(1px); }
+  100% { transform: rotate(0) translateX(0) translateY(0); }
+}
+@media (max-width: 1023px) {
+  .hero-mamas-word.animate-fall-once {
+    animation: fallOnce 0.8s cubic-bezier(.34,1.56,.64,1) forwards;
   }
 }
 
