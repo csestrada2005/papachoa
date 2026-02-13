@@ -471,6 +471,80 @@
   animation: micro-drift 30s ease-in-out infinite reverse;
 }
 
+/* ═══════════════════════════════════════════
+   PRODUCT CARD CAROUSEL — Directional crossfade
+   ═══════════════════════════════════════════ */
+
+/* Slide to left (exiting forward) */
+@keyframes carousel-exit-forward {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+}
+
+/* Slide from right (entering forward) */
+@keyframes carousel-enter-forward {
+  from {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide to right (exiting backward) */
+@keyframes carousel-exit-backward {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(8px);
+  }
+}
+
+/* Slide from left (entering backward) */
+@keyframes carousel-enter-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.carousel-image {
+  animation-duration: 0.25s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
+
+.carousel-image.exit-forward {
+  animation-name: carousel-exit-forward;
+}
+
+.carousel-image.enter-forward {
+  animation-name: carousel-enter-forward;
+}
+
+.carousel-image.exit-backward {
+  animation-name: carousel-exit-backward;
+}
+
+.carousel-image.enter-backward {
+  animation-name: carousel-enter-backward;
+}
+
 /* Glass blob buttons */
 .glass-blob-btn {
   transition: transform 0.2s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
