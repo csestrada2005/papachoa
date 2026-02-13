@@ -69,12 +69,12 @@ const Emotion = () => {
 
               <div ref={stitchRef} className="divider-cross-stitch w-24 mb-8" />
 
-              <div className="flex flex-wrap gap-3">
+              <div className="grid grid-cols-3 gap-3 max-w-sm">
                 {["Calma", "Ternura", "Apapacho"].map((tag) => (
                   <span 
                     key={tag}
                     data-disarrange
-                    className="border border-primary/20 text-foreground/70 px-5 py-2.5 text-sm font-medium tracking-wide relative"
+                    className="w-full min-h-[48px] flex items-center justify-center border border-primary/20 text-foreground/70 text-sm font-medium tracking-wide relative"
                     style={{ borderRadius: "2px" }}
                   >
                     <svg className="absolute -top-[3px] -left-[3px] w-[6px] h-[6px]" viewBox="0 0 6 6">
