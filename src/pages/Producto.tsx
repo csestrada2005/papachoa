@@ -4,6 +4,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductGallery from "@/components/product/ProductGallery";
 import SimpleGallery from "@/components/product/SimpleGallery";
+import MobileHeroGallery from "@/components/product/MobileHeroGallery";
 import ProductInfo from "@/components/product/ProductInfo";
 import ProductAccordion from "@/components/product/ProductAccordion";
 import TextureSection from "@/components/product/TextureSection";
@@ -18,6 +19,7 @@ const Producto = () => {
   const { slug } = useParams<{ slug: string }>();
   const product = products.find((p) => p.slug === slug);
   const isMobile = useIsMobile();
+  const isMamaBebe = product?.slug === "pijama-mama-bebe";
 
   const collectionLabel = useMemo(() => {
     if (!product) return "";
@@ -101,8 +103,12 @@ const Producto = () => {
         {/* Main product section — sticky right column on desktop */}
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
-            {/* LEFT — Scrollable gallery */}
-            <ProductGallery images={topImages} name={product.name} thumbnailExtras={remainingImages} />
+            {/* LEFT — Gallery */}
+            {isMobile && isMamaBebe ? (
+              <MobileHeroGallery images={product.images} name={product.name} />
+            ) : (
+              <ProductGallery images={topImages} name={product.name} thumbnailExtras={remainingImages} />
+            )}
 
             {/* RIGHT — Sticky info */}
             <div
