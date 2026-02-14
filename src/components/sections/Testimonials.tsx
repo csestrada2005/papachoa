@@ -36,7 +36,7 @@ const testimonials = [
     name: "Andrea G.",
     text: "Las pijamas matching con mi esposo e hijos son nuestra tradición navideña. La calidad es impresionante.",
     rating: 5,
-    product: "Pijama Mamá + Bebé",
+    product: "Pijama Mamá & Hijos",
     category: "Familias",
   },
 ];

@@ -48,7 +48,7 @@ export interface Product {
 
 export const collections: { id: Collection; label: string; color: string }[] = [
   { id: "todos", label: "Todos", color: "bg-papachoa-cream" },
-  { id: "mama-bebe", label: "Mamá & Bebé", color: "bg-papachoa-blush" },
+  { id: "mama-bebe", label: "Mamá & Hijos", color: "bg-papachoa-blush" },
   { id: "mama-hija", label: "Mamá & Hija", color: "bg-papachoa-sky" },
   { id: "papa-hija", label: "Papá & Hija", color: "bg-papachoa-sage" },
   { id: "matching", label: "Matching", color: "bg-papachoa-peach" },
