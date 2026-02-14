@@ -24,7 +24,7 @@ const collections: {
     showAll: true,
   },
   {
-    title: "Mamá & Bebé",
+    title: "Mamá & Hijos",
     description: "Suavidad desde el primer abrazo",
     bgGradient: "linear-gradient(145deg, hsl(14 38% 82%) 0%, hsl(14 32% 78%) 100%)",
     slug: "mama-bebe",
