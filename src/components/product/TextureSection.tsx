@@ -1,15 +1,16 @@
+import texturaTela from "@/assets/textura-tela.png";
+
 const TextureSection = () => {
   return (
     <div className="max-w-3xl">
       <div className="flex flex-col sm:flex-row items-stretch gap-4 bg-card rounded-xl p-5 md:p-6 border border-border/30">
         {/* Texture swatch */}
-        <div className="w-full sm:w-28 h-20 sm:h-auto bg-papachoa-cream rounded-lg flex items-center justify-center shrink-0 border border-border/20">
-          {/* Embroidery stitch icon */}
-          <svg className="w-8 h-8 text-primary/50" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 3">
-            <path d="M8 16C8 12 12 8 16 8C20 8 24 12 24 16C24 20 20 24 16 24C12 24 8 20 8 16Z" />
-            <path d="M12 12L20 20" />
-            <path d="M20 12L12 20" />
-          </svg>
+        <div className="w-full sm:w-28 h-[160px] sm:h-auto shrink-0 overflow-hidden rounded-lg">
+          <img
+            src={texturaTela}
+            alt="Close-up de textura de tela ultra suave"
+            className="w-full h-full object-cover rounded-lg"
+          />
         </div>
         {/* Copy */}
         <div className="flex flex-col justify-center gap-1">
