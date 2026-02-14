@@ -156,12 +156,6 @@ const Producto = () => {
           <ProductReviews />
         </div>
 
-        {/* Remaining images gallery (mobile only, pijama-mama-bebe) */}
-        {remainingImages.length > 0 && (
-          <div className="container mt-12 md:mt-16 lg:hidden">
-            <SimpleGallery images={remainingImages} name={product.name} />
-          </div>
-        )}
 
         {/* Related */}
         <div className="container mt-12 md:mt-16">
