@@ -87,7 +87,7 @@ const Producto = () => {
 
   const textureImageMap: Record<string, string> = {
     "pijama-dinosaurio-papa-nina": texturaDinosaurio,
-    "pijama-doodle-mama-hija": texturaDoodle,
+    "pijama-doodle-mama-bebe": texturaDoodle,
   };
   const textureImage = product.slug ? textureImageMap[product.slug] : undefined;
 
