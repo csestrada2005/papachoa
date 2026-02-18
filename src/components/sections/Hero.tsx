@@ -111,43 +111,33 @@ const Hero = () => {
 
         {/* Floating birds layer */}
         <style>{`
-          @keyframes bird-lissajous-1 {
-            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
-            15%  { transform: translate(8px, -6px) rotate(2deg) scaleY(0.97); }
-            30%  { transform: translate(12px, -12px) rotate(3.5deg) scaleY(1); }
-            45%  { transform: translate(4px, -16px) rotate(1deg) scaleY(0.96); }
-            60%  { transform: translate(-8px, -10px) rotate(-2.5deg) scaleY(1); }
-            75%  { transform: translate(-12px, -4px) rotate(-3deg) scaleY(0.97); }
-            90%  { transform: translate(-4px, 4px) rotate(-1deg) scaleY(1); }
-            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+          @keyframes bird-float-1 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+            25%  { transform: translate(3px, -4px) rotate(1.5deg) scale(1.015); }
+            50%  { transform: translate(-2px, -6px) rotate(-1deg) scale(1.03); }
+            75%  { transform: translate(-3px, -2px) rotate(1deg) scale(1.01); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
-          @keyframes bird-lissajous-2 {
-            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
-            12%  { transform: translate(-10px, -8px) rotate(-3deg) scaleY(0.96); }
-            28%  { transform: translate(-6px, -18px) rotate(-1deg) scaleY(1); }
-            42%  { transform: translate(6px, -14px) rotate(2.5deg) scaleY(0.97); }
-            58%  { transform: translate(14px, -6px) rotate(4deg) scaleY(1); }
-            72%  { transform: translate(10px, 4px) rotate(2deg) scaleY(0.96); }
-            88%  { transform: translate(-2px, 6px) rotate(-1.5deg) scaleY(1); }
-            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+          @keyframes bird-float-2 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+            20%  { transform: translate(-3px, -3px) rotate(-1.5deg) scale(1.02); }
+            45%  { transform: translate(2px, -5px) rotate(1deg) scale(1.03); }
+            70%  { transform: translate(4px, -2px) rotate(-0.5deg) scale(1.01); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
-          @keyframes bird-lissajous-3 {
-            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
-            18%  { transform: translate(6px, -14px) rotate(3deg) scaleY(0.97); }
-            35%  { transform: translate(-4px, -20px) rotate(1deg) scaleY(1); }
-            50%  { transform: translate(-14px, -12px) rotate(-3.5deg) scaleY(0.96); }
-            65%  { transform: translate(-10px, 2px) rotate(-2deg) scaleY(1); }
-            80%  { transform: translate(4px, 8px) rotate(1.5deg) scaleY(0.97); }
-            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+          @keyframes bird-float-3 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+            30%  { transform: translate(2px, -5px) rotate(1deg) scale(1.02); }
+            55%  { transform: translate(-3px, -4px) rotate(-1.5deg) scale(1.03); }
+            80%  { transform: translate(-1px, -2px) rotate(0.5deg) scale(1.01); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
-          @keyframes bird-lissajous-4 {
-            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
-            20%  { transform: translate(-8px, -10px) rotate(-2deg) scaleY(0.97); }
-            40%  { transform: translate(4px, -20px) rotate(2deg) scaleY(1); }
-            55%  { transform: translate(16px, -14px) rotate(3.5deg) scaleY(0.96); }
-            70%  { transform: translate(12px, -2px) rotate(1deg) scaleY(1); }
-            85%  { transform: translate(2px, 6px) rotate(-1.5deg) scaleY(0.97); }
-            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+          @keyframes bird-float-4 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
+            35%  { transform: translate(-2px, -4px) rotate(-1deg) scale(1.015); }
+            60%  { transform: translate(3px, -6px) rotate(1.5deg) scale(1.03); }
+            85%  { transform: translate(1px, -2px) rotate(-0.5deg) scale(1.01); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
         `}</style>
         <div
@@ -170,7 +160,7 @@ const Hero = () => {
             const currentY = bird.startY * (1 - entryT); // vh offset from final
 
             const hasArrived = progress >= 0.45;
-            const animName = `bird-lissajous-${i + 1}`;
+            const animName = `bird-float-${i + 1}`;
 
             return (
               <div
