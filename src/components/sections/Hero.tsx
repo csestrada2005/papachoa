@@ -38,7 +38,7 @@ const LETTERS = [
 ];
 
 const ease = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
 const Hero = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -60,9 +60,9 @@ const Hero = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  const assembleT = ease(Math.min(progress / 0.35, 1));
-  const subP = Math.max(0, Math.min(1, (progress - 0.55) / 0.2));
-  const ctaP = Math.max(0, Math.min(1, (progress - 0.65) / 0.15));
+  const assembleT = ease(Math.min(progress / 0.5, 1));
+  const subP = Math.max(0, Math.min(1, (progress - 0.6) / 0.2));
+  const ctaP = Math.max(0, Math.min(1, (progress - 0.72) / 0.15));
 
   return (
     <div ref={sectionRef} style={{ height: "240vh", position: "relative" }}>
@@ -146,11 +146,7 @@ const Hero = () => {
                   position: "absolute",
                   top: `${bird.top}%`,
                   left: `${bird.left}%`,
-                  background: "hsl(15 20% 96%)",
                   lineHeight: 0,
-                  border: "none",
-                  boxShadow: "none",
-                  outline: "none",
                   willChange: "transform",
                   transform: `scale(${scrollAmplify})`,
                   animation: `${animName} ${bird.dur} ease-in-out infinite ${bird.delay}`,
@@ -221,9 +217,9 @@ const Hero = () => {
                   <div
                     key={i}
                     style={{
-                      background: "hsl(15 20% 96%)",
                       lineHeight: 0,
                       transform: `translate(${offsetX}px, ${offsetY}px) rotate(${rot}deg)`,
+                      transition: "transform 0.05s linear",
                     }}
                   >
                     <img
