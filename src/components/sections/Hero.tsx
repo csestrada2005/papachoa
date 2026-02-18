@@ -104,7 +104,7 @@ const Hero = () => {
           style={{
             position: "absolute",
             inset: 0,
-            zIndex: 2,
+            zIndex: 30,
             pointerEvents: "none",
           }}
         >
@@ -124,9 +124,10 @@ const Hero = () => {
                   right: (bird as any).right,
                   width: bird.size,
                   height: "auto",
-                  transform: bird.flip ? "scaleX(-1)" : undefined,
+                  background: "transparent",
+                  border: "none",
+                  boxShadow: "none",
                   animation: `${isAssembling ? "bird-float-active" : "bird-float-calm"} ${bird.dur} ease-in-out ${bird.delay} infinite`,
-                  mixBlendMode: "multiply",
                 }}
               />
             );
