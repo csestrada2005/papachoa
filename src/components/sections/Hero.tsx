@@ -14,13 +14,13 @@ import letterA3 from "@/assets/letters/A3.png";
 // Order: P A P A C H O A — last A is blue (A1)
 const LETTERS = [
   { src: letterP1, alt: "Letra P morada", scatterX: -80, scatterY: -30, scatterRot: -12 },
-  { src: letterA2, alt: "Letra A amarilla", scatterX: 60, scatterY: 25, scatterRot: 10 },
+  { src: letterA1, alt: "Letra A amarilla", scatterX: 60, scatterY: 25, scatterRot: 10 },
   { src: letterP2, alt: "Letra P azul", scatterX: -65, scatterY: 40, scatterRot: -8 },
   { src: letterA3, alt: "Letra A naranja", scatterX: 75, scatterY: -35, scatterRot: 14 },
   { src: letterC, alt: "Letra C azul marino", scatterX: -50, scatterY: 45, scatterRot: -10 },
   { src: letterH, alt: "Letra H morada", scatterX: 55, scatterY: -25, scatterRot: 9 },
   { src: letterO, alt: "Letra O amarilla", scatterX: -60, scatterY: -40, scatterRot: -14 },
-  { src: letterA1, alt: "Letra A azul final", scatterX: 70, scatterY: 35, scatterRot: 11 },
+  { src: letterA2, alt: "Letra A azul final", scatterX: 70, scatterY: 35, scatterRot: 11 },
 ];
 
 const ease = (t: number) =>
