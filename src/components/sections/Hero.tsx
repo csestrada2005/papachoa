@@ -106,6 +106,7 @@ const Hero = () => {
             inset: 0,
             zIndex: 30,
             pointerEvents: "none",
+            isolation: "isolate",
           }}
         >
           {BIRDS.map((bird, i) => {
@@ -119,28 +120,31 @@ const Hero = () => {
                   top: bird.top,
                   left: bird.left,
                   right: (bird as any).right,
-                  width: bird.size,
-                  height: bird.size,
-                  background: "transparent",
+                  background: "hsl(15 20% 96%)",
+                  lineHeight: 0,
                   border: "none",
                   boxShadow: "none",
-                  backdropFilter: "none",
-                  transformStyle: "flat" as const,
+                  outline: "none",
                   animation: `${isAssembling ? "bird-float-active" : "bird-float-calm"} ${bird.dur} ease-in-out ${bird.delay} infinite`,
-                  WebkitMaskImage: `url(${bird.src})`,
-                  WebkitMaskRepeat: "no-repeat",
-                  WebkitMaskSize: "contain",
-                  WebkitMaskPosition: "center",
-                  maskImage: `url(${bird.src})`,
-                  maskRepeat: "no-repeat",
-                  maskSize: "contain",
-                  maskPosition: "center",
-                  backgroundImage: `url(${bird.src})`,
-                  backgroundSize: "contain",
-                  backgroundRepeat: "no-repeat",
-                  backgroundPosition: "center",
                 }}
-              />
+              >
+                <img
+                  src={bird.src}
+                  alt={bird.alt}
+                  draggable={false}
+                  className="select-none pointer-events-none"
+                  style={{
+                    width: bird.size,
+                    height: "auto",
+                    display: "block",
+                    background: "transparent",
+                    border: "none",
+                    boxShadow: "none",
+                    mixBlendMode: "multiply",
+                    filter: "brightness(0.98) contrast(1.02)",
+                  }}
+                />
+              </div>
             );
           })}
         </div>
