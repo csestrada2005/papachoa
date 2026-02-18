@@ -22,26 +22,26 @@ const BIRDS = [
   {
     src: pajaroAmarillo, alt: "Pájaro amarillo",
     finalTop: 18, finalLeft: 6,
-    startX: -25, startY: -30,
-    dur: "6.8s",
+    startX: -50, startY: -55,
+    dur: "7.5s", delay: "0s",
   },
   {
     src: pajaroNaranja, alt: "Pájaro naranja",
     finalTop: 12, finalLeft: 48,
-    startX: 0, startY: -35,
-    dur: "7.6s",
+    startX: 10, startY: -65,
+    dur: "8.8s", delay: "0.4s",
   },
   {
     src: pajaroAzulClaro, alt: "Pájaro azul claro",
     finalTop: 38, finalLeft: 88,
-    startX: 30, startY: 10,
-    dur: "8.4s",
+    startX: 55, startY: 20,
+    dur: "9.6s", delay: "0.8s",
   },
   {
     src: pajaroAzul, alt: "Pájaro azul",
     finalTop: 14, finalLeft: 85,
-    startX: 30, startY: -30,
-    dur: "9.2s",
+    startX: 60, startY: -55,
+    dur: "10.2s", delay: "1.2s",
   },
 ];
 
@@ -80,7 +80,7 @@ const Hero = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  const assembleT = ease(Math.min(progress / 0.45, 1));
+  const assembleT = ease(Math.min(progress / 0.35, 1));
   const subP = Math.max(0, Math.min(1, (progress - 0.55) / 0.2));
   const ctaP = Math.max(0, Math.min(1, (progress - 0.65) / 0.15));
 
@@ -113,30 +113,34 @@ const Hero = () => {
         <style>{`
           @keyframes bird-float-1 {
             0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
-            25%  { transform: translate(3px, -4px) rotate(1.5deg) scale(1.015); }
-            50%  { transform: translate(-2px, -6px) rotate(-1deg) scale(1.03); }
-            75%  { transform: translate(-3px, -2px) rotate(1deg) scale(1.01); }
+            20%  { transform: translate(6px, -8px) rotate(1.8deg) scale(1.02); }
+            45%  { transform: translate(-4px, -12px) rotate(-1.2deg) scale(1.05); }
+            65%  { transform: translate(-7px, -5px) rotate(1deg) scale(1.03); }
+            85%  { transform: translate(3px, -2px) rotate(-0.5deg) scale(1.01); }
             100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
           @keyframes bird-float-2 {
             0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
-            20%  { transform: translate(-3px, -3px) rotate(-1.5deg) scale(1.02); }
-            45%  { transform: translate(2px, -5px) rotate(1deg) scale(1.03); }
-            70%  { transform: translate(4px, -2px) rotate(-0.5deg) scale(1.01); }
+            18%  { transform: translate(-5px, -6px) rotate(-1.5deg) scale(1.02); }
+            40%  { transform: translate(4px, -10px) rotate(1.8deg) scale(1.05); }
+            60%  { transform: translate(8px, -4px) rotate(-0.8deg) scale(1.03); }
+            80%  { transform: translate(-3px, -2px) rotate(0.5deg) scale(1.01); }
             100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
           @keyframes bird-float-3 {
             0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
-            30%  { transform: translate(2px, -5px) rotate(1deg) scale(1.02); }
-            55%  { transform: translate(-3px, -4px) rotate(-1.5deg) scale(1.03); }
-            80%  { transform: translate(-1px, -2px) rotate(0.5deg) scale(1.01); }
+            25%  { transform: translate(5px, -10px) rotate(1.2deg) scale(1.03); }
+            50%  { transform: translate(-6px, -8px) rotate(-2deg) scale(1.05); }
+            70%  { transform: translate(-3px, -3px) rotate(0.8deg) scale(1.02); }
+            90%  { transform: translate(2px, -1px) rotate(-0.3deg) scale(1.01); }
             100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
           @keyframes bird-float-4 {
             0%   { transform: translate(0px, 0px) rotate(0deg) scale(1); }
-            35%  { transform: translate(-2px, -4px) rotate(-1deg) scale(1.015); }
-            60%  { transform: translate(3px, -6px) rotate(1.5deg) scale(1.03); }
-            85%  { transform: translate(1px, -2px) rotate(-0.5deg) scale(1.01); }
+            22%  { transform: translate(-4px, -7px) rotate(-1.5deg) scale(1.02); }
+            48%  { transform: translate(6px, -11px) rotate(2deg) scale(1.05); }
+            68%  { transform: translate(5px, -4px) rotate(-0.6deg) scale(1.03); }
+            88%  { transform: translate(-2px, -1px) rotate(0.4deg) scale(1.01); }
             100% { transform: translate(0px, 0px) rotate(0deg) scale(1); }
           }
         `}</style>
@@ -152,14 +156,14 @@ const Hero = () => {
         >
           {BIRDS.map((bird, i) => {
             // Entry easing: cubic-bezier(0.22, 1, 0.36, 1) approximation
-            const entryRaw = Math.min(progress / 0.45, 1);
+            const entryRaw = Math.min(progress / 0.35, 1);
             const entryT = 1 - Math.pow(1 - entryRaw, 3); // smooth decel
 
             // Interpolate from start (off-screen) to final position
             const currentX = bird.startX * (1 - entryT); // vw offset from final
             const currentY = bird.startY * (1 - entryT); // vh offset from final
 
-            const hasArrived = progress >= 0.45;
+            const hasArrived = progress >= 0.35;
             const animName = `bird-float-${i + 1}`;
 
             return (
@@ -180,7 +184,7 @@ const Hero = () => {
                     ? "translate(0, 0)"
                     : `translate(${currentX}vw, ${currentY}vh)`,
                   animation: hasArrived
-                    ? `${animName} ${bird.dur} ease-in-out infinite`
+                    ? `${animName} ${bird.dur} ease-in-out infinite ${bird.delay}`
                     : "none",
                   transition: hasArrived ? "none" : "transform 0.05s linear",
                 }}
