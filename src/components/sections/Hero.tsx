@@ -12,15 +12,16 @@ import letterO from "@/assets/letters/O.png";
 import letterA3 from "@/assets/letters/A3.png";
 
 // PAPACHOA = P A P A C H O A
+// Scatter values are moderate to keep letters visible but playful
 const LETTERS = [
-  { src: letterP1, alt: "P", scatterX: -35, scatterY: -60, scatterRot: -12 },
-  { src: letterA1, alt: "A", scatterX: 25, scatterY: 45, scatterRot: 8 },
-  { src: letterP2, alt: "P", scatterX: -50, scatterY: 30, scatterRot: -6 },
-  { src: letterA2, alt: "A", scatterX: 40, scatterY: -50, scatterRot: 10 },
-  { src: letterC, alt: "C", scatterX: -30, scatterY: 55, scatterRot: -14 },
-  { src: letterH, alt: "H", scatterX: 55, scatterY: -35, scatterRot: 7 },
-  { src: letterO, alt: "O", scatterX: -45, scatterY: -40, scatterRot: -9 },
-  { src: letterA3, alt: "A", scatterX: 35, scatterY: 50, scatterRot: 11 },
+  { src: letterP1, alt: "P", scatterX: -80, scatterY: -45, scatterRot: -7 },
+  { src: letterA1, alt: "A", scatterX: 50, scatterY: 35, scatterRot: 6 },
+  { src: letterP2, alt: "P", scatterX: -60, scatterY: 40, scatterRot: -5 },
+  { src: letterA2, alt: "A", scatterX: 70, scatterY: -50, scatterRot: 8 },
+  { src: letterC, alt: "C", scatterX: -45, scatterY: 50, scatterRot: -6 },
+  { src: letterH, alt: "H", scatterX: 55, scatterY: -35, scatterRot: 5 },
+  { src: letterO, alt: "O", scatterX: -50, scatterY: -40, scatterRot: -7 },
+  { src: letterA3, alt: "A", scatterX: 65, scatterY: 45, scatterRot: 6 },
 ];
 
 const Hero = () => {
@@ -32,8 +33,13 @@ const Hero = () => {
     if (!section) return;
     const rect = section.getBoundingClientRect();
     const sectionH = section.offsetHeight;
-    // progress 0 = top of section at top of viewport, 1 = bottom of section at top
-    const raw = -rect.top / (sectionH * 0.5);
+    const viewH = window.innerHeight;
+    // Scroll range: from section top at viewport top to section bottom minus one viewport
+    // Letters assemble in first 50% of scroll, then stay assembled for remaining 50%
+    const scrollable = sectionH - viewH;
+    if (scrollable <= 0) return;
+    const scrolled = -rect.top;
+    const raw = scrolled / (scrollable * 0.5); // assemble in first half
     setProgress(Math.max(0, Math.min(1, raw)));
   }, []);
 
@@ -43,15 +49,22 @@ const Hero = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  // Easing: slow start, smooth finish
-  const ease = (t: number) => t * t * (3 - 2 * t); // smoothstep
+  // Smooth cubic ease-in-out
+  const ease = (t: number) => {
+    return t < 0.5
+      ? 4 * t * t * t
+      : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  };
   const t = ease(progress);
+
+  // Subtitle/CTA appear after letters are fully assembled
+  const subtitleProgress = Math.max(0, (progress - 0.85) / 0.15);
 
   return (
     <section
       ref={sectionRef}
       className="relative flex flex-col justify-center items-center overflow-hidden"
-      style={{ minHeight: "150svh" }}
+      style={{ minHeight: "250svh" }}
     >
       {/* Subtle background pattern */}
       <div
@@ -63,7 +76,7 @@ const Hero = () => {
         }}
       />
 
-      {/* Sticky container for the letters */}
+      {/* Sticky container */}
       <div className="sticky top-0 h-screen w-full flex flex-col justify-center items-center">
         {/* Letter composition */}
         <div
@@ -97,12 +110,12 @@ const Hero = () => {
           })}
         </div>
 
-        {/* Subtitle + CTA fade in as letters align */}
+        {/* Subtitle + CTA fade in after assembly */}
         <p
           className="text-lg md:text-xl text-muted-foreground font-light mt-8 mb-10 max-w-md mx-auto text-center leading-relaxed"
           style={{
-            opacity: Math.max(0, (t - 0.7) / 0.3),
-            transform: `translateY(${(1 - Math.max(0, (t - 0.7) / 0.3)) * 20}px)`,
+            opacity: subtitleProgress,
+            transform: `translateY(${(1 - subtitleProgress) * 20}px)`,
           }}
         >
           Suaves, cálidos y con magia de hogar.
@@ -112,8 +125,8 @@ const Hero = () => {
 
         <div
           style={{
-            opacity: Math.max(0, (t - 0.8) / 0.2),
-            transform: `translateY(${(1 - Math.max(0, (t - 0.8) / 0.2)) * 20}px)`,
+            opacity: Math.max(0, (progress - 0.9) / 0.1),
+            transform: `translateY(${(1 - Math.max(0, (progress - 0.9) / 0.1)) * 20}px)`,
           }}
         >
           <Link to="/catalogo" className="btn-artisan inline-flex text-base px-10 py-4">
