@@ -115,28 +115,29 @@ const Hero = () => {
                 const offsetY = letter.scatterY * (1 - assembleT);
                 const rot = letter.scatterRot * (1 - assembleT);
                 return (
-                  <img
+                  <div
                     key={i}
-                    src={letter.src}
-                    alt={letter.alt}
-                    draggable={false}
-                    className="select-none pointer-events-none"
                     style={{
-                      height: "clamp(70px, 10vw, 120px)",
-                      width: "auto",
-                      objectFit: "contain",
-                      display: "block",
-                      background: "transparent",
-                      boxShadow: "none",
-                      border: "none",
-                      borderRadius: 0,
-                      filter: "none",
-                      mixBlendMode: "multiply",
+                      background: "hsl(15 20% 96%)",
+                      lineHeight: 0,
                       transform: `translate(${offsetX}px, ${offsetY}px) rotate(${rot}deg)`,
-                      willChange: "transform",
                     }}
-                    loading="eager"
-                  />
+                  >
+                    <img
+                      src={letter.src}
+                      alt={letter.alt}
+                      draggable={false}
+                      className="select-none pointer-events-none"
+                      style={{
+                        height: "clamp(70px, 10vw, 120px)",
+                        width: "auto",
+                        objectFit: "contain",
+                        display: "block",
+                        mixBlendMode: "multiply",
+                      }}
+                      loading="eager"
+                    />
+                  </div>
                 );
               })}
             </div>
