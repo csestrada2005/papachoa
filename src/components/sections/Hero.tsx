@@ -1,213 +1,118 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef, useState } from "react";
-import { useParallax } from "@/hooks/useParallax";
-import heroImage from "@/assets/hero-family.png";
-import hero2 from "@/assets/hero-2.jpg";
-import hero3 from "@/assets/hero-3.jpg";
-import hero4 from "@/assets/hero-4.jpg";
-import hero5 from "@/assets/hero-5.jpg";
+import { useEffect, useState } from "react";
+import pajaroNaranja from "@/assets/brand/pajaro-naranja.png";
+import printPapachoa from "@/assets/brand/print-papachoa.png";
 
-const heroSlides = [
-  { src: heroImage, alt: "Familia usando pijamas Papachoa", posMobile: "50% 25%", posDesktop: "52% 15%" },
-  { src: hero3, alt: "Pijamas Papachoa estilo 3", posMobile: "50% 30%", posDesktop: "50% 25%" },
-  { src: hero4, alt: "Pijamas Papachoa estilo 4", posMobile: "50% 30%", posDesktop: "50% 25%" },
-  { src: hero5, alt: "Pijamas Papachoa estilo 5", posMobile: "50% 35%", posDesktop: "50% 30%" },
+const TAGLINE = "Pijamas que abrazan";
+const COLORS = [
+  "hsl(331 48% 45%)",  // magenta
+  "hsl(47 90% 50%)",   // yellow
+  "hsl(14 100% 71%)",  // coral
+  "hsl(216 44% 46%)",  // blue
+  "hsl(331 48% 45%)",  // magenta
+  "hsl(14 100% 71%)",  // coral
+  "hsl(47 90% 50%)",   // yellow
+  "hsl(216 44% 46%)",  // blue
+  "hsl(331 48% 45%)",  // magenta
+  "hsl(14 100% 71%)",  // coral
+  "hsl(216 44% 46%)",  // blue
+  "hsl(47 90% 50%)",   // yellow
+  "hsl(331 48% 45%)",  // magenta
+  "hsl(14 100% 71%)",  // coral
+  "hsl(47 90% 50%)",   // yellow
+  "hsl(216 44% 46%)",  // blue
+  "hsl(331 48% 45%)",  // magenta
+  "hsl(14 100% 71%)",  // coral
 ];
 
-/* Floating thread particles */
-const ThreadParticles = () => (
-  <div className="absolute inset-0 pointer-events-none overflow-hidden z-[2]">
-    {[...Array(6)].map((_, i) => (
-      <div
-        key={i}
-        className="thread-particle"
-        style={{
-          left: `${15 + i * 14}%`,
-          height: `${20 + (i % 3) * 12}px`,
-          background: `hsl(${[14, 38, 162, 38, 14, 228][i]} ${[52, 60, 22, 45, 38, 28][i]}% ${[46, 52, 42, 80, 74, 58][i]}%)`,
-          animationDuration: `${12 + i * 4}s`,
-          animationDelay: `${i * 2.5}s`,
-        }}
-      />
-    ))}
-  </div>
-);
+const getRandomTransform = (i: number) => ({
+  "--start-x": `${(Math.random() - 0.5) * 200}px`,
+  "--start-y": `${(Math.random() - 0.5) * 150 - 40}px`,
+  "--start-rot": `${(Math.random() - 0.5) * 60}deg`,
+  animationDelay: `${0.3 + i * 0.08}s`,
+});
 
 const Hero = () => {
-  const parallaxRef = useParallax(0.08);
-  const stitchRef = useRef<SVGRectElement>(null);
-  const mamasRef = useRef<HTMLElement>(null);
-  const [stitchVisible, setStitchVisible] = useState(false);
+  const [animate, setAnimate] = useState(false);
 
-  /* Animate stitched border on load */
   useEffect(() => {
-    const timer = setTimeout(() => setStitchVisible(true), 400);
+    const timer = setTimeout(() => setAnimate(true), 200);
     return () => clearTimeout(timer);
   }, []);
 
-  /* Mobile: one-time fall animation when hero enters viewport */
-  useEffect(() => {
-    const el = mamasRef.current;
-    if (!el || window.matchMedia("(min-width: 1024px)").matches) return;
-    let timeoutId: ReturnType<typeof setTimeout>;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          timeoutId = setTimeout(() => {
-            el.classList.add("animate-fall-once");
-            el.addEventListener("animationend", () => el.classList.remove("animate-fall-once"), { once: true });
-          }, 1000);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(el);
-    return () => {
-      clearTimeout(timeoutId);
-      observer.disconnect();
-    };
-  }, []);
-
   return (
-    <section className="relative min-h-[100svh] overflow-hidden flex flex-col">
-      {/* Preload */}
-      <link rel="preload" as="image" href={heroSlides[0].src} />
-
-      {/* FULL-WIDTH IMAGE BACKGROUND */}
-      <div className="absolute inset-0">
-        {heroSlides.map((slide, i) => (
-          <img
-            key={i}
-            src={slide.src}
-            alt={slide.alt}
-            className={`absolute inset-0 w-full h-full object-cover hero-slide hero-slide-${i} hero-img-${i}`}
-            style={{ willChange: "opacity" }}
-            fetchPriority={i === 0 ? "high" : undefined}
-            loading={i === 0 ? "eager" : "lazy"}
-            decoding={i === 0 ? undefined : "async"}
-            draggable={false}
-          />
-        ))}
-        {/* Dark overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/20" />
-        {/* Textile texture overlay */}
-        <div className="absolute inset-0 texture-linen" style={{ opacity: 0.03 }} />
-      </div>
-
-      {/* Parallax floating decorative elements */}
-      <div ref={parallaxRef} className="absolute inset-0 pointer-events-none will-change-transform z-[1]">
-        <div
-          className="absolute -top-10 -right-24 w-72 h-72 opacity-[0.08] animate-drift"
-          style={{
-            background: "radial-gradient(ellipse 60% 80%, hsl(38 60% 52% / 0.5), transparent 70%)",
-            borderRadius: "40% 60% 55% 45% / 50% 40% 60% 50%",
-          }}
-        />
-        <div
-          className="absolute bottom-32 -left-16 w-56 h-56 opacity-[0.06] animate-drift-slow"
-          style={{
-            background: "radial-gradient(ellipse 70% 50%, hsl(14 52% 46% / 0.4), transparent 70%)",
-            borderRadius: "55% 45% 40% 60% / 45% 55% 45% 55%",
-          }}
-        />
-      </div>
-
-      
-
-      {/* Content — centered */}
-      <div className="flex-1 flex flex-col justify-center items-center relative z-10 pt-28 pb-20 md:pb-28">
-        <div className="container">
-          <div className="max-w-2xl mx-auto text-center">
-            <h1
-              className="font-display text-5xl md:text-6xl lg:text-8xl leading-[1.05] mb-6"
-              style={{
-                color: "transparent",
-                backgroundImage:
-                  "linear-gradient(175deg, hsl(38 30% 96%) 0%, hsl(38 25% 82%) 50%, hsl(38 20% 70%) 100%)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                textShadow: "0 2px 20px hsl(0 0% 0% / 0.3)",
-                filter: "drop-shadow(0 4px 12px hsl(0 0% 0% / 0.25))",
-              }}
-            >
-              Pensado por
-              <br />
-              <em
-                ref={mamasRef}
-                className="hero-mamas-word relative inline-block cursor-default"
-                style={{
-                  backgroundImage: "linear-gradient(175deg, hsl(38 60% 80%) 0%, hsl(14 45% 65%) 100%)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  transformOrigin: "bottom center",
-                }}
-              >
-                mamás,
-              </em>{" "}
-              para mamás
-            </h1>
-
-            <p className="text-lg md:text-xl text-white/80 font-light mb-10 max-w-lg mx-auto leading-relaxed">
-              Pijamas y cobijos ultra suaves que apapachan a toda la familia
-            </p>
-
-            <Link to="/catalogo" className="btn-artisan inline-flex text-base px-10 py-4">
-              Ver colección
-              <span className="text-xl">→</span>
-            </Link>
-          </div>
-
-          {/* Animated stitched frame — draws itself */}
-          <svg
-            className="absolute bottom-8 right-4 md:bottom-16 md:right-12 w-32 h-32 md:w-48 md:h-48 opacity-[0.15] pointer-events-none hidden md:block"
-            viewBox="0 0 100 100"
-          >
-            <rect
-              ref={stitchRef}
-              x="5"
-              y="5"
-              width="90"
-              height="90"
-              rx="3"
-              fill="none"
-              stroke="hsl(38 60% 72%)"
-              strokeWidth="0.8"
-              strokeDasharray="3 4"
-              strokeDashoffset={stitchVisible ? 0 : 380}
-              style={{
-                transition: "stroke-dashoffset 3s cubic-bezier(.22,1,.36,1)",
-              }}
-            />
-            {/* Inner stitch */}
-            <rect
-              x="12"
-              y="12"
-              width="76"
-              height="76"
-              rx="2"
-              fill="none"
-              stroke="hsl(14 52% 60%)"
-              strokeWidth="0.5"
-              strokeDasharray="2 5"
-              strokeDashoffset={stitchVisible ? 0 : 320}
-              style={{
-                transition: "stroke-dashoffset 4s cubic-bezier(.22,1,.36,1) 0.5s",
-              }}
-            />
-          </svg>
-        </div>
-      </div>
-
-      {/* Organic gradient transition to next section — no hard line */}
+    <section className="relative min-h-[100svh] flex flex-col justify-center items-center overflow-hidden">
+      {/* Subtle background pattern */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none z-10"
+        className="absolute inset-0 opacity-[0.04]"
         style={{
-          background: "linear-gradient(to bottom, transparent 0%, hsl(var(--background)) 100%)",
+          backgroundImage: `url(${printPapachoa})`,
+          backgroundSize: "400px",
+          backgroundRepeat: "repeat",
         }}
       />
+
+      {/* Floating bird decoration */}
+      <img
+        src={pajaroNaranja}
+        alt=""
+        aria-hidden="true"
+        className="absolute top-[15%] right-[8%] w-24 md:w-36 opacity-[0.12] animate-float-gentle pointer-events-none select-none"
+        loading="eager"
+        draggable={false}
+      />
+
+      {/* Content */}
+      <div className="container relative z-10 text-center py-32 md:py-40">
+        {/* Animated tagline */}
+        <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold leading-[1.05] mb-8">
+          {animate
+            ? TAGLINE.split("").map((char, i) =>
+                char === " " ? (
+                  <span key={i} className="inline-block w-[0.3em]" />
+                ) : (
+                  <span
+                    key={i}
+                    className="hero-letter font-display"
+                    style={{
+                      color: COLORS[i % COLORS.length],
+                      ...getRandomTransform(i),
+                    } as React.CSSProperties}
+                  >
+                    {char}
+                  </span>
+                )
+              )
+            : <span className="opacity-0">{TAGLINE}</span>
+          }
+        </h1>
+
+        <p
+          className="text-lg md:text-xl text-muted-foreground font-light mb-12 max-w-md mx-auto leading-relaxed"
+          style={{
+            opacity: animate ? 1 : 0,
+            transform: animate ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.8s ease-out 1.8s",
+          }}
+        >
+          Suaves, cálidos y con magia de hogar.
+          <br />
+          Hechos en México con amor.
+        </p>
+
+        <div
+          style={{
+            opacity: animate ? 1 : 0,
+            transform: animate ? "translateY(0)" : "translateY(20px)",
+            transition: "all 0.8s ease-out 2.2s",
+          }}
+        >
+          <Link to="/catalogo" className="btn-artisan inline-flex text-base px-10 py-4">
+            Ver colección
+            <span className="text-xl">→</span>
+          </Link>
+        </div>
+      </div>
     </section>
   );
 };
