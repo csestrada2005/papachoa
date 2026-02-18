@@ -188,7 +188,7 @@ const Hero = () => {
                   position: "absolute",
                   top: `${bird.finalTop}%`,
                   left: `${bird.finalLeft}%`,
-                  background: "transparent",
+                  background: "hsl(15 20% 96%)",
                   lineHeight: 0,
                   border: "none",
                   boxShadow: "none",
