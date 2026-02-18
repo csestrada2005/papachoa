@@ -11,6 +11,18 @@ import letterH from "@/assets/letters/H.png";
 import letterO from "@/assets/letters/O.png";
 import letterA3 from "@/assets/letters/A3.png";
 
+import pajaroAmarillo from "@/assets/brand/pajaro-amarillo-sf.png";
+import pajaroAzulClaro from "@/assets/brand/pajaro-azul-claro-sf.png";
+import pajaroAzul from "@/assets/brand/pajaro-azul-sf.png";
+import pajaroNaranja from "@/assets/brand/pajaro-naranja-sf.png";
+
+const BIRDS = [
+  { src: pajaroAmarillo, alt: "Pájaro amarillo", top: "18%", left: "12%", size: 54, dur: "8s", delay: "0s", flip: false },
+  { src: pajaroAzul, alt: "Pájaro azul", top: "14%", right: "10%", size: 48, dur: "7s", delay: "1.5s", flip: true },
+  { src: pajaroNaranja, alt: "Pájaro naranja", top: "28%", left: "42%", size: 40, dur: "9s", delay: "0.8s", flip: true },
+  { src: pajaroAzulClaro, alt: "Pájaro azul claro", top: "22%", right: "18%", size: 44, dur: "10s", delay: "2.2s", flip: false },
+];
+
 // Order: P A P A C H O A — last A is blue (A1)
 const LETTERS = [
   { src: letterP1, alt: "Letra P morada", scatterX: -80, scatterY: -30, scatterRot: -12 },
@@ -75,6 +87,52 @@ const Hero = () => {
           }}
         />
 
+        {/* Floating birds layer */}
+        <style>{`
+          @keyframes bird-float-active {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(6px, -10px) rotate(3deg); }
+            50% { transform: translate(-4px, -16px) rotate(-2deg); }
+            75% { transform: translate(8px, -6px) rotate(2deg); }
+          }
+          @keyframes bird-float-calm {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(3px, -6px) rotate(1.5deg); }
+          }
+        `}</style>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            zIndex: 2,
+            pointerEvents: "none",
+          }}
+        >
+          {BIRDS.map((bird, i) => {
+            const isAssembling = progress < 0.45;
+            return (
+              <img
+                key={`bird-${i}`}
+                src={bird.src}
+                alt={bird.alt}
+                draggable={false}
+                className="select-none pointer-events-none"
+                style={{
+                  position: "absolute",
+                  top: bird.top,
+                  left: bird.left,
+                  right: (bird as any).right,
+                  width: bird.size,
+                  height: "auto",
+                  transform: bird.flip ? "scaleX(-1)" : undefined,
+                  animation: `${isAssembling ? "bird-float-active" : "bird-float-calm"} ${bird.dur} ease-in-out ${bird.delay} infinite`,
+                  mixBlendMode: "multiply",
+                }}
+              />
+            );
+          })}
+        </div>
+
         {/* Content layout: bird zone ~30% + letters zone ~70% */}
         <div
           style={{
@@ -82,7 +140,7 @@ const Hero = () => {
             display: "flex",
             flexDirection: "column",
             height: "100vh",
-            zIndex: 1,
+            zIndex: 3,
           }}
         >
           {/* Bird placeholder zone */}
