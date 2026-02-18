@@ -16,11 +16,41 @@ import pajaroAzulClaro from "@/assets/brand/pajaro-azul-claro-sf.png";
 import pajaroAzul from "@/assets/brand/pajaro-azul-sf.png";
 import pajaroNaranja from "@/assets/brand/pajaro-naranja-sf.png";
 
+// Final positions (where birds settle at 45% scroll)
+// Start positions are off-screen corners
 const BIRDS = [
-  { src: pajaroAmarillo, alt: "Pájaro amarillo", top: "20%", left: "10%", dur: "6.5s", delay: "0s" },
-  { src: pajaroAzul, alt: "Pájaro azul", top: "18%", left: "88%", dur: "7.5s", delay: "1.2s" },
-  { src: pajaroNaranja, alt: "Pájaro naranja", top: "25%", left: "50%", dur: "8.5s", delay: "0.6s" },
-  { src: pajaroAzulClaro, alt: "Pájaro azul claro", top: "38%", left: "89%", dur: "9.5s", delay: "2s" },
+  {
+    src: pajaroAmarillo, alt: "Pájaro amarillo",
+    // Final: upper-left of wordmark
+    finalTop: 22, finalLeft: 8,
+    // Start: off-screen top-left
+    startX: -25, startY: -30,
+    dur: "6.8s",
+  },
+  {
+    src: pajaroNaranja, alt: "Pájaro naranja",
+    // Final: upper-center-right
+    finalTop: 18, finalLeft: 55,
+    // Start: off-screen top
+    startX: 0, startY: -35,
+    dur: "7.6s",
+  },
+  {
+    src: pajaroAzulClaro, alt: "Pájaro azul claro",
+    // Final: right-middle
+    finalTop: 40, finalLeft: 85,
+    // Start: off-screen right
+    startX: 30, startY: 10,
+    dur: "8.4s",
+  },
+  {
+    src: pajaroAzul, alt: "Pájaro azul",
+    // Final: upper-right
+    finalTop: 16, finalLeft: 87,
+    // Start: off-screen top-right
+    startX: 30, startY: -30,
+    dur: "9.2s",
+  },
 ];
 
 // Order: P A P A C H O A — last A is blue (A1)
@@ -89,29 +119,43 @@ const Hero = () => {
 
         {/* Floating birds layer */}
         <style>{`
-          @keyframes bird-fly-1 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(10px, -8px) rotate(2deg); }
-            50% { transform: translate(-6px, -14px) rotate(-2deg); }
-            75% { transform: translate(8px, -4px) rotate(1.5deg); }
+          @keyframes bird-lissajous-1 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+            15%  { transform: translate(8px, -6px) rotate(2deg) scaleY(0.97); }
+            30%  { transform: translate(12px, -12px) rotate(3.5deg) scaleY(1); }
+            45%  { transform: translate(4px, -16px) rotate(1deg) scaleY(0.96); }
+            60%  { transform: translate(-8px, -10px) rotate(-2.5deg) scaleY(1); }
+            75%  { transform: translate(-12px, -4px) rotate(-3deg) scaleY(0.97); }
+            90%  { transform: translate(-4px, 4px) rotate(-1deg) scaleY(1); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
           }
-          @keyframes bird-fly-2 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            30% { transform: translate(-12px, -10px) rotate(-3deg); }
-            60% { transform: translate(8px, -16px) rotate(2deg); }
-            80% { transform: translate(-4px, -6px) rotate(-1deg); }
+          @keyframes bird-lissajous-2 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+            12%  { transform: translate(-10px, -8px) rotate(-3deg) scaleY(0.96); }
+            28%  { transform: translate(-6px, -18px) rotate(-1deg) scaleY(1); }
+            42%  { transform: translate(6px, -14px) rotate(2.5deg) scaleY(0.97); }
+            58%  { transform: translate(14px, -6px) rotate(4deg) scaleY(1); }
+            72%  { transform: translate(10px, 4px) rotate(2deg) scaleY(0.96); }
+            88%  { transform: translate(-2px, 6px) rotate(-1.5deg) scaleY(1); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
           }
-          @keyframes bird-fly-3 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            20% { transform: translate(8px, -12px) rotate(2.5deg); }
-            50% { transform: translate(-10px, -8px) rotate(-2deg); }
-            70% { transform: translate(6px, -14px) rotate(1deg); }
+          @keyframes bird-lissajous-3 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+            18%  { transform: translate(6px, -14px) rotate(3deg) scaleY(0.97); }
+            35%  { transform: translate(-4px, -20px) rotate(1deg) scaleY(1); }
+            50%  { transform: translate(-14px, -12px) rotate(-3.5deg) scaleY(0.96); }
+            65%  { transform: translate(-10px, 2px) rotate(-2deg) scaleY(1); }
+            80%  { transform: translate(4px, 8px) rotate(1.5deg) scaleY(0.97); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
           }
-          @keyframes bird-fly-4 {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            35% { transform: translate(-8px, -14px) rotate(-2deg); }
-            55% { transform: translate(12px, -6px) rotate(3deg); }
-            85% { transform: translate(-6px, -10px) rotate(-1.5deg); }
+          @keyframes bird-lissajous-4 {
+            0%   { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
+            20%  { transform: translate(-8px, -10px) rotate(-2deg) scaleY(0.97); }
+            40%  { transform: translate(4px, -20px) rotate(2deg) scaleY(1); }
+            55%  { transform: translate(16px, -14px) rotate(3.5deg) scaleY(0.96); }
+            70%  { transform: translate(12px, -2px) rotate(1deg) scaleY(1); }
+            85%  { transform: translate(2px, 6px) rotate(-1.5deg) scaleY(0.97); }
+            100% { transform: translate(0px, 0px) rotate(0deg) scaleY(1); }
           }
         `}</style>
         <div
@@ -125,24 +169,38 @@ const Hero = () => {
           }}
         >
           {BIRDS.map((bird, i) => {
-            const animName = `bird-fly-${i + 1}`;
-            const scrollDrift = progress < 0.45 ? (progress / 0.45) * 5 : 5;
-            const driftX = i % 2 === 0 ? scrollDrift : -scrollDrift;
+            // Entry easing: cubic-bezier(0.22, 1, 0.36, 1) approximation
+            const entryRaw = Math.min(progress / 0.45, 1);
+            const entryT = 1 - Math.pow(1 - entryRaw, 3); // smooth decel
+
+            // Interpolate from start (off-screen) to final position
+            const currentX = bird.startX * (1 - entryT); // vw offset from final
+            const currentY = bird.startY * (1 - entryT); // vh offset from final
+
+            const hasArrived = progress >= 0.45;
+            const animName = `bird-lissajous-${i + 1}`;
+
             return (
               <div
                 key={`bird-${i}`}
                 aria-hidden="true"
                 style={{
                   position: "absolute",
-                  top: bird.top,
-                  left: bird.left,
-                  background: "hsl(15 20% 96%)",
+                  top: `${bird.finalTop}%`,
+                  left: `${bird.finalLeft}%`,
+                  background: "transparent",
                   lineHeight: 0,
                   border: "none",
                   boxShadow: "none",
                   outline: "none",
-                  transform: `translateX(${driftX}px)`,
-                  animation: `${animName} ${bird.dur} ease-in-out ${bird.delay} infinite`,
+                  transformStyle: "flat" as any,
+                  transform: hasArrived
+                    ? "translate(0, 0)"
+                    : `translate(${currentX}vw, ${currentY}vh)`,
+                  animation: hasArrived
+                    ? `${animName} ${bird.dur} ease-in-out infinite`
+                    : "none",
+                  transition: hasArrived ? "none" : "transform 0.05s linear",
                 }}
               >
                 <img
@@ -151,7 +209,7 @@ const Hero = () => {
                   draggable={false}
                   className="select-none pointer-events-none"
                   style={{
-                    width: "clamp(55px, 8vw, 100px)",
+                    width: "clamp(70px, 10vw, 150px)",
                     height: "auto",
                     display: "block",
                     objectFit: "contain",
