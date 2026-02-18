@@ -17,10 +17,10 @@ import pajaroAzul from "@/assets/brand/pajaro-azul-sf.png";
 import pajaroNaranja from "@/assets/brand/pajaro-naranja-sf.png";
 
 const BIRDS = [
-  { src: pajaroAmarillo, alt: "Pájaro amarillo", top: "18%", left: "12%", size: 54, dur: "8s", delay: "0s", flip: false },
-  { src: pajaroAzul, alt: "Pájaro azul", top: "14%", right: "10%", size: 48, dur: "7s", delay: "1.5s", flip: true },
-  { src: pajaroNaranja, alt: "Pájaro naranja", top: "28%", left: "42%", size: 40, dur: "9s", delay: "0.8s", flip: true },
-  { src: pajaroAzulClaro, alt: "Pájaro azul claro", top: "22%", right: "18%", size: 44, dur: "10s", delay: "2.2s", flip: false },
+  { src: pajaroAmarillo, alt: "Pájaro amarillo", top: "20%", left: "10%", dur: "6.5s", delay: "0s" },
+  { src: pajaroAzul, alt: "Pájaro azul", top: "18%", left: "88%", dur: "7.5s", delay: "1.2s" },
+  { src: pajaroNaranja, alt: "Pájaro naranja", top: "25%", left: "50%", dur: "8.5s", delay: "0.6s" },
+  { src: pajaroAzulClaro, alt: "Pájaro azul claro", top: "38%", left: "89%", dur: "9.5s", delay: "2s" },
 ];
 
 // Order: P A P A C H O A — last A is blue (A1)
@@ -89,15 +89,29 @@ const Hero = () => {
 
         {/* Floating birds layer */}
         <style>{`
-          @keyframes bird-float-active {
+          @keyframes bird-fly-1 {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(6px, -10px) rotate(3deg); }
-            50% { transform: translate(-4px, -16px) rotate(-2deg); }
-            75% { transform: translate(8px, -6px) rotate(2deg); }
+            25% { transform: translate(10px, -8px) rotate(2deg); }
+            50% { transform: translate(-6px, -14px) rotate(-2deg); }
+            75% { transform: translate(8px, -4px) rotate(1.5deg); }
           }
-          @keyframes bird-float-calm {
+          @keyframes bird-fly-2 {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            50% { transform: translate(3px, -6px) rotate(1.5deg); }
+            30% { transform: translate(-12px, -10px) rotate(-3deg); }
+            60% { transform: translate(8px, -16px) rotate(2deg); }
+            80% { transform: translate(-4px, -6px) rotate(-1deg); }
+          }
+          @keyframes bird-fly-3 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            20% { transform: translate(8px, -12px) rotate(2.5deg); }
+            50% { transform: translate(-10px, -8px) rotate(-2deg); }
+            70% { transform: translate(6px, -14px) rotate(1deg); }
+          }
+          @keyframes bird-fly-4 {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            35% { transform: translate(-8px, -14px) rotate(-2deg); }
+            55% { transform: translate(12px, -6px) rotate(3deg); }
+            85% { transform: translate(-6px, -10px) rotate(-1.5deg); }
           }
         `}</style>
         <div
@@ -107,10 +121,13 @@ const Hero = () => {
             zIndex: 30,
             pointerEvents: "none",
             isolation: "isolate",
+            overflow: "visible",
           }}
         >
           {BIRDS.map((bird, i) => {
-            const isAssembling = progress < 0.45;
+            const animName = `bird-fly-${i + 1}`;
+            const scrollDrift = progress < 0.45 ? (progress / 0.45) * 5 : 5;
+            const driftX = i % 2 === 0 ? scrollDrift : -scrollDrift;
             return (
               <div
                 key={`bird-${i}`}
@@ -119,13 +136,13 @@ const Hero = () => {
                   position: "absolute",
                   top: bird.top,
                   left: bird.left,
-                  right: (bird as any).right,
                   background: "hsl(15 20% 96%)",
                   lineHeight: 0,
                   border: "none",
                   boxShadow: "none",
                   outline: "none",
-                  animation: `${isAssembling ? "bird-float-active" : "bird-float-calm"} ${bird.dur} ease-in-out ${bird.delay} infinite`,
+                  transform: `translateX(${driftX}px)`,
+                  animation: `${animName} ${bird.dur} ease-in-out ${bird.delay} infinite`,
                 }}
               >
                 <img
@@ -134,9 +151,10 @@ const Hero = () => {
                   draggable={false}
                   className="select-none pointer-events-none"
                   style={{
-                    width: bird.size,
+                    width: "clamp(55px, 8vw, 100px)",
                     height: "auto",
                     display: "block",
+                    objectFit: "contain",
                     background: "transparent",
                     border: "none",
                     boxShadow: "none",
