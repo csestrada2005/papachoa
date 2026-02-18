@@ -111,23 +111,34 @@ const Hero = () => {
           {BIRDS.map((bird, i) => {
             const isAssembling = progress < 0.45;
             return (
-              <img
+              <div
                 key={`bird-${i}`}
-                src={bird.src}
-                alt={bird.alt}
-                draggable={false}
-                className="select-none pointer-events-none"
+                aria-hidden="true"
                 style={{
                   position: "absolute",
                   top: bird.top,
                   left: bird.left,
                   right: (bird as any).right,
                   width: bird.size,
-                  height: "auto",
+                  height: bird.size,
                   background: "transparent",
                   border: "none",
                   boxShadow: "none",
+                  backdropFilter: "none",
+                  transformStyle: "flat" as const,
                   animation: `${isAssembling ? "bird-float-active" : "bird-float-calm"} ${bird.dur} ease-in-out ${bird.delay} infinite`,
+                  WebkitMaskImage: `url(${bird.src})`,
+                  WebkitMaskRepeat: "no-repeat",
+                  WebkitMaskSize: "contain",
+                  WebkitMaskPosition: "center",
+                  maskImage: `url(${bird.src})`,
+                  maskRepeat: "no-repeat",
+                  maskSize: "contain",
+                  maskPosition: "center",
+                  backgroundImage: `url(${bird.src})`,
+                  backgroundSize: "contain",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center",
                 }}
               />
             );
