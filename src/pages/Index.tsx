@@ -18,7 +18,7 @@ const Newsletter = lazy(() => import("@/components/sections/Newsletter"));
 const Index = () => {
   usePrefetchRoutes();
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-clip">
       <Header transparent />
       <main>
         <Hero />
