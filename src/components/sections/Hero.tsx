@@ -147,6 +147,7 @@ const Hero = () => {
                   top: `${bird.top}%`,
                   left: `${bird.left}%`,
                   lineHeight: 0,
+                  background: "transparent",
                   willChange: "transform",
                   transform: `scale(${scrollAmplify})`,
                   animation: `${animName} ${bird.dur} ease-in-out infinite ${bird.delay}`,
@@ -163,10 +164,7 @@ const Hero = () => {
                     display: "block",
                     objectFit: "contain",
                     background: "transparent",
-                    border: "none",
-                    boxShadow: "none",
                     mixBlendMode: "multiply",
-                    filter: "brightness(0.98) contrast(1.02)",
                   }}
                 />
               </div>
