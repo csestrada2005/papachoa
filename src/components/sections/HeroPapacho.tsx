@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import heroImage from "@/assets/hero-mama-hija.png";
 import printPapachoa from "@/assets/brand/print-papachoa.png";
+import papachoaLogo from "@/assets/brand/papachoa-logo.png";
 
 const TEXT = "Pijamas que abrazan";
 
@@ -86,6 +87,10 @@ const HeroPapacho = () => {
   const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
+  // Logo fade-in between 60%-90% scroll
+  const logoOpacity = Math.max(0, Math.min(1, (progress - 0.6) / 0.3));
+  const logoTranslateY = (1 - logoOpacity) * 20;
+
   return (
     <section ref={sectionRef} style={{ height: "300vh", position: "relative" }}>
       <div
@@ -169,6 +174,21 @@ const HeroPapacho = () => {
               </span>
             ))}
           </h1>
+          <div
+            className="flex justify-center mt-4"
+            style={{
+              opacity: logoOpacity,
+              transform: `translateY(${logoTranslateY}px)`,
+              transition: "opacity 0.2s linear, transform 0.2s ease-out",
+            }}
+          >
+            <img
+              src={papachoaLogo}
+              alt="Papachoa"
+              className="w-[240px] select-none"
+              draggable={false}
+            />
+          </div>
         </div>
       </div>
     </section>
