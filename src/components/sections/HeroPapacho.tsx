@@ -1,6 +1,17 @@
 import { useEffect, useRef, useState, useCallback } from "react";
-import { Link } from "react-router-dom";
 import heroKids from "@/assets/hero-kids.png";
+
+/* ─── Brand colors for each letter ─── */
+const LETTER_COLORS = [
+  "#ac3c72", // Magenta
+  "#f5ce3e", // Yellow
+  "#ff8d6b", // Coral
+  "#416ba9", // Blue
+  "#c1438c", // Rose
+  "#d4a92a", // Warm gold
+  "#ff6b35", // Orange
+  "#6b8fb5", // Soft blue
+];
 
 /* ─── Letter scatter targets (stable pseudo-random per letter) ─── */
 const TEXT = "Pijamas que abrazan";
@@ -11,6 +22,9 @@ interface LetterTarget {
   ty: number;
   tz: number;
   rot: number;
+  color: string;
+  floatDuration: number;
+  floatDelay: number;
 }
 
 const SEED_TARGETS: LetterTarget[] = TEXT.split("").map((char, i) => {
@@ -22,6 +36,9 @@ const SEED_TARGETS: LetterTarget[] = TEXT.split("").map((char, i) => {
     ty: c * 200 + Math.sin(i * 13.1) * 140,
     tz: Math.sin(i * 23.7) * 450,
     rot: s * 40 + c * 25,
+    color: char === " " ? "transparent" : LETTER_COLORS[i % LETTER_COLORS.length],
+    floatDuration: 3 + (i % 3),
+    floatDelay: i * 0.12,
   };
 });
 
@@ -45,9 +62,13 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
+  /* Reversed: letters start scattered (scatter=1), end assembled (scatter=0) */
+  const scatter = 1 - progress;
   const lineScale = progress;
-  const scatter = progress;
-  const contentOpacity = Math.max(0, 1 - Math.max(0, (progress - 0.7) / 0.3));
+  /* Image starts big (~1.3) and shrinks to 1.0 */
+  const imgScale = 1.3 - progress * 0.3;
+  /* Float animation only visible when letters are mostly scattered */
+  const showFloat = progress < 0.15;
 
   return (
     <section ref={sectionRef} className="relative" style={{ height: "200vh" }}>
@@ -59,15 +80,19 @@ const HeroPapacho = () => {
         }}
       >
         {/* Image + Line */}
-        <div
-          className="relative flex flex-col items-center"
-          style={{ opacity: contentOpacity }}
-        >
+        <div className="relative flex flex-col items-center">
           <img
             src={heroKids}
             alt="Niños felices en pijamas Papachoa"
             className="object-cover select-none pointer-events-none"
-            style={{ maxHeight: "50vh", width: "auto", maxWidth: "90vw" }}
+            style={{
+              maxHeight: "50vh",
+              width: "auto",
+              maxWidth: "90vw",
+              transform: `scale(${imgScale})`,
+              transformOrigin: "center",
+              transition: "transform 0.05s linear",
+            }}
             loading="eager"
             draggable={false}
           />
@@ -83,13 +108,13 @@ const HeroPapacho = () => {
           />
         </div>
 
-        {/* 3D Scattered Text */}
+        {/* 3D Scattered Text — assembles on scroll */}
         <div
           className="mt-6 md:mt-8"
-          style={{ perspective: "1000px", opacity: contentOpacity }}
+          style={{ perspective: "1000px" }}
         >
           <h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-foreground text-center leading-none select-none"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight text-center leading-none select-none"
             style={{ transformStyle: "preserve-3d" }}
             aria-label={TEXT}
           >
@@ -104,8 +129,12 @@ const HeroPapacho = () => {
                   aria-hidden="true"
                   className="inline-block will-change-transform"
                   style={{
+                    color: l.color,
                     transform: `translate3d(${x}px, ${y}px, ${z}px) rotateZ(${r}deg)`,
                     whiteSpace: l.char === " " ? "pre" : "normal",
+                    animation: showFloat
+                      ? `heroFloat ${l.floatDuration}s ease-in-out infinite alternate ${l.floatDelay}s`
+                      : "none",
                   }}
                 >
                   {l.char === " " ? "\u00A0" : l.char}
@@ -114,37 +143,15 @@ const HeroPapacho = () => {
             })}
           </h1>
         </div>
-
-        {/* Subtitle + CTA */}
-        <div
-          className="mt-6 flex flex-col items-center gap-4"
-          style={{
-            opacity: Math.max(0, 1 - progress * 4),
-            transform: `translateY(${progress * 30}px)`,
-            pointerEvents: progress < 0.15 ? "auto" : "none",
-          }}
-        >
-          <p className="text-muted-foreground text-base md:text-lg text-center max-w-md font-light leading-relaxed">
-            Suaves, cálidos y con magia de hogar.
-            <br />
-            Hechos en México con amor.
-          </p>
-          <Link to="/catalogo" className="btn-artisan inline-flex text-sm px-8 py-3">
-            Ver colección <span className="text-lg">→</span>
-          </Link>
-        </div>
-
-        {/* Scroll indicator */}
-        <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1"
-          style={{ opacity: Math.max(0, 1 - progress * 5) }}
-        >
-          <span className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60 font-medium">
-            scroll
-          </span>
-          <div className="w-px h-6 bg-muted-foreground/30 animate-float-gentle" />
-        </div>
       </div>
+
+      {/* Float keyframes */}
+      <style>{`
+        @keyframes heroFloat {
+          0% { transform: translateY(0px); }
+          100% { transform: translateY(-6px); }
+        }
+      `}</style>
     </section>
   );
 };
