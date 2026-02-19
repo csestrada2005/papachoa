@@ -202,7 +202,7 @@ const HeroPapacho = () => {
             <img
               src={papachoaLogo}
               alt="Papachoa"
-              className="w-[240px] select-none"
+              className="w-[360px] select-none"
               draggable={false}
             />
           </div>
