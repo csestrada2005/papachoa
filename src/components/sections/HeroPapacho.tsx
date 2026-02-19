@@ -122,7 +122,7 @@ const HeroPapacho = () => {
           <img
             src={heroImage}
             alt="Niños felices en pijamas Papachoa"
-            className="object-cover object-top select-none max-h-[80vh] w-auto"
+            className="object-cover object-top select-none max-h-[90vh] w-auto"
             style={{ filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))" }}
             loading="eager"
             draggable={false}
@@ -139,7 +139,7 @@ const HeroPapacho = () => {
           }}
         >
           <h1
-            className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
+            className="relative text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-none select-none text-center"
             style={{ transformStyle: "preserve-3d" }}
             aria-label={TEXT}
           >
