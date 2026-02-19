@@ -36,7 +36,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
   useEffect(() => {
     const onScroll = () => {
       // On transparent (homepage) pages, stay invisible until hero section is fully passed (~200vh)
-      const threshold = transparent ? window.innerHeight * 2 : 48;
+      const threshold = transparent ? window.innerHeight * 4 : 48;
       setScrolled(window.scrollY > threshold);
     };
     window.addEventListener("scroll", onScroll, { passive: true });

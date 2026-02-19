@@ -81,11 +81,13 @@ const HeroPapacho = () => {
   }, [onMouseMove]);
 
   const p = 1 - progress;
-  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6}px, 0)`;
+  // Image slides upward as user scrolls (no fade, just translate)
+  const imgSlide = Math.min(progress / 0.6, 1); // image exits by 60% scroll
+  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   return (
-    <section ref={sectionRef} style={{ height: "300vh", position: "relative" }}>
+    <section ref={sectionRef} style={{ height: "500vh", position: "relative" }}>
       <div
         style={{
           position: "sticky",
@@ -111,12 +113,12 @@ const HeroPapacho = () => {
           }}
         />
 
-        {/* Image + line with parallax */}
+        {/* Image with parallax — slides up and out */}
         <div
-          className="relative z-10 flex flex-col items-center"
+          className="absolute z-10 flex flex-col items-center"
           style={{
             transform: imgShift,
-            transition: "transform 0.2s ease-out",
+            transition: "transform 0.15s ease-out",
           }}
         >
           <img
@@ -129,13 +131,13 @@ const HeroPapacho = () => {
           />
         </div>
 
-        {/* Scattered → assembled typography with opposite parallax */}
+        {/* Scattered → assembled typography — stays centered */}
         <div
-          className="relative z-10 -mt-16 sm:-mt-20"
+          className="absolute z-20 inset-0 flex items-center justify-center"
           style={{
             perspective: "1000px",
             transform: textShift,
-            transition: "transform 0.2s ease-out",
+            transition: "transform 0.15s ease-out",
           }}
         >
           <h1
