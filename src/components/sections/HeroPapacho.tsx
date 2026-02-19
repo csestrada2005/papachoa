@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-mama-hija.png";
 import printPapachoa from "@/assets/brand/print-papachoa.png";
 import papachoaLogo from "@/assets/brand/papachoa-logo.png";
@@ -55,6 +56,7 @@ const WORDS: WordData[] = (() => {
 })();
 
 const HeroPapacho = () => {
+  const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const [lineVisible, setLineVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
@@ -206,6 +208,17 @@ const HeroPapacho = () => {
               draggable={false}
             />
           </div>
+          <button
+            onClick={() => navigate("/catalogo")}
+            className="mt-6 px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-base tracking-wide shadow-lg hover:opacity-90 transition-opacity"
+            style={{
+              opacity: logoOpacity,
+              transform: `translateY(${logoTranslateY}px)`,
+              transition: "opacity 0.2s linear, transform 0.2s ease-out",
+            }}
+          >
+            Ver Catálogo
+          </button>
         </div>
       </div>
     </section>
