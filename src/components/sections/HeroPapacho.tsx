@@ -1,148 +1,137 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import heroKids from "@/assets/hero-kids.png";
+import printPapachoa from "@/assets/brand/print-papachoa.png";
 
 /* ─── Brand colors ─── */
-const LETTER_COLORS = [
-  "#ac3c72", "#f5ce3e", "#ff8d6b", "#416ba9",
-  "#c1438c", "#d4a92a", "#ff6b35", "#6b8fb5",
-];
+const BRAND_COLOR = "#A64D8A";
 
 const TEXT = "Pijamas que abrazan";
 
-interface LetterTarget {
+interface LetterStyle {
   char: string;
   tx: number;
   ty: number;
+  tz: number;
   rot: number;
-  color: string;
-  floatDur: number;
-  floatDelay: number;
 }
 
-/* Scatter positions spread wide around the image area */
-const SEED_TARGETS: LetterTarget[] = TEXT.split("").map((char, i) => {
+/* Pseudo-random scattered positions — permanently fixed */
+const SCATTERED_LETTERS: LetterStyle[] = TEXT.split("").map((char, i) => {
   const s = Math.sin(i * 47.3 + 7.1);
   const c = Math.cos(i * 31.7 + 3.9);
-  const angle = (i / TEXT.length) * Math.PI * 2 + s * 0.8;
   return {
     char,
-    tx: Math.cos(angle) * 550 + s * 120,
-    ty: Math.sin(angle) * 380 + c * 100,
-    rot: s * 45 + c * 25,
-    color: char === " " ? "transparent" : LETTER_COLORS[i % LETTER_COLORS.length],
-    floatDur: 3 + (i % 3),
-    floatDelay: i * 0.15,
+    tx: s * 60 + c * 30,
+    ty: c * 25 + s * 15,
+    tz: Math.sin(i * 23.1) * 80,
+    rot: s * 18 + c * 12,
   };
 });
 
 const HeroPapacho = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const hasScrolled = useRef(false);
-  const [progress, setProgress] = useState(0);
+  const [lineVisible, setLineVisible] = useState(false);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
-  const onScroll = useCallback(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    hasScrolled.current = true;
-    const rect = el.getBoundingClientRect();
-    const scrollable = el.offsetHeight - window.innerHeight;
-    if (scrollable <= 0) return;
-    const raw = -rect.top / scrollable;
-    setProgress(Math.max(0, Math.min(1, raw)));
+  /* Expanding line animation on mount */
+  useEffect(() => {
+    const timer = setTimeout(() => setLineVisible(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  /* Mouse parallax */
+  const onMouseMove = useCallback((e: MouseEvent) => {
+    const nx = (e.clientX / window.innerWidth) * 2 - 1;
+    const ny = (e.clientY / window.innerHeight) * 2 - 1;
+    setMouse({ x: nx, y: ny });
   }, []);
 
   useEffect(() => {
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
-  }, [onScroll]);
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMouseMove);
+  }, [onMouseMove]);
 
-  /* Phase mapping */
-  const imgOpacity = progress < 0.3 ? 1 : progress > 0.55 ? 0 : 1 - (progress - 0.3) / 0.25;
-  const imgTranslateY = progress * -60;
-
-  // Letters: scattered at progress=0, assemble by ~0.67
-  const scatter = Math.max(0, 1 - progress * 1.5);
-  const letterOpacity = 1;
-
-  const textGlow = progress > 0.5 ? Math.min(1, (progress - 0.5) * 4) : 0;
-
-  const showFloat = scatter > 0.85;
+  const imgShift = `translate3d(${mouse.x * -15}px, ${mouse.y * -15}px, 0)`;
+  const textShift = `translate3d(${mouse.x * 20}px, ${mouse.y * 20}px, 0)`;
 
   return (
-    <section ref={sectionRef} className="relative" style={{ height: "300vh" }}>
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
+      style={{ background: "hsl(15 20% 96%)" }}
+    >
+      {/* Background texture overlay */}
       <div
-        className="sticky top-0 h-screen w-full overflow-hidden"
-        style={{ background: "hsl(var(--papachoa-cream))" }}
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `url(${printPapachoa})`,
+          backgroundSize: "400px",
+          backgroundRepeat: "repeat",
+          opacity: 0.04,
+        }}
+      />
+
+      {/* Image container with parallax */}
+      <div
+        className="relative z-10 flex flex-col items-center"
+        style={{
+          transform: imgShift,
+          transition: "transform 0.2s ease-out",
+        }}
       >
-        {/* Large centered image */}
-        <div
-          className="absolute inset-0 flex items-end justify-center pointer-events-none pb-0"
+        <img
+          src={heroKids}
+          alt="Niños felices en pijamas Papachoa"
+          className="object-cover object-top select-none max-h-[50vh] w-auto rounded-sm"
           style={{
-            transform: `translateY(${imgTranslateY}vh)`,
-            opacity: imgOpacity,
-            transition: "opacity 0.05s linear",
+            filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.12))",
           }}
-        >
-          <img
-            src={heroKids}
-            alt="Niños felices en pijamas Papachoa"
-            className="object-cover select-none max-w-[92vw]"
-            style={{ height: "80vh" }}
-            loading="eager"
-            draggable={false}
-          />
-        </div>
+          loading="eager"
+          draggable={false}
+        />
 
-        {/* Scattered / assembling letters — absolutely positioned over everything */}
+        {/* Expanding line flush with bottom of image */}
         <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ perspective: "800px", pointerEvents: "none" }}
-        >
-          <h1
-            className="relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight leading-none select-none"
-            style={{ transformStyle: "preserve-3d" }}
-            aria-label={TEXT}
-          >
-            {SEED_TARGETS.map((l, i) => {
-              const x = l.tx * scatter;
-              const y = l.ty * scatter;
-              const r = l.rot * scatter;
-              const scale = 1 + scatter * 0.3;
-
-              return (
-                <span
-                  key={i}
-                  aria-hidden="true"
-                  className="inline-block will-change-transform"
-                  style={{
-                    color: l.color,
-                    transform: `translate3d(${x}px, ${y}px, 0) rotateZ(${r}deg) scale(${scale})`,
-                    opacity: letterOpacity,
-                    whiteSpace: l.char === " " ? "pre" : "normal",
-                    textShadow: textGlow > 0
-                      ? `0 0 ${textGlow * 30}px ${l.color}40`
-                      : "none",
-                    animation: showFloat
-                      ? `heroFloat ${l.floatDur}s ease-in-out infinite alternate ${l.floatDelay}s`
-                      : "none",
-                    transition: "text-shadow 0.3s ease",
-                  }}
-                >
-                  {l.char === " " ? "\u00A0" : l.char}
-                </span>
-              );
-            })}
-          </h1>
-        </div>
+          className="w-full h-[3px]"
+          style={{
+            background: BRAND_COLOR,
+            transform: lineVisible ? "scaleX(1)" : "scaleX(0)",
+            transformOrigin: "center",
+            transition: "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+          }}
+        />
       </div>
 
-      <style>{`
-        @keyframes heroFloat {
-          0% { transform: translateY(0px); }
-          100% { transform: translateY(-8px); }
-        }
-      `}</style>
+      {/* Scattered typography with opposite parallax */}
+      <div
+        className="relative z-10 mt-8 sm:mt-10"
+        style={{
+          perspective: "1000px",
+          transform: textShift,
+          transition: "transform 0.2s ease-out",
+        }}
+      >
+        <h1
+          className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none"
+          style={{ transformStyle: "preserve-3d" }}
+          aria-label={TEXT}
+        >
+          {SCATTERED_LETTERS.map((l, i) => (
+            <span
+              key={i}
+              aria-hidden="true"
+              className="inline-block will-change-transform"
+              style={{
+                color: l.char === " " ? "transparent" : BRAND_COLOR,
+                transform: `translate3d(${l.tx}px, ${l.ty}px, ${l.tz}px) rotateZ(${l.rot}deg)`,
+                whiteSpace: l.char === " " ? "pre" : "normal",
+              }}
+            >
+              {l.char === " " ? "\u00A0" : l.char}
+            </span>
+          ))}
+        </h1>
+      </div>
     </section>
   );
 };
