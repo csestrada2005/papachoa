@@ -23,39 +23,23 @@ interface WordData {
 /* Manually craft scatter so letters cross over each other dramatically */
 const SCATTER_MAP: Record<number, { tx: number; ty: number; tz: number; rot: number }> = {
   // P - push far right
-  0:  { tx:  12, ty: 12, tz: -20, rot:  35 },
-  // i - push right
-  1:  { tx:   8, ty: 18, tz: -10, rot: -25 },
-  // j - push far right
-  2:  { tx:  14, ty:  8, tz: -25, rot:  40 },
-  // a - push left
-  3:  { tx:  -6, ty: 14, tz: -15, rot: -30 },
-  // m - slight left
-  4:  { tx:  -3, ty: 20, tz: -18, rot:  20 },
-  // a - push right
-  5:  { tx:  10, ty: 16, tz: -12, rot: -35 },
-  // s - push far left
-  6:  { tx: -12, ty: 10, tz: -22, rot:  30 },
-  // q - push right
-  7:  { tx:   9, ty: 22, tz: -14, rot: -20 },
-  // u - push far left
-  8:  { tx: -10, ty: 14, tz: -20, rot:  25 },
-  // e - push left
-  9:  { tx:  -8, ty: 18, tz: -16, rot: -40 },
-  // a - push far right
-  10: { tx:  13, ty: 10, tz: -24, rot:  30 },
-  // b - push far left
-  11: { tx: -14, ty: 16, tz: -18, rot: -35 },
-  // r - push right
-  12: { tx:   7, ty: 20, tz: -12, rot:  25 },
-  // a - push left
-  13: { tx:  -9, ty: 12, tz: -20, rot: -30 },
-  // z - push far right
-  14: { tx:  11, ty: 22, tz: -26, rot:  40 },
-  // a - push far left
-  15: { tx: -11, ty:  8, tz: -15, rot: -25 },
-  // n - center-ish
-  16: { tx:   4, ty: 18, tz: -20, rot:  35 },
+  0:  { tx:   8, ty: 12, tz: -20, rot:  35 },
+  1:  { tx:   4, ty: 18, tz: -10, rot: -25 },
+  2:  { tx:  10, ty:  8, tz: -25, rot:  40 },
+  3:  { tx: -10, ty: 14, tz: -15, rot: -30 },
+  4:  { tx:  -7, ty: 20, tz: -18, rot:  20 },
+  5:  { tx:   6, ty: 16, tz: -12, rot: -35 },
+  6:  { tx: -16, ty: 10, tz: -22, rot:  30 },
+  7:  { tx:   5, ty: 22, tz: -14, rot: -20 },
+  8:  { tx: -14, ty: 14, tz: -20, rot:  25 },
+  9:  { tx: -12, ty: 18, tz: -16, rot: -40 },
+  10: { tx:   9, ty: 10, tz: -24, rot:  30 },
+  11: { tx: -18, ty: 16, tz: -18, rot: -35 },
+  12: { tx:   3, ty: 20, tz: -12, rot:  25 },
+  13: { tx: -13, ty: 12, tz: -20, rot: -30 },
+  14: { tx:   7, ty: 22, tz: -26, rot:  40 },
+  15: { tx: -15, ty:  8, tz: -15, rot: -25 },
+  16: { tx:   0, ty: 18, tz: -20, rot:  35 },
 };
 
 const WORDS: WordData[] = (() => {
