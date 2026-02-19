@@ -19,17 +19,16 @@ interface LetterTarget {
   floatDelay: number;
 }
 
-/* Scatter positions spread wide around the image area (in vw/vh-ish px) */
+/* Scatter positions spread wide around the image area */
 const SEED_TARGETS: LetterTarget[] = TEXT.split("").map((char, i) => {
   const s = Math.sin(i * 47.3 + 7.1);
   const c = Math.cos(i * 31.7 + 3.9);
   const angle = (i / TEXT.length) * Math.PI * 2 + s * 0.8;
   return {
     char,
-    // Spread letters in an ellipse around center, with some randomness
-    tx: Math.cos(angle) * 420 + s * 80,
-    ty: Math.sin(angle) * 300 + c * 60,
-    rot: s * 35 + c * 20,
+    tx: Math.cos(angle) * 550 + s * 120,
+    ty: Math.sin(angle) * 380 + c * 100,
+    rot: s * 45 + c * 25,
     color: char === " " ? "transparent" : LETTER_COLORS[i % LETTER_COLORS.length],
     floatDur: 3 + (i % 3),
     floatDelay: i * 0.15,
@@ -38,11 +37,13 @@ const SEED_TARGETS: LetterTarget[] = TEXT.split("").map((char, i) => {
 
 const HeroPapacho = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const hasScrolled = useRef(false);
   const [progress, setProgress] = useState(0);
 
   const onScroll = useCallback(() => {
     const el = sectionRef.current;
     if (!el) return;
+    hasScrolled.current = true;
     const rect = el.getBoundingClientRect();
     const scrollable = el.offsetHeight - window.innerHeight;
     if (scrollable <= 0) return;
@@ -57,18 +58,16 @@ const HeroPapacho = () => {
   }, [onScroll]);
 
   /* Phase mapping */
-  // Image: visible 0-0.4, fades out 0.3-0.5, translates up
   const imgOpacity = progress < 0.3 ? 1 : progress > 0.55 ? 0 : 1 - (progress - 0.3) / 0.25;
-  const imgTranslateY = progress * -60; // moves up in vh
+  const imgTranslateY = progress * -60;
 
-  // Letters: scattered at 0, assemble by 1
-  const scatter = Math.max(0, 1 - progress * 1.5); // fully assembled by ~0.67
+  // Letters: scattered at progress=0, assemble by ~0.67
+  const scatter = Math.max(0, 1 - progress * 1.5);
   const letterOpacity = 1;
 
-  // Text assembly opacity — text becomes prominent after image fades
   const textGlow = progress > 0.5 ? Math.min(1, (progress - 0.5) * 4) : 0;
 
-  const showFloat = progress < 0.15;
+  const showFloat = scatter > 0.85;
 
   return (
     <section ref={sectionRef} className="relative" style={{ height: "300vh" }}>
@@ -78,7 +77,7 @@ const HeroPapacho = () => {
       >
         {/* Large centered image */}
         <div
-          className="absolute inset-0 flex items-center justify-center pointer-events-none"
+          className="absolute inset-0 flex items-end justify-center pointer-events-none pb-0"
           style={{
             transform: `translateY(${imgTranslateY}vh)`,
             opacity: imgOpacity,
@@ -89,7 +88,7 @@ const HeroPapacho = () => {
             src={heroKids}
             alt="Niños felices en pijamas Papachoa"
             className="object-cover select-none max-w-[92vw]"
-            style={{ height: "70vh" }}
+            style={{ height: "80vh" }}
             loading="eager"
             draggable={false}
           />
