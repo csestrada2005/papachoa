@@ -90,8 +90,8 @@ const HeroPapacho = () => {
     const scrollable = el.offsetHeight - window.innerHeight;
     if (scrollable <= 0) return;
     const raw = -rect.top / scrollable;
-    // Animation completes at 75% scroll (300vh of 400vh), last 25% is for overlap
-    const capped = Math.min(raw / 0.75, 1);
+    // Animation completes at 50% scroll (250vh of 500vh), rest is for logo + overlap
+    const capped = Math.min(raw / 0.5, 1);
     setProgress(Math.max(0, Math.min(1, capped)));
   }, []);
 
@@ -124,7 +124,7 @@ const HeroPapacho = () => {
   const logoTranslateY = (1 - logoOpacity) * 20;
 
   return (
-    <section ref={sectionRef} style={{ height: "400vh", position: "relative", zIndex: 1 }}>
+    <section ref={sectionRef} style={{ height: "500vh", position: "relative", zIndex: 1 }}>
       <div
         style={{
           position: "sticky",
