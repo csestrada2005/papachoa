@@ -2,42 +2,69 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import heroImage from "@/assets/hero-mama-hija.png";
 import printPapachoa from "@/assets/brand/print-papachoa.png";
 
-/* ─── Brand colors ─── */
 const BRAND_COLOR = "#A64D8A";
-
 const TEXT = "Pijamas que abrazan";
 
-interface LetterStyle {
+interface LetterScatter {
   char: string;
-  tx: number;
-  ty: number;
-  tz: number;
-  rot: number;
+  tx: number;  // vw
+  ty: number;  // vh
+  tz: number;  // vw
+  rot: number; // deg
 }
 
-/* Pseudo-random scattered positions — permanently fixed */
-const SCATTERED_LETTERS: LetterStyle[] = TEXT.split("").map((char, i) => {
-  const s = Math.sin(i * 47.3 + 7.1);
-  const c = Math.cos(i * 31.7 + 3.9);
-  return {
-    char,
-    tx: s * 60 + c * 30,
-    ty: c * 25 + s * 15,
-    tz: Math.sin(i * 23.1) * 80,
-    rot: s * 18 + c * 12,
-  };
-});
+interface WordData {
+  letters: LetterScatter[];
+}
+
+/* Build word-then-letter structure with viewport-unit scatter */
+const WORDS: WordData[] = (() => {
+  const words = TEXT.split(" ");
+  let globalIdx = 0;
+  return words.map((word) => ({
+    letters: word.split("").map((char) => {
+      const i = globalIdx++;
+      const s = Math.sin(i * 47.3 + 7.1);
+      const c = Math.cos(i * 31.7 + 3.9);
+      return {
+        char,
+        tx: s * 10 + c * 5,          // ~ -15vw to 15vw
+        ty: (c * 25 + s * 15),        // ~ -30vh to 45vh
+        tz: -(Math.abs(Math.sin(i * 23.1)) * 35 + 2), // ~ -40vw to -2vw
+        rot: s * 12 + c * 6,          // ~ -18deg to 18deg
+      };
+    }),
+  }));
+})();
 
 const HeroPapacho = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const [lineVisible, setLineVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [progress, setProgress] = useState(0);
 
-  /* Expanding line animation on mount */
+  /* Expanding line on mount */
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
+
+  /* Scroll progress */
+  const onScroll = useCallback(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const scrollable = el.offsetHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    const raw = -rect.top / scrollable;
+    setProgress(Math.max(0, Math.min(1, raw)));
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [onScroll]);
 
   /* Mouse parallax */
   const onMouseMove = useCallback((e: MouseEvent) => {
@@ -51,86 +78,103 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, [onMouseMove]);
 
+  const p = 1 - progress;
   const imgShift = `translate3d(${mouse.x * -15}px, ${mouse.y * -15}px, 0)`;
   const textShift = `translate3d(${mouse.x * 20}px, ${mouse.y * 20}px, 0)`;
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
-      style={{ background: "hsl(15 20% 96%)" }}
-    >
-      {/* Background texture overlay */}
+    <section ref={sectionRef} style={{ height: "300vh", position: "relative" }}>
       <div
-        className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url(${printPapachoa})`,
-          backgroundSize: "400px",
-          backgroundRepeat: "repeat",
-          opacity: 0.04,
-        }}
-      />
-
-      {/* Image container with parallax */}
-      <div
-        className="relative z-10 flex flex-col items-center"
-        style={{
-          transform: imgShift,
-          transition: "transform 0.2s ease-out",
+          position: "sticky",
+          top: 0,
+          height: "100vh",
+          width: "100%",
+          overflow: "hidden",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "hsl(15 20% 96%)",
         }}
       >
-        <img
-          src={heroImage}
-          alt="Niños felices en pijamas Papachoa"
-          className="object-cover object-top select-none max-h-[50vh] w-auto rounded-sm"
-          style={{
-            filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.12))",
-          }}
-          loading="eager"
-          draggable={false}
-        />
-
-        {/* Expanding line flush with bottom of image */}
+        {/* Background texture */}
         <div
-          className="w-full h-[3px]"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            background: BRAND_COLOR,
-            transform: lineVisible ? "scaleX(1)" : "scaleX(0)",
-            transformOrigin: "center",
-            transition: "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+            backgroundImage: `url(${printPapachoa})`,
+            backgroundSize: "400px",
+            backgroundRepeat: "repeat",
+            opacity: 0.04,
           }}
         />
-      </div>
 
-      {/* Scattered typography with opposite parallax */}
-      <div
-        className="relative z-10 mt-8 sm:mt-10"
-        style={{
-          perspective: "1000px",
-          transform: textShift,
-          transition: "transform 0.2s ease-out",
-        }}
-      >
-        <h1
-          className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none"
-          style={{ transformStyle: "preserve-3d" }}
-          aria-label={TEXT}
+        {/* Image + line with parallax */}
+        <div
+          className="relative z-10 flex flex-col items-center"
+          style={{
+            transform: imgShift,
+            transition: "transform 0.2s ease-out",
+          }}
         >
-          {SCATTERED_LETTERS.map((l, i) => (
-            <span
-              key={i}
-              aria-hidden="true"
-              className="inline-block will-change-transform"
-              style={{
-                color: l.char === " " ? "transparent" : BRAND_COLOR,
-                transform: `translate3d(${l.tx}px, ${l.ty}px, ${l.tz}px) rotateZ(${l.rot}deg)`,
-                whiteSpace: l.char === " " ? "pre" : "normal",
-              }}
-            >
-              {l.char === " " ? "\u00A0" : l.char}
-            </span>
-          ))}
-        </h1>
+          <img
+            src={heroImage}
+            alt="Niños felices en pijamas Papachoa"
+            className="object-cover object-top select-none max-h-[50vh] w-auto rounded-sm"
+            style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.12))" }}
+            loading="eager"
+            draggable={false}
+          />
+          <div
+            className="w-full h-[3px]"
+            style={{
+              background: BRAND_COLOR,
+              transform: lineVisible ? "scaleX(1)" : "scaleX(0)",
+              transformOrigin: "center",
+              transition: "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
+            }}
+          />
+        </div>
+
+        {/* Scattered → assembled typography with opposite parallax */}
+        <div
+          className="relative z-10 mt-8 sm:mt-10"
+          style={{
+            perspective: "1000px",
+            transform: textShift,
+            transition: "transform 0.2s ease-out",
+          }}
+        >
+          <h1
+            className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
+            style={{ transformStyle: "preserve-3d" }}
+            aria-label={TEXT}
+          >
+            {WORDS.map((word, wi) => (
+              <span key={wi} className="inline-block">
+                <span className="inline-block whitespace-nowrap">
+                  {word.letters.map((l, li) => (
+                    <span
+                      key={li}
+                      aria-hidden="true"
+                      className="inline-block will-change-transform"
+                      style={{
+                        color: BRAND_COLOR,
+                        transform: `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
+                        transition: "transform 0.05s linear",
+                      }}
+                    >
+                      {l.char}
+                    </span>
+                  ))}
+                </span>
+                {wi < WORDS.length - 1 && (
+                  <span className="inline-block w-[0.3em]">{"\u00A0"}</span>
+                )}
+              </span>
+            ))}
+          </h1>
+        </div>
       </div>
     </section>
   );
