@@ -87,7 +87,7 @@ const HeroPapacho = () => {
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   return (
-    <section ref={sectionRef} style={{ height: "500vh", position: "relative" }}>
+    <section ref={sectionRef} style={{ height: "300vh", position: "relative" }}>
       <div
         style={{
           position: "sticky",
