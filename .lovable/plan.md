@@ -1,57 +1,69 @@
 
 
-# Hero Section: Reversed Scroll Effect with Colorful Letters
+# Hero Redesign: Elena Borisova-Style Fixed Image + Scattered Letters
 
 ## What Changes
 
-The hero scroll animation will be **inverted** from the current behavior:
-
-- **At scroll 0 (top)**: Image fills most of the viewport, letters of "Pijamas que abrazan" are scattered wildly in 3D space with a gentle floating animation to hint interactivity
-- **At scroll 1 (bottom of 200vh)**: Image shrinks to a contained size, the expanding line appears at full width, and all letters gather into their assembled, readable position
-
-Each letter gets a unique color from the Papachoa brand palette (magenta, yellow, coral, blue, and warm tones).
-
-All other hero content (subtitle, CTA button, scroll indicator) will be removed. The hero becomes purely: image + line + scattered colorful letters.
+The hero will be completely restructured to match Elena Borisova's approach: a large central image with colorful scattered letters floating around it. As the user scrolls, the image stays fixed and naturally exits the viewport while the letters assemble into readable "Pijamas que abrazan" text.
 
 ## Visual Flow
 
 ```text
-SCROLL = 0 (top)                    SCROLL = 1 (bottom)
-+---------------------------+       +---------------------------+
-|                           |       |                           |
-|   P        a     s        |       |                           |
-|      i  j     m           |       |      [  image  ]          |
-|  [=== BIG IMAGE ===]      |  -->  |      ___________          |
-|        a                  |       |                           |
-|   q  u   e                |       |   Pijamas que abrazan     |
-|     a b r  a  z  a  n     |       |                           |
-+---------------------------+       +---------------------------+
- Letters scattered, image big        Letters assembled, image small
- Line invisible (scaleX=0)           Line visible (scaleX=1)
+SCROLL = 0 (top of page)              SCROLL = 1 (bottom of scroll area)
++-------------------------------+      +-------------------------------+
+|        P                      |      |                               |
+|   i         a                 |      |                               |
+|      [=== BIG IMAGE ===]      |      |    (image scrolled away)      |
+|      [=== HERO KIDS  ===]     |      |                               |
+|   q  [================= ]  s  |      |                               |
+|      u   e                    |  ->  |    Pijamas que abrazan        |
+|  a b r  a  z  a  n     m     |      |                               |
+|         j                     |      |                               |
++-------------------------------+      +-------------------------------+
+ Letters scattered around image         Letters assembled, image gone
 ```
 
-## Technical Details
+## Key Differences from Current
 
-### 1. Reversed progress mapping
-- `scatter = 1 - progress` (letters start scattered, end assembled)
-- `lineScale = progress` (line grows as you scroll)
-- Image scale: interpolates from ~1.3 (big) down to 1.0 (normal) based on progress
+1. **Image is NOT scaled down** -- it stays large and fixed, the viewport simply scrolls past it
+2. **Letters are positioned absolutely around the image** (overlapping, surrounding), not below it
+3. **The expanding line is removed** -- not needed in this design
+4. **Section height increases to ~300vh** to give enough scroll room for the image to exit and letters to assemble
+5. **Letters assemble into a centered position** in the lower portion of the sticky viewport, so they remain visible after the image has scrolled away
 
-### 2. Per-letter brand colors
-Each letter of "Pijamas que abrazan" gets assigned a color cycling through:
-- Magenta (`hsl(331 48% 45%)` / `#ac3c72`)
-- Yellow (`#f5ce3e`)
-- Coral (`#ff8d6b`)
-- Blue (`#416ba9`)
-- Warm brown and intermediate tones
+## Technical Approach
 
-### 3. Floating hint animation
-At scroll 0, letters will have a subtle CSS animation (gentle translateY oscillation, ~4-6px amplitude, 2-4s duration, staggered per letter) so users can tell the section is interactive.
+### 1. Layout Structure
+- Outer section: `height: 300vh` (enough scroll distance)
+- Inner sticky container: `position: sticky; top: 0; height: 100vh`
+- Image: large, centered, takes up ~60-70% of viewport height
+- Letters: `position: absolute` within the sticky container, scattered around the image
 
-### 4. Removed elements
-- Subtitle paragraph ("Suaves, calidos...")
-- CTA link ("Ver coleccion")
-- Scroll indicator ("scroll" + line)
+### 2. Scroll Progress Phases
+- **Phase 1 (progress 0-0.5)**: Image is visible, letters are scattered around it with floating animation. Image starts translating upward as user scrolls (parallax-style exit).
+- **Phase 2 (progress 0.5-1.0)**: Image has moved off-screen, letters converge to center and assemble into readable text.
 
-### 5. File changes
-- **Edit**: `src/components/sections/HeroPapacho.tsx` — reverse the scatter logic, add per-letter colors, add floating animation, remove subtitle/CTA/scroll indicator, scale image inversely with progress
+### 3. Image Behavior
+- Starts centered and large (~65vh height)
+- As progress increases, `translateY` moves it upward and out of view
+- Opacity fades to 0 around progress 0.4-0.6
+- No scaling -- it simply exits the viewport
+
+### 4. Letter Scatter & Assembly
+- Each letter has absolute scatter coordinates (tx, ty, tz, rot) -- reuse existing pseudo-random seed logic
+- Scatter targets are wider and taller to wrap around the image area
+- Assembly target: all letters converge to inline positions centered in the viewport
+- Brand colors preserved (magenta, yellow, coral, blue cycling)
+
+### 5. Floating Animation
+- Active when `progress < 0.2` (letters mostly scattered)
+- Gentle translateY oscillation per letter with staggered delays
+
+### 6. Responsive
+- Desktop: image ~65vh, letters font-size ~7-8xl, scatter radius large
+- Tablet: image ~50vh, letters ~5-6xl, scatter radius reduced
+- Mobile: image ~40vh, letters ~3-4xl, scatter radius compact
+
+## File Changes
+- **Edit**: `src/components/sections/HeroPapacho.tsx` -- complete rewrite of the scroll logic, layout structure, and animation phases as described above
+
