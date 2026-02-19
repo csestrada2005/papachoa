@@ -131,7 +131,7 @@ const HeroPapacho = () => {
 
         {/* Scattered → assembled typography with opposite parallax */}
         <div
-          className="relative z-10 -mt-4 sm:-mt-6"
+          className="relative z-10 -mt-16 sm:-mt-20"
           style={{
             perspective: "1000px",
             transform: textShift,
