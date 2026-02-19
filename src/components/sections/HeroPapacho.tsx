@@ -81,8 +81,8 @@ const HeroPapacho = () => {
   }, [onMouseMove]);
 
   const p = 1 - progress;
-  const imgShift = `translate3d(${mouse.x * -15}px, ${mouse.y * -15}px, 0)`;
-  const textShift = `translate3d(${mouse.x * 20}px, ${mouse.y * 20}px, 0)`;
+  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6}px, 0)`;
+  const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   return (
     <section ref={sectionRef} style={{ height: "300vh", position: "relative" }}>
@@ -131,7 +131,7 @@ const HeroPapacho = () => {
 
         {/* Scattered → assembled typography with opposite parallax */}
         <div
-          className="relative z-10 mt-8 sm:mt-10"
+          className="relative z-10 -mt-4 sm:-mt-6"
           style={{
             perspective: "1000px",
             transform: textShift,

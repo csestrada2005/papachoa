@@ -34,11 +34,15 @@ const Header = ({ transparent = false }: HeaderProps) => {
 
   /* scroll listener */
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 48);
+    const onScroll = () => {
+      // On transparent (homepage) pages, stay invisible until hero section is fully passed (~200vh)
+      const threshold = transparent ? window.innerHeight * 2 : 48;
+      setScrolled(window.scrollY > threshold);
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [transparent]);
 
   /* logo click → smooth scroll home */
   const handleLogoClick = useCallback(
