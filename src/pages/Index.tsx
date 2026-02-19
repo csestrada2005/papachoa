@@ -20,13 +20,30 @@ const Index = () => {
 
   // Auto-scroll to the assembled hero state (logo + button visible) on page load
   useEffect(() => {
-    // Target: ~75% of the hero scroll range (logo fully visible at progress ~0.75)
-    // scrollable = 500vh - 100vh = 400vh; target = 0.75 * 400vh = 300vh
     const targetY = window.innerHeight * 3;
+    const duration = 3200; // ~2x slower than default smooth scroll
+    let startTime: number | null = null;
+    let rafId: number;
+
+    const easeInOutCubic = (t: number) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      window.scrollTo(0, easeInOutCubic(progress) * targetY);
+      if (progress < 1) rafId = requestAnimationFrame(step);
+    };
+
     const delay = setTimeout(() => {
-      window.scrollTo({ top: targetY, behavior: "smooth" });
+      rafId = requestAnimationFrame(step);
     }, 400);
-    return () => clearTimeout(delay);
+
+    return () => {
+      clearTimeout(delay);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
