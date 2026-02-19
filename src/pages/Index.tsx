@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import Hero from "@/components/sections/Hero";
+import HeroPapacho from "@/components/sections/HeroPapacho";
 import BrandMarquee from "@/components/sections/BrandMarquee";
 import Emotion from "@/components/sections/Emotion";
 import Collections from "@/components/sections/Collections";
@@ -21,7 +21,7 @@ const Index = () => {
     <div className="min-h-screen bg-background overflow-x-clip">
       <Header transparent />
       <main>
-        <Hero />
+        <HeroPapacho />
         <BrandMarquee />
         <Emotion />
         <Collections />
