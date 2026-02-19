@@ -208,8 +208,8 @@ const Header = ({ transparent = false }: HeaderProps) => {
         </div>
       </header>
 
-      {/* Spacer so content isn't hidden under fixed header */}
-      <div style={{ height: "74px" }} aria-hidden="true" />
+      {/* Spacer: only show when NOT transparent (transparent header overlays the hero) */}
+      {!transparent && <div style={{ height: "74px" }} aria-hidden="true" />}
 
       <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       <MiniCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />

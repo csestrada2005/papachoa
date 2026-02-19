@@ -19,7 +19,7 @@ const Index = () => {
   usePrefetchRoutes();
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
-      <Header />
+      <Header transparent />
       <main>
         {/* 1 · Hero */}
         <HeroPapacho />
