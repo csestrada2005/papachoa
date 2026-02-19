@@ -2,8 +2,10 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import heroImage from "@/assets/hero-mama-hija.png";
 import printPapachoa from "@/assets/brand/print-papachoa.png";
 
-const BRAND_COLOR = "#A64D8A";
 const TEXT = "Pijamas que abrazan";
+
+/* Brand palette cycling per letter */
+const LETTER_COLORS = ["#ac3c72", "#f5ce3e", "#ff8d6b", "#416ba9"];
 
 interface LetterScatter {
   char: string;
@@ -120,19 +122,10 @@ const HeroPapacho = () => {
           <img
             src={heroImage}
             alt="Niños felices en pijamas Papachoa"
-            className="object-cover object-top select-none max-h-[50vh] w-auto rounded-sm"
-            style={{ filter: "drop-shadow(0 8px 24px rgba(0,0,0,0.12))" }}
+            className="object-cover object-top select-none max-h-[80vh] w-auto"
+            style={{ filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))" }}
             loading="eager"
             draggable={false}
-          />
-          <div
-            className="w-full h-[3px]"
-            style={{
-              background: BRAND_COLOR,
-              transform: lineVisible ? "scaleX(1)" : "scaleX(0)",
-              transformOrigin: "center",
-              transition: "transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)",
-            }}
           />
         </div>
 
@@ -159,7 +152,7 @@ const HeroPapacho = () => {
                       aria-hidden="true"
                       className="inline-block will-change-transform"
                       style={{
-                        color: BRAND_COLOR,
+                        color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
                         transform: `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
                         transition: "transform 0.05s linear",
                       }}
