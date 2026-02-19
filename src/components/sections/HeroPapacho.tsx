@@ -138,7 +138,7 @@ const HeroPapacho = () => {
 
         {/* Scattered → assembled typography — stays centered */}
         <div
-          className="absolute z-20 inset-0 flex items-center justify-center"
+          className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
             perspective: "1000px",
             transform: textShift,
