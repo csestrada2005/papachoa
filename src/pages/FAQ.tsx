@@ -1,3 +1,4 @@
+import { useSeo } from "@/hooks/useSeo";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import {
@@ -165,6 +166,7 @@ const faqItems = [
 ];
 
 const FAQ = () => {
+  useSeo({ title: "Preguntas Frecuentes | Papachoa México", description: "Resolvemos tus dudas sobre pijamas Papachoa: tallas, materiales, envíos, devoluciones y más.", path: "/faq" });
   return (
     <div className="min-h-screen bg-background">
       <Header />

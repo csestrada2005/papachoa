@@ -11,12 +11,14 @@ import HistoriasHilo from "@/components/sections/HistoriasHilo";
 import Suavidad from "@/components/sections/Suavidad";
 import MexicoAmor from "@/components/sections/MexicoAmor";
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
+import { useSeo } from "@/hooks/useSeo";
 
 // Below-fold lazy sections
 const Newsletter = lazy(() => import("@/components/sections/Newsletter"));
 
 const Index = () => {
   usePrefetchRoutes();
+  useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
   // Auto-scroll to the assembled hero state (logo + button visible) on page load
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef, useCallback, useId } from "react";
+import { useSeo } from "@/hooks/useSeo";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +10,7 @@ import { products, collections, type Collection } from "@/data/products";
 const validSlugs = new Set(collections.map((c) => c.id));
 
 const Catalogo = () => {
+  useSeo({ title: "Catálogo de Pijamas | Papachoa México", description: "Explora nuestras colecciones de pijamas familiares ultra suaves hechos en México. Mamá & bebé, papá & hija, sets matching y más.", path: "/catalogo" });
   const [searchParams, setSearchParams] = useSearchParams();
   const filterRef = useRef<HTMLDivElement>(null);
 

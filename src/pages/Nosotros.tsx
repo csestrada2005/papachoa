@@ -1,3 +1,4 @@
+import { useSeo } from "@/hooks/useSeo";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Link } from "react-router-dom";
@@ -11,6 +12,7 @@ const cardBase: React.CSSProperties = {
 };
 
 const Nosotros = () => {
+  useSeo({ title: "Nuestra Historia | Papachoa México", description: "Conoce la historia detrás de Papachoa: pijamas hechos con amor en México para las familias que abrazan.", path: "/nosotros" });
   usePrefetchRoutes();
 
   const hoverProps = (e: React.MouseEvent<HTMLDivElement>, active: boolean) => {

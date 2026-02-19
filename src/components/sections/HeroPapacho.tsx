@@ -147,11 +147,15 @@ const HeroPapacho = () => {
         >
           <img
             src={heroImage}
-            alt="Niños felices en pijamas Papachoa"
+            alt="Familia feliz con pijamas Papachoa hechos en México"
             className="object-cover object-top select-none max-h-[90vh] w-auto"
             style={{ filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))" }}
             loading="eager"
+            // @ts-expect-error fetchpriority is valid HTML but not yet in React types
+            fetchpriority="high"
             draggable={false}
+            width={800}
+            height={900}
           />
         </div>
 

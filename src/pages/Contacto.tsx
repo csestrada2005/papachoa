@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSeo } from "@/hooks/useSeo";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { brand } from "@/data/brand";
 
 const Contacto = () => {
+  useSeo({ title: "Contacto | Papachoa México", description: "¿Tienes dudas sobre nuestros pijamas? Escríbenos. Estamos para ayudarte.", path: "/contacto" });
   const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
