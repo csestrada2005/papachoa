@@ -1,4 +1,4 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
@@ -17,6 +17,17 @@ const Newsletter = lazy(() => import("@/components/sections/Newsletter"));
 
 const Index = () => {
   usePrefetchRoutes();
+
+  // Auto-scroll to the assembled hero state (logo + button visible) on page load
+  useEffect(() => {
+    // Target: ~75% of the hero scroll range (logo fully visible at progress ~0.75)
+    // scrollable = 500vh - 100vh = 400vh; target = 0.75 * 400vh = 300vh
+    const targetY = window.innerHeight * 3;
+    const delay = setTimeout(() => {
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    }, 400);
+    return () => clearTimeout(delay);
+  }, []);
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
       <Header transparent />
