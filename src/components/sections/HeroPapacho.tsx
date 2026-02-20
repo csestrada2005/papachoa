@@ -1,7 +1,7 @@
+// Optimized: removed printPapachoa (1MB) — replaced with inline SVG grain
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-mama-hija.png";
-import printPapachoa from "@/assets/brand/print-papachoa.png";
 import papachoaLogo from "@/assets/brand/papachoa-logo.png";
 
 const TEXT = "Pijamas que abrazan";
@@ -126,14 +126,12 @@ const HeroPapacho = () => {
           zIndex: 1,
         }}
       >
-        {/* Background texture */}
+        {/* Subtle grain texture via CSS — no image request */}
         <div
-          className="absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none opacity-[0.025]"
           style={{
-            backgroundImage: `url(${printPapachoa})`,
-            backgroundSize: "400px",
-            backgroundRepeat: "repeat",
-            opacity: 0.04,
+            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            backgroundSize: "150px",
           }}
         />
 
@@ -170,7 +168,7 @@ const HeroPapacho = () => {
         >
           <h1
             className="relative text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-none select-none text-center"
-            style={{ transformStyle: "preserve-3d" }}
+            style={{ transformStyle: "preserve-3d", minHeight: "1em", minWidth: "10ch" }}
             aria-label={TEXT}
           >
             {WORDS.map((word, wi) => (

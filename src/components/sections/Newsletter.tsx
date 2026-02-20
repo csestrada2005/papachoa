@@ -1,8 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { toast } from "@/hooks/use-toast";
-import printPajaritos from "@/assets/brand/print-pajaritos.png";
-import aoIcon from "@/assets/brand/ao-icon.png";
 
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
 const STORAGE_KEY = "papachoa_newsletter_subscribers";
@@ -83,19 +81,15 @@ const Newsletter = () => {
     <section className="py-24 md:py-36 relative overflow-hidden" style={{ background: "hsl(var(--papachoa-cream))" }}>
       <Confetti active={showConfetti} />
 
-      {/* Pajaritos pattern background */}
+      {/* Pajaritos pattern — inline SVG dots, zero HTTP request */}
       <div
-        className="absolute inset-0 opacity-[0.06] pointer-events-none"
-        style={{ backgroundImage: `url(${printPajaritos})`, backgroundSize: "300px", backgroundRepeat: "repeat" }}
-      />
-
-      {/* AO icon decoration */}
-      <img
-        src={aoIcon}
-        alt=""
-        aria-hidden="true"
-        className="absolute top-8 right-8 w-16 md:w-24 opacity-[0.06] pointer-events-none"
-        loading="lazy"
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          opacity: 0.07,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='3' fill='%23ac3c72'/%3E%3Ccircle cx='35' cy='20' r='2' fill='%23f5ce3e'/%3E%3Ccircle cx='50' cy='8' r='2.5' fill='%23ff8d6b'/%3E%3Ccircle cx='20' cy='40' r='2' fill='%23416ba9'/%3E%3Ccircle cx='45' cy='45' r='3' fill='%23ac3c72'/%3E%3Ccircle cx='8' cy='52' r='2' fill='%23f5ce3e'/%3E%3C/svg%3E")`,
+          backgroundSize: "60px 60px",
+          backgroundRepeat: "repeat",
+        }}
       />
 
       <div className="container relative z-10">

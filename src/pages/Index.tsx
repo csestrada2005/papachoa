@@ -2,35 +2,37 @@ import { lazy, Suspense, useEffect } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
-import BrandMarquee from "@/components/sections/BrandMarquee";
-import AboutPapachoa from "@/components/sections/AboutPapachoa";
-import Filosofia from "@/components/sections/Filosofia";
-import ColeccionesEditorial from "@/components/sections/ColeccionesEditorial";
-import ApatachoItems from "@/components/sections/ApatachoItems";
-import HistoriasHilo from "@/components/sections/HistoriasHilo";
-import Suavidad from "@/components/sections/Suavidad";
-import MexicoAmor from "@/components/sections/MexicoAmor";
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
 
-// Below-fold lazy sections
-const Newsletter = lazy(() => import("@/components/sections/Newsletter"));
+// Lazy load ALL below-fold sections to keep initial bundle lean
+const BrandMarquee       = lazy(() => import("@/components/sections/BrandMarquee"));
+const AboutPapachoa      = lazy(() => import("@/components/sections/AboutPapachoa"));
+const Filosofia          = lazy(() => import("@/components/sections/Filosofia"));
+const ColeccionesEditorial = lazy(() => import("@/components/sections/ColeccionesEditorial"));
+const ApatachoItems      = lazy(() => import("@/components/sections/ApatachoItems"));
+const HistoriasHilo      = lazy(() => import("@/components/sections/HistoriasHilo"));
+const Suavidad           = lazy(() => import("@/components/sections/Suavidad"));
+const MexicoAmor         = lazy(() => import("@/components/sections/MexicoAmor"));
+const Newsletter         = lazy(() => import("@/components/sections/Newsletter"));
 
 const Index = () => {
   usePrefetchRoutes();
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
-  // Auto-scroll to the assembled hero state (logo + button visible) on page load
+  // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
   useEffect(() => {
     const targetY = window.innerHeight * 3;
-    const duration = 3200; // ~2x slower than default smooth scroll
+    const duration = 3200;
     let startTime: number | null = null;
     let rafId: number;
+    let cancelled = false;
 
     const easeInOutCubic = (t: number) =>
       t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 
     const step = (timestamp: number) => {
+      if (cancelled) return;
       if (!startTime) startTime = timestamp;
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
@@ -38,14 +40,31 @@ const Index = () => {
       if (progress < 1) rafId = requestAnimationFrame(step);
     };
 
-    const delay = setTimeout(() => {
+    const startScroll = () => {
+      if (cancelled) return;
       rafId = requestAnimationFrame(step);
-    }, 400);
-
-    return () => {
-      clearTimeout(delay);
-      cancelAnimationFrame(rafId);
     };
+
+    // Wait for the hero image to be ready before scrolling
+    const heroImg = document.querySelector<HTMLImageElement>("img[fetchpriority='high']");
+    if (heroImg && !heroImg.complete) {
+      heroImg.addEventListener("load", startScroll, { once: true });
+      // Safety fallback: start after 1.5s even if image isn't ready
+      const fallback = setTimeout(startScroll, 1500);
+      return () => {
+        cancelled = true;
+        clearTimeout(fallback);
+        cancelAnimationFrame(rafId);
+      };
+    } else {
+      // Image already cached — small delay for first paint
+      const delay = setTimeout(startScroll, 200);
+      return () => {
+        cancelled = true;
+        clearTimeout(delay);
+        cancelAnimationFrame(rafId);
+      };
+    }
   }, []);
   return (
     <div className="min-h-screen bg-white overflow-x-clip">

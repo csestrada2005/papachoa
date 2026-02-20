@@ -172,70 +172,76 @@ const ApatachoItems = () => {
   const userInteracting = useRef(false);
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const rafRef = useRef<number | null>(null);
+  const blockWidthRef = useRef(0);        // cached to avoid DOM reads every frame
+  const cardWidthRef = useRef(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const initialized = useRef(false);
 
-  // Ancho estimado de una card en px (se calcula dinámicamente)
-  const getCardWidth = useCallback(() => {
-    if (!trackRef.current) return 180;
-    const first = trackRef.current.querySelector<HTMLElement>("[data-card]");
-    return first ? first.offsetWidth + 12 : 180; // gap-3 = 12px
+  // Measure and cache card + block width — also re-runs on resize
+  const measure = useCallback(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const first = el.querySelector<HTMLElement>("[data-card]");
+    if (!first) return;
+    // gap-3 = 12px, gap-4 = 16px — compute real gap from computed style
+    const gap = parseFloat(getComputedStyle(el).gap) || 12;
+    const cw = first.offsetWidth + gap;
+    cardWidthRef.current = cw;
+    blockWidthRef.current = cw * CARD_COUNT;
+    if (!initialized.current) {
+      el.scrollLeft = blockWidthRef.current; // start at middle block
+      initialized.current = true;
+    }
   }, []);
 
-  // Scroll infinito: cuando llega al 2do bloque se teleporta al 1er bloque (mismo visual)
+  // ResizeObserver so remeasure happens after layout, not on a blind rAF
+  useEffect(() => {
+    const el = trackRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    measure(); // initial measure
+    return () => ro.disconnect();
+  }, [measure]);
+
+  // Scroll loop — reads from cached values, no DOM touches per frame
   const loopScroll = useCallback(() => {
     const el = trackRef.current;
-    if (!el) return;
-    const cardW = getCardWidth();
-    const blockWidth = cardW * CARD_COUNT;
-    // Si llega al bloque 3, vuelve al bloque 1 sin animación
-    if (el.scrollLeft >= blockWidth * 2) {
-      el.scrollLeft -= blockWidth;
+    if (!el || blockWidthRef.current === 0) return;
+    const bw = blockWidthRef.current;
+    if (el.scrollLeft >= bw * 2) {
+      el.scrollLeft -= bw;
+    } else if (el.scrollLeft < bw * 0.25) {
+      el.scrollLeft += bw;
     }
-    // Si por drag llega al inicio (bloque 0), salta al bloque 1
-    if (el.scrollLeft < blockWidth * 0.5 && el.scrollLeft < 10) {
-      el.scrollLeft += blockWidth;
-    }
-  }, [getCardWidth]);
+  }, []);
 
-  // Auto-scroll suave
-  const autoScroll = useCallback(() => {
+  // rAF auto-scroll — uses timestamp delta for frame-rate-independent speed
+  const prevTs = useRef<number>(0);
+  const autoScroll = useCallback((ts: number) => {
     const el = trackRef.current;
-    if (!el || userInteracting.current) {
-      rafRef.current = requestAnimationFrame(autoScroll);
-      return;
+    if (!el) { rafRef.current = requestAnimationFrame(autoScroll); return; }
+
+    if (!userInteracting.current && blockWidthRef.current > 0) {
+      const delta = prevTs.current ? ts - prevTs.current : 16;
+      const speed = 40; // px per second
+      el.scrollLeft += (speed * delta) / 1000;
+      loopScroll();
+
+      // Update active dot — throttled via integer comparison
+      const bw = blockWidthRef.current;
+      const cw = cardWidthRef.current;
+      const normalized = ((el.scrollLeft % bw) + bw) % bw;
+      const idx = Math.floor(normalized / cw + 0.5) % CARD_COUNT;
+      setActiveIndex((prev) => (prev !== idx ? idx : prev));
     }
-    el.scrollLeft += 0.6; // velocidad: px por frame (~36px/s a 60fps)
-    loopScroll();
-
-    // Actualiza card activa
-    const cardW = getCardWidth();
-    const blockWidth = cardW * CARD_COUNT;
-    const normalized = el.scrollLeft % blockWidth;
-    const idx = Math.round(normalized / cardW) % CARD_COUNT;
-    setActiveIndex(idx);
-
+    prevTs.current = ts;
     rafRef.current = requestAnimationFrame(autoScroll);
-  }, [loopScroll, getCardWidth]);
+  }, [loopScroll]);
 
-  // Init: posiciona en el bloque del medio para poder ir en ambas direcciones
-  useEffect(() => {
-    const el = trackRef.current;
-    if (!el) return;
-    const init = () => {
-      const cardW = getCardWidth();
-      el.scrollLeft = cardW * CARD_COUNT; // bloque 2 (medio)
-    };
-    // Esperar un frame para que el DOM mida bien
-    const raf = requestAnimationFrame(init);
-    return () => cancelAnimationFrame(raf);
-  }, [getCardWidth]);
-
-  // Arrancar auto-scroll
   useEffect(() => {
     rafRef.current = requestAnimationFrame(autoScroll);
-    return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
+    return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
   }, [autoScroll]);
 
   // Pausa al interactuar, reanuda después de 2s
@@ -386,10 +392,8 @@ const ApatachoItems = () => {
             aria-label={`Ir a ${items[i].label}`}
             onClick={() => {
               const el = trackRef.current;
-              if (!el) return;
-              const cardW = getCardWidth();
-              const blockWidth = cardW * CARD_COUNT;
-              el.scrollLeft = blockWidth + cardW * i;
+              if (!el || !blockWidthRef.current) return;
+              el.scrollLeft = blockWidthRef.current + cardWidthRef.current * i;
               pauseAuto();
             }}
             style={{
