@@ -1,5 +1,3 @@
-import familiaImg from "@/assets/pijama-rosa-0-familia-azul.jpg";
-import mama2 from "@/assets/pijama-rosa-2-ternura.jpg";
 import SectionReveal from "@/components/ui/SectionReveal";
 
 /* ─────────────────────────────────────────
@@ -56,11 +54,9 @@ const AboutPapachoa = () => (
         </h2>
       </SectionReveal>
 
-      {/* ROW 3: texto izquierda (ancho limitado) + imagen derecha desfasada */}
-      <div className="relative grid lg:grid-cols-12 gap-0 items-start">
-
-        {/* Texto — cols 1-5 */}
-        <div className="lg:col-span-5 lg:pr-12" style={{ paddingTop: "clamp(0px, 4vw, 60px)" }}>
+      {/* ROW 3: texto */}
+      <div className="max-w-2xl">
+        <div>
           <SectionReveal delay={140}>
             <div
               className="space-y-5 text-muted-foreground font-light leading-relaxed"
@@ -92,56 +88,6 @@ const AboutPapachoa = () => (
               "El apapacho empieza con la pijama."
             </p>
           </SectionReveal>
-        </div>
-
-        {/* Imagen derecha — desfasada hacia arriba (negative mt en lg) */}
-        <div className="lg:col-span-7 lg:col-start-6" style={{ marginTop: "clamp(0rem, -3vw, -2rem)" }}>
-        <SectionReveal
-          delay={200}
-          distance={24}
-        >
-          <div className="relative">
-            {/* Imagen principal */}
-            <div className="overflow-hidden" style={{ borderRadius: 0 }}>
-              <img
-                src={familiaImg}
-                alt="Familia Papachoa en pijamas"
-                className="w-full"
-                style={{
-                  aspectRatio: "3/4",
-                  objectFit: "cover",
-                  objectPosition: "top center",
-                  display: "block",
-                }}
-                loading="lazy"
-                decoding="async"
-                width={600}
-                height={800}
-              />
-            </div>
-
-            {/* Mini imagen flotante — rompe monotonía */}
-            <div
-              className="absolute overflow-hidden shadow-xl"
-              style={{
-                bottom: "-2rem",
-                left: "-2.5rem",
-                width: "clamp(100px, 22vw, 220px)",
-                aspectRatio: "1/1",
-                border: "4px solid white",
-                zIndex: 2,
-              }}
-            >
-              <img
-                src={mama2}
-                alt=""
-                aria-hidden="true"
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </SectionReveal>
         </div>
 
       </div>
