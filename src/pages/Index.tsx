@@ -22,8 +22,8 @@ const Index = () => {
 
   // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
   useEffect(() => {
-    const targetY = window.innerHeight * 2;
-    const duration = 2600;
+    const targetY = Math.round(window.innerHeight * 2);
+    const duration = 2400;
     let startTime: number | null = null;
     let rafId: number;
     let cancelled = false;
@@ -74,7 +74,7 @@ const Index = () => {
         <HeroPapacho />
 
         {/* Wrapper so everything after hero overlaps it */}
-        <div className="relative z-10 bg-white" style={{ marginTop: "-100vh" }}>
+        <div className="relative z-10 bg-white" style={{ marginTop: 0 }}>
         {/* Marquee strip */}
         <BrandMarquee />
 
