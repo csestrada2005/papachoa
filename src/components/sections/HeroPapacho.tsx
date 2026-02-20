@@ -110,7 +110,7 @@ const HeroPapacho = () => {
   const logoTranslateY = (1 - logoOpacity) * 20;
 
   return (
-    <section ref={sectionRef} style={{ height: "500vh", position: "relative", zIndex: 1 }}>
+    <section ref={sectionRef} style={{ height: "350vh", position: "relative", zIndex: 1 }}>
       <div
         style={{
           position: "sticky",

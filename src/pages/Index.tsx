@@ -22,8 +22,8 @@ const Index = () => {
 
   // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
   useEffect(() => {
-    const targetY = window.innerHeight * 3;
-    const duration = 3200;
+    const targetY = window.innerHeight * 2;
+    const duration = 2600;
     let startTime: number | null = null;
     let rafId: number;
     let cancelled = false;
