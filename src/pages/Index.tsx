@@ -8,7 +8,7 @@ import { useSeo } from "@/hooks/useSeo";
 // Lazy load ALL below-fold sections to keep initial bundle lean
 const BrandMarquee       = lazy(() => import("@/components/sections/BrandMarquee"));
 const AboutPapachoa      = lazy(() => import("@/components/sections/AboutPapachoa"));
-const Filosofia          = lazy(() => import("@/components/sections/Filosofia"));
+// const Filosofia       = lazy(() => import("@/components/sections/Filosofia"));
 const ColeccionesEditorial = lazy(() => import("@/components/sections/ColeccionesEditorial"));
 const ApatachoItems      = lazy(() => import("@/components/sections/ApatachoItems"));
 const HistoriasHilo      = lazy(() => import("@/components/sections/HistoriasHilo"));
@@ -81,8 +81,7 @@ const Index = () => {
         {/* 2 · About */}
         <AboutPapachoa />
 
-        {/* 3 · Filosofía */}
-        <Filosofia />
+        {/* 3 · Filosofía — oculta */}
 
         {/* 4 · Colecciones editorial */}
         <ColeccionesEditorial />
