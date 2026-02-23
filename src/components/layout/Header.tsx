@@ -185,7 +185,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
   /* scroll listener */
   useEffect(() => {
     const onScroll = () => {
-      const threshold = transparent ? window.innerHeight * 4 : 48;
+      const threshold = transparent ? window.innerHeight * 2.5 : 48;
       setScrolled(window.scrollY > threshold);
     };
     window.addEventListener("scroll", onScroll, { passive: true });

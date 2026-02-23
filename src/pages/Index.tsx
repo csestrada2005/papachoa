@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
@@ -20,10 +20,12 @@ const Index = () => {
   usePrefetchRoutes();
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
+  const [heroComplete, setHeroComplete] = useState(false);
+
   // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
   useEffect(() => {
     const targetY = Math.round(window.innerHeight * 2);
-    const duration = 2400;
+    const duration = 3200;
     let startTime: number | null = null;
     let rafId: number;
     let cancelled = false;
@@ -37,7 +39,12 @@ const Index = () => {
       const elapsed = timestamp - startTime;
       const progress = Math.min(elapsed / duration, 1);
       window.scrollTo(0, easeInOutCubic(progress) * targetY);
-      if (progress < 1) rafId = requestAnimationFrame(step);
+      if (progress < 1) {
+        rafId = requestAnimationFrame(step);
+      } else {
+        // Auto-scroll finished — enable the overlap effect
+        setHeroComplete(true);
+      }
     };
 
     const startScroll = () => {
@@ -45,20 +52,24 @@ const Index = () => {
       rafId = requestAnimationFrame(step);
     };
 
+    // Wait 1.5s after load before starting the auto-scroll
+    const initialDelay = 1500;
+
     // Wait for the hero image to be ready before scrolling
     const heroImg = document.querySelector<HTMLImageElement>("img[fetchpriority='high']");
     if (heroImg && !heroImg.complete) {
-      heroImg.addEventListener("load", startScroll, { once: true });
-      // Safety fallback: start after 1.5s even if image isn't ready
-      const fallback = setTimeout(startScroll, 1500);
+      heroImg.addEventListener("load", () => {
+        if (!cancelled) setTimeout(startScroll, initialDelay);
+      }, { once: true });
+      // Safety fallback
+      const fallback = setTimeout(startScroll, initialDelay + 2000);
       return () => {
         cancelled = true;
         clearTimeout(fallback);
         cancelAnimationFrame(rafId);
       };
     } else {
-      // Image already cached — small delay for first paint
-      const delay = setTimeout(startScroll, 200);
+      const delay = setTimeout(startScroll, initialDelay);
       return () => {
         cancelled = true;
         clearTimeout(delay);
@@ -74,7 +85,7 @@ const Index = () => {
         <HeroPapacho />
 
         {/* Wrapper so everything after hero overlaps it */}
-        <div className="relative z-10 bg-white" style={{ marginTop: "-100vh" }}>
+        <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
         {/* Marquee strip */}
         <BrandMarquee />
 
