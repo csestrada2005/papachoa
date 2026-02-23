@@ -74,7 +74,7 @@ const Index = () => {
         <HeroPapacho />
 
         {/* Wrapper so everything after hero overlaps it */}
-        <div className="relative z-10 bg-white" style={{ marginTop: 0 }}>
+        <div className="relative z-10 bg-white" style={{ marginTop: "-100vh" }}>
         {/* Marquee strip */}
         <BrandMarquee />
 
