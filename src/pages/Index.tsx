@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
@@ -21,6 +21,7 @@ const Index = () => {
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
   const [heroComplete, setHeroComplete] = useState(false);
+  const autoScrollDone = React.useRef(false);
 
   // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
   useEffect(() => {
@@ -42,8 +43,8 @@ const Index = () => {
       if (progress < 1) {
         rafId = requestAnimationFrame(step);
       } else {
-        // Auto-scroll finished — enable the overlap effect
-        setHeroComplete(true);
+        // Mark auto-scroll done; overlap activates on next user scroll
+        autoScrollDone.current = true;
       }
     };
 
@@ -55,28 +56,31 @@ const Index = () => {
     // Wait 1.5s after load before starting the auto-scroll
     const initialDelay = 1500;
 
-    // Wait for the hero image to be ready before scrolling
     const heroImg = document.querySelector<HTMLImageElement>("img[fetchpriority='high']");
     if (heroImg && !heroImg.complete) {
       heroImg.addEventListener("load", () => {
         if (!cancelled) setTimeout(startScroll, initialDelay);
       }, { once: true });
-      // Safety fallback
       const fallback = setTimeout(startScroll, initialDelay + 2000);
-      return () => {
-        cancelled = true;
-        clearTimeout(fallback);
-        cancelAnimationFrame(rafId);
-      };
+      return () => { cancelled = true; clearTimeout(fallback); cancelAnimationFrame(rafId); };
     } else {
       const delay = setTimeout(startScroll, initialDelay);
-      return () => {
-        cancelled = true;
-        clearTimeout(delay);
-        cancelAnimationFrame(rafId);
-      };
+      return () => { cancelled = true; clearTimeout(delay); cancelAnimationFrame(rafId); };
     }
   }, []);
+
+  // Activate overlap only when user scrolls AFTER auto-scroll finishes
+  useEffect(() => {
+    const onWheel = () => {
+      if (autoScrollDone.current && !heroComplete) setHeroComplete(true);
+    };
+    window.addEventListener("wheel", onWheel, { passive: true, once: true });
+    window.addEventListener("touchmove", onWheel, { passive: true, once: true });
+    return () => {
+      window.removeEventListener("wheel", onWheel);
+      window.removeEventListener("touchmove", onWheel);
+    };
+  }, [heroComplete]);
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
       <Header transparent />
