@@ -289,6 +289,8 @@ const HeroPapacho = () => {
               ...bird.style,
               animation: `floatBird 3.5s ease-in-out infinite`,
               animationDelay: bird.delay,
+              mixBlendMode: "multiply",
+              background: "transparent",
             }}
             aria-hidden="true"
             draggable={false}

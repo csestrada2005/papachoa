@@ -88,13 +88,13 @@ const Index = () => {
     <div className="min-h-screen bg-white overflow-x-clip">
       <Header transparent onShowSection={setVisibleSection} />
       <main>
-        {/* 1 · Hero */}
-        <div id="hero">
+        {/* 1 · Hero — sticky so content scrolls over it */}
+        <div id="hero" style={{ position: "sticky", top: 0, zIndex: 1 }}>
           <HeroPapacho />
         </div>
 
-        {/* Wrapper so everything after hero overlaps it */}
-        <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
+        {/* Wrapper — solid bg, higher z so it covers the hero */}
+        <div className="relative bg-white transition-[margin] duration-700 ease-out" style={{ zIndex: 10, marginTop: heroComplete ? "-100vh" : 0 }}>
         <Suspense fallback={null}>
           <div id="about">
             <AboutPapachoa />
