@@ -197,10 +197,10 @@ const Nosotros = () => {
                 </p>
                 <Link
                   to="/catalogo"
-                  className="cta-premium-terracotta"
+                  className="cta-premium-terracotta group"
                 >
                   Ver colección
-                  <span className="text-lg">→</span>
+                  <span className="text-lg inline-block transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
                 </Link>
               </div>
             </div>

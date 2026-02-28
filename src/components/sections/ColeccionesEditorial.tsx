@@ -133,17 +133,26 @@ const CollectionCard = ({ col, index }: { col: CollectionEntry; index: number })
             Desde {priceFormatter.format(col.price_from)}
           </p>
           <p
-            className="inline-flex items-center gap-1.5 border-b pb-0.5 mt-2"
+            className="inline-flex items-center gap-1.5 mt-2 font-body"
             style={{
-              fontSize: "0.72rem",
-              letterSpacing: "0.13em",
-              textTransform: "uppercase",
+              fontSize: "0.8rem",
+              letterSpacing: "0.08em",
               color: "hsl(var(--foreground))",
-              borderColor: hovered ? "hsl(var(--foreground) / 0.7)" : "hsl(var(--foreground) / 0.25)",
-              transition: "border-color 0.3s, gap 0.3s",
+              transition: "color 300ms ease-out",
+              ...(hovered ? { color: "hsl(var(--primary))" } : {}),
             }}
           >
-            Ver colección <span aria-hidden="true">→</span>
+            Ver colección{" "}
+            <span
+              aria-hidden="true"
+              style={{
+                display: "inline-block",
+                transition: "transform 300ms ease-out",
+                transform: hovered ? "translateX(4px)" : "translateX(0)",
+              }}
+            >
+              →
+            </span>
           </p>
         </div>
       </Link>
