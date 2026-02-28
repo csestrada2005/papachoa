@@ -1,9 +1,11 @@
 import SectionReveal from "@/components/ui/SectionReveal";
+import { Package, Star, Heart } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const ITEMS = [
-  { icon: "📦", text: "Envío a todo México" },
-  { icon: "⭐", text: "Calidad garantizada" },
-  { icon: "💕", text: "Hecho con amor" },
+const ITEMS: { Icon: LucideIcon; text: string }[] = [
+  { Icon: Package, text: "Envío a todo México" },
+  { Icon: Star, text: "Calidad garantizada" },
+  { Icon: Heart, text: "Hecho con amor" },
 ];
 
 const BarraConfianza = () => (
@@ -12,7 +14,7 @@ const BarraConfianza = () => (
       <div className="container flex flex-wrap items-center justify-center gap-8 py-4">
         {ITEMS.map((item) => (
           <span key={item.text} className="flex items-center gap-2 text-sm text-gray-600">
-            <span>{item.icon}</span>
+            <item.Icon size={18} strokeWidth={1.5} className="text-current" />
             <span>{item.text}</span>
           </span>
         ))}

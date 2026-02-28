@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { products } from "@/data/products";
 import type { Collection } from "@/data/products";
 import pajaroNaranja from "@/assets/brand/pajaro-naranja.png";
+import { Moon, Baby, Users, Gift } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 interface ApatachoOption {
   id: string;
-  emoji: string;
+  Icon: LucideIcon;
   label: string;
   description: string;
   collections: Exclude<Collection, "todos">[];
@@ -16,7 +18,7 @@ interface ApatachoOption {
 const options: ApatachoOption[] = [
   {
     id: "calma",
-    emoji: "🌙",
+    Icon: Moon,
     label: "Calma",
     description: "Necesito que mi bebé duerma tranquilo toda la noche",
     collections: ["mama-bebe"],
@@ -24,7 +26,7 @@ const options: ApatachoOption[] = [
   },
   {
     id: "ternura",
-    emoji: "🤱",
+    Icon: Baby,
     label: "Ternura",
     description: "Quiero apapachar a mi recién nacido con lo más suave",
     collections: ["mama-bebe", "mama-hija"],
@@ -32,7 +34,7 @@ const options: ApatachoOption[] = [
   },
   {
     id: "conexion",
-    emoji: "👨‍👩‍👧",
+    Icon: Users,
     label: "Conexión",
     description: "Busco momentos especiales en familia, vestidos igual",
     collections: ["mama-hija", "papa-hija"],
@@ -40,7 +42,7 @@ const options: ApatachoOption[] = [
   },
   {
     id: "regalo",
-    emoji: "🎁",
+    Icon: Gift,
     label: "Regalar amor",
     description: "Quiero dar un regalo que emocione de verdad",
     collections: ["mama-bebe", "papa-hija"],
@@ -99,8 +101,8 @@ const ApatachoSelector = () => {
                     : "1.5px solid hsl(var(--border) / 0.3)",
                 }}
               >
-                <span className="text-4xl block mb-3 transition-transform duration-300 group-hover:scale-110">
-                  {option.emoji}
+                <span className="block mb-3 transition-transform duration-300 group-hover:scale-110">
+                  <option.Icon size={40} strokeWidth={1.5} style={{ color: option.color }} />
                 </span>
                 <h3 className="text-lg font-bold text-foreground mb-1">{option.label}</h3>
                 <p className="text-xs text-muted-foreground font-light leading-relaxed">{option.description}</p>

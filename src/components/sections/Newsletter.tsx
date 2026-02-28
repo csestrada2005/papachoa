@@ -70,7 +70,7 @@ const Newsletter = () => {
     }
     subs.push(trimmed);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(subs));
-    setStatus("success"); setMessage("🎉 ¡Bienvenida al club! Tu código: APAPACHO10"); setEmail(""); setShowConfetti(true);
+    setStatus("success"); setMessage("¡Bienvenida al club! Tu código: APAPACHO10"); setEmail(""); setShowConfetti(true);
     toast({ title: "¡Bienvenida al club de mamás apapacho!", description: "Usa el código APAPACHO10 para un 10% en tu primer pedido." });
     setTimeout(() => setShowConfetti(false), 3000);
   }, [email]);
@@ -104,7 +104,7 @@ const Newsletter = () => {
             Te enviaremos historias y descuentos que abrigan.
           </p>
           <p className="text-sm font-bold text-primary mb-8">
-            ✨ 10% de descuento en tu primer pedido al suscribirte
+            10% de descuento en tu primer pedido al suscribirte
           </p>
 
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
@@ -137,7 +137,7 @@ const Newsletter = () => {
           </div>
 
           <p className="text-xs mt-2 text-muted-foreground/60 tracking-wide">
-            Sin spam. Solo apapacho. 💛
+            Sin spam. Solo apapacho.
           </p>
         </div>
       </div>
