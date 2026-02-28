@@ -94,19 +94,19 @@ const Index = () => {
 
         {/* Wrapper so everything after hero overlaps it */}
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
-        <BrandMarquee />
-        <BarraConfianza />
-        <AboutPapachoa />
-        <ColeccionesEditorial />
-        <ProductosDestacados />
-        <ResenasSection />
-        <ComplementaLook />
-        <ApatachoItems />
-        <HistoriasHilo />
-        <Suavidad />
-        <MexicoAmor />
-        <CTAWhatsApp />
         <Suspense fallback={null}>
+          <BrandMarquee />
+          <BarraConfianza />
+          <AboutPapachoa />
+          <ColeccionesEditorial />
+          <ProductosDestacados />
+          <ResenasSection />
+          <ComplementaLook />
+          <ApatachoItems />
+          <HistoriasHilo />
+          <Suavidad />
+          <MexicoAmor />
+          <CTAWhatsApp />
           <div id="contacto">
             <Newsletter />
           </div>
