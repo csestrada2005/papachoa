@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
+import SectionReveal from "@/components/ui/SectionReveal";
 import { toast } from "@/hooks/use-toast";
 
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
@@ -94,51 +95,59 @@ const Newsletter = () => {
 
       <div className="container relative z-10">
         <div className="max-w-xl mx-auto text-center">
-          <p className="font-display text-3xl md:text-4xl text-primary mb-3">
-            Recibe nuestros cuentos nocturnos
-          </p>
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
-            Únete a nuestra familia
-          </h2>
-          <p className="text-muted-foreground mb-2 text-base font-light leading-relaxed">
-            Te enviaremos historias y descuentos que abrigan.
-          </p>
-          <p className="text-sm font-bold text-primary mb-8">
-            10% de descuento en tu primer pedido al suscribirte
-          </p>
+          <SectionReveal>
+            <p className="font-display text-3xl md:text-4xl text-primary mb-3">
+              Recibe nuestros cuentos nocturnos
+            </p>
+          </SectionReveal>
+          <SectionReveal delay={60}>
+            <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
+              Únete a nuestra familia
+            </h2>
+          </SectionReveal>
+          <SectionReveal delay={120}>
+            <p className="text-muted-foreground mb-2 text-base font-light leading-relaxed">
+              Te enviaremos historias y descuentos que abrigan.
+            </p>
+            <p className="text-sm font-bold text-primary mb-8">
+              10% de descuento en tu primer pedido al suscribirte
+            </p>
+          </SectionReveal>
 
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
-            <div className="relative flex-1">
-              <Input
-                type="email"
-                placeholder="tu@email.com"
-                value={email}
-                onChange={(e) => { setEmail(e.target.value); if (status === "error") { setStatus("idle"); setMessage(""); } }}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-                disabled={isLoading}
-                className="w-full bg-white border border-border rounded-full px-5 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 disabled:opacity-60 transition-all duration-300"
-                style={{ boxShadow: isFocused ? "0 0 20px hsl(331 48% 45% / 0.1)" : "none" }}
-                required
-                aria-describedby="newsletter-msg"
-              />
+          <SectionReveal delay={200}>
+            <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
+              <div className="relative flex-1">
+                <Input
+                  type="email"
+                  placeholder="tu@email.com"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); if (status === "error") { setStatus("idle"); setMessage(""); } }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                  disabled={isLoading}
+                  className="w-full bg-white border border-border rounded-full px-5 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 disabled:opacity-60 transition-all duration-300"
+                  style={{ boxShadow: isFocused ? "0 0 20px hsl(331 48% 45% / 0.1)" : "none" }}
+                  required
+                  aria-describedby="newsletter-msg"
+                />
+              </div>
+              <button type="submit" disabled={isLoading} className="btn-artisan disabled:opacity-70 whitespace-nowrap">
+                {isLoading ? "Suscribiendo…" : "Suscribirme"}
+              </button>
+            </form>
+
+            <div id="newsletter-msg" className="h-8 mt-4" aria-live="polite">
+              {message && (
+                <p className={`text-sm font-bold animate-fade-in ${status === "error" ? "text-red-500" : "text-emerald-600"}`}>
+                  {message}
+                </p>
+              )}
             </div>
-            <button type="submit" disabled={isLoading} className="btn-artisan disabled:opacity-70 whitespace-nowrap">
-              {isLoading ? "Suscribiendo…" : "Suscribirme"}
-            </button>
-          </form>
 
-          <div id="newsletter-msg" className="h-8 mt-4" aria-live="polite">
-            {message && (
-              <p className={`text-sm font-bold animate-fade-in ${status === "error" ? "text-red-500" : "text-emerald-600"}`}>
-                {message}
-              </p>
-            )}
-          </div>
-
-          <p className="text-xs mt-2 text-muted-foreground/60 tracking-wide">
-            Sin spam. Solo apapacho.
-          </p>
+            <p className="text-xs mt-2 text-muted-foreground/60 tracking-wide">
+              Sin spam. Solo apapacho.
+            </p>
+          </SectionReveal>
         </div>
       </div>
     </section>
