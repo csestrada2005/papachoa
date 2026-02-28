@@ -2,11 +2,11 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
+import BrandMarquee from "@/components/sections/BrandMarquee";
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
 
-// Lazy load ALL below-fold sections to keep initial bundle lean
-const BrandMarquee          = lazy(() => import("@/components/sections/BrandMarquee"));
+// Lazy load below-fold sections to keep initial bundle lean
 const BarraConfianza        = lazy(() => import("@/components/sections/BarraConfianza"));
 const AboutPapachoa         = lazy(() => import("@/components/sections/AboutPapachoa"));
 const ColeccionesEditorial  = lazy(() => import("@/components/sections/ColeccionesEditorial"));
@@ -94,8 +94,8 @@ const Index = () => {
 
         {/* Wrapper so everything after hero overlaps it */}
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
+        <BrandMarquee />
         <Suspense fallback={null}>
-          <BrandMarquee />
           <BarraConfianza />
           <AboutPapachoa />
           <ColeccionesEditorial />
