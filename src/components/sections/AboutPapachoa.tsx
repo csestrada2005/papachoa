@@ -33,16 +33,17 @@ const AboutPapachoa = () =>
         {/* ROW 1: label + número */}
         <div className="flex items-start justify-between mb-3">
           <SectionReveal>
-            
-
-
-
-
-
-
-
-
-
+            <span
+              className="font-bold select-none"
+              style={{
+                fontSize: "clamp(1.2rem, 2vw, 1.6rem)",
+                color: "#b0b0b0",
+                opacity: 0.3,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase"
+              }}>
+              Hola
+            </span>
           </SectionReveal>
           <SectionReveal delay={60}>
             <span

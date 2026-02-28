@@ -88,8 +88,8 @@ const Index = () => {
     <div className="min-h-screen bg-white overflow-x-clip">
       <Header transparent onShowSection={setVisibleSection} />
       <main>
-        {/* 1 · Hero — sticky so content scrolls over it */}
-        <div id="hero" style={{ position: "sticky", top: 0, zIndex: 1 }}>
+        {/* 1 · Hero */}
+        <div id="hero">
           <HeroPapacho />
         </div>
 
