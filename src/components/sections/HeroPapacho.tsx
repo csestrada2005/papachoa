@@ -156,7 +156,7 @@ const HeroPapacho = () => {
             src={heroImage}
             alt="Familia feliz con pijamas Papachoa hechos en México"
             className="object-cover object-top select-none max-h-[90vh] w-auto"
-            style={{ filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))" }}
+            style={{ filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))", imageRendering: "auto", objectFit: "cover" }}
             loading="eager"
             // @ts-expect-error fetchpriority is valid HTML but not yet in React types
             fetchpriority="high"

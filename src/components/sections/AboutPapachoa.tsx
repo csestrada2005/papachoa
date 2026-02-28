@@ -45,12 +45,12 @@ const AboutPapachoa = () => (
       <div
         className="w-full md:max-w-[54%] lg:max-w-[48%]"
         style={{
-        background: "rgba(10,8,6,0.42)",
-          backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          border: "1px solid rgba(255,255,255,0.12)",
+          background: "rgba(255,255,255,0.08)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid rgba(255,255,255,0.15)",
           borderRadius: "20px",
-          boxShadow: "0 12px 50px rgba(0,0,0,0.30), 0 1px 0 rgba(255,255,255,0.06) inset",
+          boxShadow: "0 12px 50px rgba(0,0,0,0.20), 0 1px 0 rgba(255,255,255,0.08) inset",
           padding: "clamp(2rem, 5vw, 3.5rem)",
         }}
       >
