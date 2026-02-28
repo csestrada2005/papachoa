@@ -21,8 +21,9 @@ const ProductosDestacados = () => (
               key={i}
               className="group rounded-2xl overflow-hidden bg-white border border-gray-100 transition-all duration-300 hover:scale-[1.03] hover:shadow-lg"
             >
-              {/* Placeholder image */}
-              <div className="aspect-square bg-gray-100 relative">
+              {/* Placeholder image with shimmer */}
+              <div className="aspect-square relative overflow-hidden" style={{ backgroundColor: "#e5e7eb" }}>
+                <div className="absolute inset-0" style={{ background: "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.4) 50%, transparent 100%)", animation: "shimmer 1.8s infinite" }} />
                 <span
                   className="absolute top-3 left-3 text-xs font-bold text-primary-foreground px-3 py-1 rounded-full bg-primary"
                 >
@@ -52,5 +53,14 @@ const ProductosDestacados = () => (
     </section>
   </SectionReveal>
 );
+
+// Shimmer keyframe injected once
+const shimmerStyle = document.getElementById("shimmer-keyframe") || (() => {
+  const s = document.createElement("style");
+  s.id = "shimmer-keyframe";
+  s.textContent = `@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}`;
+  document.head.appendChild(s);
+  return s;
+})();
 
 export default ProductosDestacados;

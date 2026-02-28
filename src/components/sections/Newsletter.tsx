@@ -79,19 +79,8 @@ const Newsletter = () => {
   const isLoading = status === "loading";
 
   return (
-    <section className="py-24 md:py-36 relative overflow-hidden" style={{ background: "hsl(var(--papachoa-cream))" }}>
+    <section className="py-24 md:py-36 relative overflow-hidden" style={{ background: "#FDF6F0" }}>
       <Confetti active={showConfetti} />
-
-      {/* Pajaritos pattern — inline SVG dots, zero HTTP request */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          opacity: 0.07,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='10' cy='10' r='3' fill='%23ac3c72'/%3E%3Ccircle cx='35' cy='20' r='2' fill='%23f5ce3e'/%3E%3Ccircle cx='50' cy='8' r='2.5' fill='%23ff8d6b'/%3E%3Ccircle cx='20' cy='40' r='2' fill='%23416ba9'/%3E%3Ccircle cx='45' cy='45' r='3' fill='%23ac3c72'/%3E%3Ccircle cx='8' cy='52' r='2' fill='%23f5ce3e'/%3E%3C/svg%3E")`,
-          backgroundSize: "60px 60px",
-          backgroundRepeat: "repeat",
-        }}
-      />
 
       <div className="container relative z-10">
         <div className="max-w-xl mx-auto text-center">
@@ -125,13 +114,13 @@ const Newsletter = () => {
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
                   disabled={isLoading}
-                  className="w-full bg-white border border-border rounded-full px-5 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 disabled:opacity-60 transition-all duration-300"
-                  style={{ boxShadow: isFocused ? "0 0 20px hsl(331 48% 45% / 0.1)" : "none" }}
+                  className="w-full bg-white px-5 py-5 text-foreground placeholder:text-muted-foreground/50 focus:ring-2 focus:ring-primary/20 focus:border-primary/30 disabled:opacity-60 transition-all duration-300"
+                  style={{ borderRadius: 8, border: "1px solid #F2BCC8", boxShadow: isFocused ? "0 0 20px hsl(331 48% 45% / 0.1)" : "none" }}
                   required
                   aria-describedby="newsletter-msg"
                 />
               </div>
-              <button type="submit" disabled={isLoading} className="btn-artisan disabled:opacity-70 whitespace-nowrap">
+              <button type="submit" disabled={isLoading} className="disabled:opacity-70 whitespace-nowrap font-semibold px-6 py-3 transition-colors duration-300" style={{ borderRadius: 8, backgroundColor: "#ac3c72", color: "#fff" }}>
                 {isLoading ? "Suscribiendo…" : "Suscribirme"}
               </button>
             </form>

@@ -9,7 +9,7 @@ const REVIEWS = [
 const Stars = () => (
   <div className="flex gap-0.5 mb-3">
     {[...Array(5)].map((_, i) => (
-      <span key={i} style={{ color: "#f5ce3e", fontSize: "1.1rem" }}>★</span>
+      <span key={i} style={{ color: "#D4AF37", fontSize: "1.1rem" }}>★</span>
     ))}
   </div>
 );
@@ -27,7 +27,9 @@ const ResenasSection = () => (
               <Stars />
               <p className="text-foreground mb-4 leading-relaxed">"{r.text}"</p>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-200" />
+                <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold text-primary" style={{ backgroundColor: "#FADADD", minWidth: 40, minHeight: 40 }}>
+                  {r.name.split(" ").map(w => w[0]).join("")}
+                </div>
                 <span className="font-bold text-sm text-foreground">{r.name}</span>
               </div>
             </div>
