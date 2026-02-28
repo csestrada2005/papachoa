@@ -210,16 +210,32 @@ const HeroPapacho = () => {
               draggable={false}
             />
           </div>
-          <button
-            onClick={() => navigate("/catalogo")}
-            className="mt-6 px-8 py-3 rounded-full bg-primary text-primary-foreground font-semibold text-base tracking-wide shadow-lg hover:opacity-90 transition-opacity"
+          {/* Tagline — fade-in + slide-up after logo appears */}
+          <p
+            className="mt-4 text-xl md:text-2xl font-bold text-center select-none"
             style={{
-              opacity: logoOpacity,
-              transform: `translateY(${logoTranslateY}px)`,
-              transition: "opacity 0.2s linear, transform 0.2s ease-out",
+              fontFamily: "'Lato', sans-serif",
+              color: "#000000",
+              opacity: Math.max(0, Math.min(1, (logoOpacity - 0.5) * 2)),
+              transform: `translateY(${(1 - Math.max(0, Math.min(1, (logoOpacity - 0.5) * 2))) * 16}px)`,
+              transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
             }}
           >
-            Ver Catálogo
+            pensado por mamás, para mamás
+          </p>
+          {/* CTA — fade-in with greater delay */}
+          <button
+            onClick={() => navigate("/catalogo")}
+            className="mt-6 px-8 py-4 rounded-full font-semibold text-base tracking-wide shadow-lg transition-all duration-200 hover:scale-105 hover:brightness-110"
+            style={{
+              backgroundColor: "#ac3c72",
+              color: "#ffffff",
+              opacity: Math.max(0, Math.min(1, (logoOpacity - 0.7) * 3.33)),
+              transform: `translateY(${(1 - Math.max(0, Math.min(1, (logoOpacity - 0.7) * 3.33))) * 16}px)`,
+              transition: "opacity 0.6s ease-out, transform 0.6s ease-out",
+            }}
+          >
+            Descubre Papachoa
           </button>
         </div>
       </div>

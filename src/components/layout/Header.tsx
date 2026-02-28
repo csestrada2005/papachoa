@@ -16,7 +16,7 @@ import logo from "@/assets/logo-papachoa.webp";
 const NAV_LINKS = [
   { label: "Filosofía",   href: "/#filosofia" },
   { label: "Colecciones", href: "/#colecciones" },
-  { label: "Catálogo",    href: "/catalogo" },
+  { label: "Ver colección", href: "/catalogo", highlight: true },
   { label: "Contacto",    href: "/contacto" },
 ];
 
@@ -253,7 +253,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
               className="w-auto transition-all duration-300"
               style={{
                 height: scrolled ? "28px" : "34px",
-                filter: isTransparent ? "brightness(0)" : "none",
+                filter: "none",
               }}
               loading="eager"
               fetchPriority="high"
@@ -267,8 +267,8 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 <Link
                   to={link.href}
                   onClick={(e) => handleAnchorClick(e, link.href)}
-                  className="text-sm font-medium transition-all duration-200 relative group"
-                  style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em", paddingBottom: "2px" }}
+                  className={`text-sm transition-all duration-200 relative group ${(link as any).highlight ? 'font-semibold' : 'font-medium'}`}
+                  style={{ color: (link as any).highlight ? '#ac3c72' : "hsl(var(--foreground))", letterSpacing: "0.03em", paddingBottom: "2px" }}
                 >
                   <span className="relative">
                     {link.label}

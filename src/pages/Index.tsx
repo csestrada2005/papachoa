@@ -6,15 +6,19 @@ import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
 
 // Lazy load ALL below-fold sections to keep initial bundle lean
-const BrandMarquee       = lazy(() => import("@/components/sections/BrandMarquee"));
-const AboutPapachoa      = lazy(() => import("@/components/sections/AboutPapachoa"));
-// const Filosofia       = lazy(() => import("@/components/sections/Filosofia"));
-const ColeccionesEditorial = lazy(() => import("@/components/sections/ColeccionesEditorial"));
-const ApatachoItems      = lazy(() => import("@/components/sections/ApatachoItems"));
-const HistoriasHilo      = lazy(() => import("@/components/sections/HistoriasHilo"));
-const Suavidad           = lazy(() => import("@/components/sections/Suavidad"));
-const MexicoAmor         = lazy(() => import("@/components/sections/MexicoAmor"));
-const Newsletter         = lazy(() => import("@/components/sections/Newsletter"));
+const BrandMarquee          = lazy(() => import("@/components/sections/BrandMarquee"));
+const BarraConfianza        = lazy(() => import("@/components/sections/BarraConfianza"));
+const AboutPapachoa         = lazy(() => import("@/components/sections/AboutPapachoa"));
+const ColeccionesEditorial  = lazy(() => import("@/components/sections/ColeccionesEditorial"));
+const ProductosDestacados   = lazy(() => import("@/components/sections/ProductosDestacados"));
+const ResenasSection        = lazy(() => import("@/components/sections/ResenasSection"));
+const ComplementaLook       = lazy(() => import("@/components/sections/ComplementaLook"));
+const ApatachoItems         = lazy(() => import("@/components/sections/ApatachoItems"));
+const HistoriasHilo         = lazy(() => import("@/components/sections/HistoriasHilo"));
+const Suavidad              = lazy(() => import("@/components/sections/Suavidad"));
+const MexicoAmor            = lazy(() => import("@/components/sections/MexicoAmor"));
+const CTAWhatsApp           = lazy(() => import("@/components/sections/CTAWhatsApp"));
+const Newsletter            = lazy(() => import("@/components/sections/Newsletter"));
 
 const Index = () => {
   usePrefetchRoutes();
@@ -90,30 +94,18 @@ const Index = () => {
 
         {/* Wrapper so everything after hero overlaps it */}
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
-        {/* Marquee strip */}
         <BrandMarquee />
-
-        {/* 2 · About */}
+        <BarraConfianza />
         <AboutPapachoa />
-
-        {/* 3 · Filosofía — oculta */}
-
-        {/* 4 · Colecciones editorial */}
         <ColeccionesEditorial />
-
-        {/* 5 · ¿Qué apapacho necesitas? */}
+        <ProductosDestacados />
+        <ResenasSection />
+        <ComplementaLook />
         <ApatachoItems />
-
-        {/* 6 · Historias en cada hilo */}
         <HistoriasHilo />
-
-        {/* 7 · La prueba de suavidad */}
         <Suavidad />
-
-        {/* 8 · Hecho en México */}
         <MexicoAmor />
-
-        {/* Newsletter + footer */}
+        <CTAWhatsApp />
         <Suspense fallback={null}>
           <div id="contacto">
             <Newsletter />
