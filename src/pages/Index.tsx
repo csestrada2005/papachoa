@@ -7,7 +7,6 @@ import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
 
 // Lazy load below-fold sections to keep initial bundle lean
-const BarraConfianza        = lazy(() => import("@/components/sections/BarraConfianza"));
 const AboutPapachoa         = lazy(() => import("@/components/sections/AboutPapachoa"));
 const ColeccionesEditorial  = lazy(() => import("@/components/sections/ColeccionesEditorial"));
 const ProductosDestacados   = lazy(() => import("@/components/sections/ProductosDestacados"));
@@ -17,7 +16,6 @@ const ApatachoItems         = lazy(() => import("@/components/sections/ApatachoI
 const HistoriasHilo         = lazy(() => import("@/components/sections/HistoriasHilo"));
 const Suavidad              = lazy(() => import("@/components/sections/Suavidad"));
 const MexicoAmor            = lazy(() => import("@/components/sections/MexicoAmor"));
-const CTAWhatsApp           = lazy(() => import("@/components/sections/CTAWhatsApp"));
 const Newsletter            = lazy(() => import("@/components/sections/Newsletter"));
 
 const Index = () => {
@@ -25,6 +23,7 @@ const Index = () => {
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
   const [heroComplete, setHeroComplete] = useState(false);
+  const [visibleSection, setVisibleSection] = useState<string | null>(null);
   const autoScrollDone = React.useRef(false);
 
   // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
@@ -87,43 +86,48 @@ const Index = () => {
   }, [heroComplete]);
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
-      <Header transparent />
+      <Header transparent onShowSection={setVisibleSection} />
       <main>
         {/* 1 · Hero */}
         <div id="hero">
           <HeroPapacho />
         </div>
 
-
         {/* Wrapper so everything after hero overlaps it */}
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
         <Suspense fallback={null}>
-          <BarraConfianza />
           <div id="about">
             <AboutPapachoa />
           </div>
-          <ColeccionesEditorial />
+          <div id="colecciones">
+            <ColeccionesEditorial />
+          </div>
           <div id="productos">
             <ProductosDestacados />
           </div>
 
-          {/* Hidden sections — accessible via hamburger menu scroll */}
-          <div id="coleccion-completa" className="hidden">
-            <ComplementaLook />
-          </div>
-          <div id="para-pintar" className="hidden">
-            <ResenasSection />
-          </div>
-          <div className="hidden">
-            <ApatachoItems />
-            <HistoriasHilo />
-            <Suavidad />
+          {/* Conditionally visible sections (toggled from menu) */}
+          {visibleSection === "historias" && (
+            <Suspense fallback={null}>
+              <div id="historias"><HistoriasHilo /></div>
+            </Suspense>
+          )}
+          {visibleSection === "materiales" && (
+            <Suspense fallback={null}>
+              <div id="materiales"><Suavidad /></div>
+            </Suspense>
+          )}
+
+          <div id="mexico-amor">
             <MexicoAmor />
-            <Newsletter />
           </div>
 
-          <div id="contacto">
-            <CTAWhatsApp />
+          {/* Hidden sections — kept in DOM but not visible */}
+          <div className="hidden">
+            <ComplementaLook />
+            <ResenasSection />
+            <ApatachoItems />
+            <Newsletter />
           </div>
         </Suspense>
         </div>

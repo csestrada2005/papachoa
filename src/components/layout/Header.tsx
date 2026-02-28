@@ -20,18 +20,20 @@ const NAV_LINKS = [
   { label: "Contacto",    href: "/contacto" },
 ];
 
-const MENU_LINKS = [
+const MENU_LINKS: { label: string; href: string; section?: string }[] = [
   { label: "Inicio", href: "/#hero" },
   { label: "Somos Papachoa", href: "/#about" },
   { label: "Colecciones", href: "/#colecciones" },
   { label: "Más Vendidos", href: "/#productos" },
-  { label: "Para Pintar", href: "/#para-pintar" },
-  { label: "Próximamente", href: "/#proximamente" },
-  { label: "Contacto", href: "/contacto" },
+  { label: "Nuestra Historia", href: "/#historias", section: "historias" },
+  { label: "Materiales", href: "/#materiales", section: "materiales" },
+  { label: "Hecho con Manos Mexicanas", href: "/#mexico-amor" },
+  { label: "Contacto", href: "/#footer" },
 ];
 
 interface HeaderProps {
   transparent?: boolean;
+  onShowSection?: (section: string | null) => void;
 }
 
 /* ── Inline Search Palette ── */
@@ -174,7 +176,7 @@ const CartBadge = ({ count }: { count: number }) => (
 );
 
 /* ── Main Header ── */
-const Header = ({ transparent = false }: HeaderProps) => {
+const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -444,13 +446,20 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 onClick={(e) => {
                   e.preventDefault();
                   setMenuOpen(false);
+
+                  // If this link needs to reveal a conditional section first
+                  if (link.section && onShowSection) {
+                    onShowSection(link.section);
+                  }
+
                   if (link.href.startsWith("/#")) {
                     const id = link.href.replace("/#", "");
                     if (location.pathname !== "/") {
                       navigate("/");
                       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 400);
                     } else {
-                      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 100);
+                      // Small delay so the section renders before scrolling
+                      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 150);
                     }
                   } else {
                     navigate(link.href);
