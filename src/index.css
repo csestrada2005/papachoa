@@ -108,6 +108,15 @@
   a, button, input, select, textarea, [role="button"] {
     transition: all 300ms ease-out;
   }
+
+
+  /* Hover scale on product/collection images */
+  .overflow-hidden img {
+    transition: transform 300ms ease-out;
+  }
+  .overflow-hidden:hover img {
+    transform: scale(1.03);
+  }
 }
 
 @layer components {

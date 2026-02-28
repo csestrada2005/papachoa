@@ -279,8 +279,8 @@ const ColeccionesEditorial = () => {
         onMouseLeave={onMouseUp}
         onMouseMove={onMouseMove}
       >
-        {catalogCollections.map((col, i) => (
-          <div key={col.id} style={{ scrollSnapAlign: "start" }}>
+         {catalogCollections.map((col, i) => (
+          <div key={col.id} id={col.id} style={{ scrollSnapAlign: "start" }}>
             <SectionReveal delay={i * 80} threshold={0.05}>
               <CollectionCard col={col} index={i} />
             </SectionReveal>
@@ -311,7 +311,7 @@ const ColeccionesEditorial = () => {
       </div>
 
       {/* Próximamente badges */}
-      <div className="container mt-16">
+      <div id="proximamente" className="container mt-16">
         <SectionReveal delay={300}>
           <p className="text-muted-foreground font-light mb-4" style={{ fontSize: "0.85rem", letterSpacing: "0.06em" }}>
             Próximamente
