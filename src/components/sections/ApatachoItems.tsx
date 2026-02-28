@@ -13,7 +13,7 @@ import SectionReveal from "@/components/ui/SectionReveal";
 
 const items = [
   {
-    label: "Calma",
+    label: "Descanso",
     description: "Para que tu bebé duerma tranquilo toda la noche. Telas que respiran y abrazan sin apretar.",
     href: "/catalogo?categoria=mama-bebe",
     Icon: Moon,
@@ -22,7 +22,7 @@ const items = [
     accent: "hsl(var(--papachoa-blue))",
   },
   {
-    label: "Ternura",
+    label: "Cuidado",
     description: "El primer regalo que importa. Suavidad diseñada para piel recién nacida.",
     href: "/catalogo?categoria=mama-bebe",
     Icon: Baby,
@@ -40,7 +40,7 @@ const items = [
     accent: "hsl(var(--papachoa-magenta))",
   },
   {
-    label: "Regalar amor",
+    label: "Regala apapachos",
     description: "El regalo que emociona de verdad. Un Papachoa dice más que cualquier tarjeta.",
     href: "/catalogo",
     Icon: Gift,
