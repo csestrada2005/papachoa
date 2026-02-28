@@ -11,10 +11,10 @@ import letterH from "@/assets/letters/H.png";
 import letterO from "@/assets/letters/O.png";
 import letterA3 from "@/assets/letters/A3.png";
 
-import pajaroAmarillo from "@/assets/brand/pajaro-amarillo-sf.png";
-import pajaroAzulClaro from "@/assets/brand/pajaro-azul-claro-sf.png";
-import pajaroAzul from "@/assets/brand/pajaro-azul-sf.png";
-import pajaroNaranja from "@/assets/brand/pajaro-naranja-sf.png";
+import pajaroAmarillo from "@/assets/brand/pajaro-amarillo.png";
+import pajaroAzulClaro from "@/assets/brand/pajaro-azul-claro.png";
+import pajaroAzul from "@/assets/brand/pajaro-azul.png";
+import pajaroNaranja from "@/assets/brand/pajaro-naranja.png";
 
 // Final positions (where birds settle at 45% scroll)
 // Start positions are off-screen corners

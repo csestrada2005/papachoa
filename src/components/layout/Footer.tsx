@@ -45,7 +45,7 @@ const Footer = () => {
   );
 
   return (
-    <footer className="relative overflow-hidden" style={{ background: "hsl(220 15% 14%)" }}>
+    <footer className="relative overflow-hidden" style={{ background: "#1C1110" }}>
       {/* Pajaritos pattern */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"

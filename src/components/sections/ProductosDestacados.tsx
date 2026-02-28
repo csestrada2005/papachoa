@@ -10,7 +10,7 @@ const ProductosDestacados = () => (
   <SectionReveal>
     <section className="py-20 bg-white">
       <div className="container">
-        <h2 className="text-3xl font-bold text-center mb-2" style={{ color: "#ac3c72" }}>
+        <h2 className="text-3xl font-bold text-center text-primary mb-2">
           más vendidos
         </h2>
         <p className="text-center text-muted-foreground mb-12">ropa infantil hecha con amor</p>
@@ -24,8 +24,7 @@ const ProductosDestacados = () => (
               {/* Placeholder image */}
               <div className="aspect-square bg-gray-100 relative">
                 <span
-                  className="absolute top-3 left-3 text-xs font-bold text-white px-3 py-1 rounded-full"
-                  style={{ backgroundColor: "#ac3c72" }}
+                  className="absolute top-3 left-3 text-xs font-bold text-primary-foreground px-3 py-1 rounded-full bg-primary"
                 >
                   {p.badge}
                 </span>
@@ -41,8 +40,7 @@ const ProductosDestacados = () => (
                 <p className="text-muted-foreground mt-1">${p.price} MXN</p>
                 <button
                   id={`add-to-cart-${i}`}
-                  className="shopify-add-to-cart mt-4 w-full rounded-full py-3 font-semibold text-white transition-colors hover:brightness-110"
-                  style={{ backgroundColor: "#ac3c72" }}
+                  className="shopify-add-to-cart mt-4 w-full rounded-full py-3 font-semibold text-primary-foreground bg-primary transition-colors hover:brightness-110"
                 >
                   Agregar al carrito
                 </button>

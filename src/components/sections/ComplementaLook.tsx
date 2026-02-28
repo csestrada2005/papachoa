@@ -10,7 +10,7 @@ const ComplementaLook = () => (
   <SectionReveal>
     <section className="py-20 bg-white">
       <div className="container">
-        <h2 className="text-3xl font-bold text-center mb-12" style={{ color: "#ac3c72" }}>
+        <h2 className="text-3xl font-bold text-center text-primary mb-12">
           completa el look
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -24,8 +24,7 @@ const ComplementaLook = () => (
                 <h3 className="font-bold text-foreground">{item.name}</h3>
                 <p className="text-muted-foreground mt-1">${item.price} MXN</p>
                 <button
-                  className="mt-4 w-full rounded-full py-3 font-semibold text-white transition-colors hover:brightness-110"
-                  style={{ backgroundColor: "#ac3c72" }}
+                  className="mt-4 w-full rounded-full py-3 font-semibold text-primary-foreground bg-primary transition-colors hover:brightness-110"
                 >
                   Agregar al carrito
                 </button>
