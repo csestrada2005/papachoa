@@ -92,9 +92,11 @@ const Index = () => {
         {/* 1 · Hero */}
         <HeroPapacho />
 
+        {/* Marquee fijo, sin wrappers de reveal/animación */}
+        <BrandMarquee />
+
         {/* Wrapper so everything after hero overlaps it */}
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
-        <BrandMarquee />
         <Suspense fallback={null}>
           <BarraConfianza />
           <AboutPapachoa />
