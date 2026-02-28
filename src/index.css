@@ -30,7 +30,7 @@
     --border: 20 12% 86%;
     --input: 20 12% 86%;
     --ring: 331 48% 45%;
-    --radius: 0.75rem;
+    --radius: 1rem;
 
     /* ── Brand palette ── */
     --papachoa-cream: 15 20% 96%;
@@ -88,15 +88,25 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background antialiased;
     font-family: 'Lato', sans-serif;
     line-height: 1.7;
+    color: #3D3028;
+  }
+
+  p, li, span, blockquote, label, td, th {
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lato', sans-serif;
+    font-family: 'Caveat', cursive;
     @apply font-bold;
     line-height: 1.2;
+  }
+
+  /* Global interactive transition */
+  a, button, input, select, textarea, [role="button"] {
+    transition: all 300ms ease-out;
   }
 }
 
