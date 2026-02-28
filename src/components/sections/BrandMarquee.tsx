@@ -3,8 +3,22 @@
 const items = ["Calma", "Apapacho", "Suavidad", "Familia", "Descanso", "Ternura", "Hogar"];
 
 const BrandMarquee = () => (
-  <section className="py-4 overflow-hidden" style={{ background: "#FDF6F0" }}>
-    <div className="animate-marquee whitespace-nowrap flex">
+  <section
+    className="py-4 overflow-hidden"
+    style={{
+      background: "#FDF6F0",
+      willChange: "transform",
+      opacity: 1,
+      transform: "none",
+    }}
+  >
+    <div
+      className="animate-marquee whitespace-nowrap flex"
+      style={{
+        transform: "translateZ(0)",
+        willChange: "transform",
+      }}
+    >
       {[...Array(3)].map((_, setIndex) => (
         <div key={setIndex} className="flex items-center">
           {items.map((item, index) => (
