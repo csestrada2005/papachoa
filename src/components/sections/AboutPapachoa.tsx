@@ -1,5 +1,6 @@
 import SectionReveal from "@/components/ui/SectionReveal";
-import papaNinaImg from "@/assets/pijama-dinosaurio-1-papa-nina.jpg";
+import lifestyleImg from "@/assets/lifestyle-2.png";
+import printTexture from "@/assets/brand/print-pajaritos.png";
 
 /* ─────────────────────────────────────────
    #aboutpapachoa — Full-screen hero con imagen de fondo
@@ -14,18 +15,30 @@ const AboutPapachoa = () => (
   >
     {/* Fondo: imagen full-screen */}
     <img
-      src={papaNinaImg}
-      alt="Papá e hija con pijamas Papachoa"
+      src={lifestyleImg}
+      alt="Niños felices en pijamas Papachoa"
       className="absolute inset-0 w-full h-full object-cover object-center"
       style={{ zIndex: 0 }}
       loading="lazy"
+    />
+
+    {/* Textura decorativa de pajaritos */}
+    <div
+      className="absolute inset-0 pointer-events-none"
+      style={{
+        zIndex: 1,
+        backgroundImage: `url(${printTexture})`,
+        backgroundSize: "280px",
+        backgroundRepeat: "repeat",
+        opacity: 0.12,
+      }}
     />
 
     {/* Overlay: degradado izquierda más sólido para legibilidad del texto */}
     <div
       className="absolute inset-0"
       style={{
-        zIndex: 1,
+        zIndex: 2,
         background:
           "linear-gradient(105deg, rgba(8,6,4,0.60) 0%, rgba(8,6,4,0.38) 50%, rgba(8,6,4,0.10) 100%)",
       }}
@@ -126,9 +139,8 @@ const AboutPapachoa = () => (
               los rodea.
             </p>
             <p>
-              Cada prenda es única. Cada print ha sido diseñado por Miriam y
-              Mercedes. Y cada pieza es confeccionada con muchísimo cariño por
-              Fer, Alondra y Lucy.
+              Cada prenda es única. Cada print diseñado por Miriam y Mercedes.
+              Cada pieza confeccionada con cariño por Fer, Alondra y Lucy.
             </p>
           </div>
         </SectionReveal>
