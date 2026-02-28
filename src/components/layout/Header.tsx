@@ -25,7 +25,6 @@ const MENU_LINKS = [
   { label: "Somos Papachoa", href: "/#about" },
   { label: "Colecciones", href: "/#colecciones" },
   { label: "Más Vendidos", href: "/#productos" },
-  { label: "Nuestra Colección", href: "/#coleccion-completa" },
   { label: "Para Pintar", href: "/#para-pintar" },
   { label: "Próximamente", href: "/#proximamente" },
   { label: "Contacto", href: "/contacto" },
@@ -365,16 +364,32 @@ const Header = ({ transparent = false }: HeaderProps) => {
               </span>
             </button>
 
-            {/* Hamburger menu button */}
+            {/* Hamburger / X toggle button */}
             <button
-              onClick={() => setMenuOpen(true)}
-              aria-label="Abrir menú"
+              onClick={() => setMenuOpen((v) => !v)}
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
               className="pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
             >
               <PillDots />
               <span className="pill-sunburst search-sunburst" aria-hidden="true" />
-              <span className="pill-icon-wrap">
-                <Menu className="w-[18px] h-[18px] text-foreground/70" strokeWidth={2} />
+              <span className="pill-icon-wrap relative w-[18px] h-[18px]">
+                {/* Two bars that rotate into an X */}
+                <span
+                  className="absolute left-0 top-[5px] w-full h-[2px] bg-foreground/70 rounded-full origin-center"
+                  style={{
+                    transition: "transform 300ms ease, top 300ms ease",
+                    transform: menuOpen ? "rotate(45deg)" : "rotate(0deg)",
+                    top: menuOpen ? "8px" : "5px",
+                  }}
+                />
+                <span
+                  className="absolute left-0 top-[13px] w-full h-[2px] bg-foreground/70 rounded-full origin-center"
+                  style={{
+                    transition: "transform 300ms ease, top 300ms ease",
+                    transform: menuOpen ? "rotate(-45deg)" : "rotate(0deg)",
+                    top: menuOpen ? "8px" : "13px",
+                  }}
+                />
               </span>
             </button>
           </div>
@@ -402,7 +417,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
           onClick={() => setMenuOpen(false)}
           style={{
             position: "absolute", inset: 0,
-            background: "rgba(0,0,0,0.3)",
+            background: "rgba(253,246,240,0.97)",
             opacity: menuOpen ? 1 : 0,
             transition: "opacity 300ms ease-out",
           }}
@@ -412,23 +427,14 @@ const Header = ({ transparent = false }: HeaderProps) => {
           style={{
             position: "absolute", top: 0, right: 0, bottom: 0,
             width: "100%", maxWidth: "420px",
-            background: "#FDF6F0",
+            background: "rgba(253,246,240,0.97)",
             transform: menuOpen ? "translateX(0)" : "translateX(100%)",
             transition: "transform 350ms cubic-bezier(0.22,1,0.36,1)",
             display: "flex", flexDirection: "column",
             padding: "24px",
           }}
         >
-          {/* Close button */}
-          <div className="flex justify-end mb-8">
-            <button
-              onClick={() => setMenuOpen(false)}
-              aria-label="Cerrar menú"
-              className="p-2 rounded-full hover:bg-muted/60 transition-colors"
-            >
-              <X className="w-6 h-6 text-foreground/70" strokeWidth={1.5} />
-            </button>
-          </div>
+          {/* Close button removed — hamburger toggles to X */}
 
           {/* Menu links */}
           <nav className="flex flex-col gap-1 flex-1" aria-label="Menú principal">
@@ -451,7 +457,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
                     navigate(link.href);
                   }
                 }}
-                className="text-lg font-medium tracking-wide py-3 px-2 rounded-xl hover:bg-muted/60 transition-all duration-200"
+                className="text-lg font-medium tracking-wide py-3 px-2 rounded-xl transition-all duration-200 hover:scale-105 hover:text-[#ac3c72]"
                 style={{
                   color: "#3D3028",
                   opacity: menuOpen ? 1 : 0,
