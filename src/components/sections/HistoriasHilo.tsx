@@ -42,7 +42,7 @@ const HistoriasHilo = () => (
     id="historias"
     className="relative overflow-hidden"
     style={{
-      background: "#1C1110",
+      background: "#F5F0FF",
       paddingTop: "clamp(5rem, 10vw, 9rem)",
       paddingBottom: "clamp(5rem, 12vw, 10rem)",
     }}
@@ -52,7 +52,7 @@ const HistoriasHilo = () => (
       <img
         src={pajaroAzulClaro}
         alt=""
-        style={{ width: "clamp(60px, 10vw, 120px)", height: "auto", opacity: 0.06 }}
+        style={{ width: "clamp(60px, 10vw, 120px)", height: "auto", opacity: 0.12 }}
         loading="lazy"
       />
     </div>
@@ -71,7 +71,7 @@ const HistoriasHilo = () => (
         </SectionReveal>
         <SectionReveal delay={80}>
           <h2
-            className="font-bold text-white/95 leading-none"
+            className="font-bold text-foreground leading-none"
             style={{
               fontSize: "clamp(2.5rem, 7.5vw, 6.5rem)",
               letterSpacing: "clamp(0.02em, 0.5vw, 0.08em)",
@@ -115,14 +115,14 @@ const HistoriasHilo = () => (
                 }}
                 aria-hidden="true"
               >{stories[0].num}</span>
-              <h3
-                className="font-bold text-white mb-3"
-                style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
-              >{stories[0].title}</h3>
-              <p
-                className="font-light leading-relaxed text-white/55"
-                style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
-              >{stories[0].body}</p>
+               <h3
+                 className="font-bold text-foreground mb-3"
+                 style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
+               >{stories[0].title}</h3>
+               <p
+                 className="font-light leading-relaxed text-muted-foreground"
+                 style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
+               >{stories[0].body}</p>
             </div>
           </SectionReveal>
 
@@ -140,13 +140,13 @@ const HistoriasHilo = () => (
                 }}
                 aria-hidden="true"
               >{stories[1].num}</span>
-              <h3
-                className="font-bold text-white mb-3"
-                style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
-              >{stories[1].title}</h3>
-              <p
-                className="font-light leading-relaxed text-white/55 mb-8"
-                style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
+               <h3
+                 className="font-bold text-foreground mb-3"
+                 style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
+               >{stories[1].title}</h3>
+               <p
+                 className="font-light leading-relaxed text-muted-foreground mb-8"
+                 style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
               >{stories[1].body}</p>
               <div className="overflow-hidden" style={{ aspectRatio: "1/1" }}>
                 <img
@@ -180,8 +180,8 @@ const HistoriasHilo = () => (
                 {/* Texto flotante sobre imagen */}
                 <div
                   className="absolute bottom-0 left-0 right-0 p-5"
-                  style={{ background: "linear-gradient(to top, #1C1110E6 0%, transparent 100%)" }}
-                >
+                   style={{ background: "linear-gradient(to top, rgba(245,240,255,0.95) 0%, transparent 100%)" }}
+                 >
                   <span
                     className="block font-bold leading-none mb-2 select-none"
                     style={{
@@ -192,14 +192,14 @@ const HistoriasHilo = () => (
                     }}
                     aria-hidden="true"
                   >{stories[2].num}</span>
-                  <h3
-                    className="font-bold text-white mb-2"
-                    style={{ fontSize: "clamp(1.2rem, 2vw, 1.5rem)", letterSpacing: "0.05em" }}
-                  >{stories[2].title}</h3>
-                  <p
-                    className="font-light leading-relaxed text-white/65"
-                    style={{ fontSize: "clamp(0.83rem, 1.2vw, 0.93rem)" }}
-                  >{stories[2].body}</p>
+                   <h3
+                     className="font-bold text-foreground mb-2"
+                     style={{ fontSize: "clamp(1.2rem, 2vw, 1.5rem)", letterSpacing: "0.05em" }}
+                   >{stories[2].title}</h3>
+                   <p
+                     className="font-light leading-relaxed text-muted-foreground"
+                     style={{ fontSize: "clamp(0.83rem, 1.2vw, 0.93rem)" }}
+                   >{stories[2].body}</p>
                 </div>
               </div>
             </div>
@@ -231,11 +231,11 @@ const HistoriasHilo = () => (
                     loading="lazy"
                   />
                 </div>
-                <h3 className="font-bold text-white mb-2" style={{ fontSize: "1.4rem", letterSpacing: "0.05em" }}>
-                  {story.title}
-                </h3>
-                <p className="font-light text-white/55 leading-relaxed" style={{ fontSize: "0.95rem" }}>
-                  {story.body}
+                 <h3 className="font-bold text-foreground mb-2" style={{ fontSize: "1.4rem", letterSpacing: "0.05em" }}>
+                   {story.title}
+                 </h3>
+                 <p className="font-light text-muted-foreground leading-relaxed" style={{ fontSize: "0.95rem" }}>
+                   {story.body}
                 </p>
               </div>
             </SectionReveal>

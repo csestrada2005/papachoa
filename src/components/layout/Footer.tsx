@@ -45,25 +45,25 @@ const Footer = () => {
   );
 
   return (
-    <footer className="relative overflow-hidden" style={{ background: "#1C1110" }}>
+    <footer className="relative overflow-hidden" style={{ background: "#FDF6F0" }}>
       {/* Pajaritos pattern */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{ backgroundImage: `url(${printPajaritos})`, backgroundSize: "250px", backgroundRepeat: "repeat" }}
+        style={{ backgroundImage: `url(${printPajaritos})`, backgroundSize: "250px", backgroundRepeat: "repeat", opacity: 0.06 }}
       />
 
       <div className="container py-16 md:py-20 relative z-10">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-14">
           <div className="col-span-2 md:col-span-1">
-            <img src={logo} alt="Papachoa México" className="h-10 w-auto mb-6 brightness-0 invert opacity-80" loading="lazy" decoding="async" width={120} height={40} />
-            <p className="text-sm mb-6 max-w-xs leading-relaxed text-white/50">
+             <img src={logo} alt="Papachoa México" className="h-10 w-auto mb-6 opacity-80" loading="lazy" decoding="async" width={120} height={40} />
+            <p className="text-sm mb-6 max-w-xs leading-relaxed text-muted-foreground">
               Pijamas y cobijos ultra suaves pensados por mamás, para mamás.
             </p>
             <div className="flex gap-3">
-              <button type="button" onClick={(e) => openExternal(brand.socials.instagramUrl, e)} aria-label="Síguenos en Instagram" className="w-10 h-10 flex items-center justify-center rounded-full border border-white/15 text-white/50 hover:text-white hover:border-white/30 transition-all cursor-pointer">
+               <button type="button" onClick={(e) => openExternal(brand.socials.instagramUrl, e)} aria-label="Síguenos en Instagram" className="w-10 h-10 flex items-center justify-center rounded-full border border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all cursor-pointer">
                 <Instagram className="h-4 w-4" />
               </button>
-              <button type="button" onClick={(e) => openExternal(brand.socials.facebookUrl, e)} aria-label="Síguenos en Facebook" className="w-10 h-10 flex items-center justify-center rounded-full border border-white/15 text-white/50 hover:text-white hover:border-white/30 transition-all cursor-pointer">
+              <button type="button" onClick={(e) => openExternal(brand.socials.facebookUrl, e)} aria-label="Síguenos en Facebook" className="w-10 h-10 flex items-center justify-center rounded-full border border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all cursor-pointer">
                 <Facebook className="h-4 w-4" />
               </button>
             </div>
@@ -75,7 +75,7 @@ const Footer = () => {
             { title: "Legal", links: footerLinks.legal },
           ].map(({ title, links }) => (
             <div key={title}>
-              <h4 className="text-sm font-bold mb-5 text-white/80 tracking-wide uppercase">{title}</h4>
+              <h4 className="text-sm font-bold mb-5 text-foreground/80 tracking-wide uppercase">{title}</h4>
               <ul className="space-y-3">
                 {links.map((link) => (
                   <li key={link.label}>
@@ -84,7 +84,7 @@ const Footer = () => {
                       onClick={(e) => handleFooterLink(e, link.href)}
                       onMouseEnter={() => prefetchRoute(link.href)}
                       onTouchStart={() => prefetchRoute(link.href)}
-                      className="text-sm text-white/40 hover:text-white/70 transition-colors"
+                      className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -95,20 +95,20 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="h-px bg-white/10 mb-8" />
+        <div className="h-px bg-foreground/10 mb-8" />
 
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-sm text-white/30 order-2 md:order-1">
+          <p className="text-sm text-muted-foreground order-2 md:order-1">
             &copy; {new Date().getFullYear()} Papachoa México
           </p>
           <div className="flex flex-wrap items-center justify-center gap-2 order-1 md:order-2">
             {paymentMethods.map((method) => (
-              <span key={method} className="text-xs px-3 py-1.5 text-white/40 border border-white/10 rounded-full">
+              <span key={method} className="text-xs px-3 py-1.5 text-muted-foreground border border-foreground/10 rounded-full">
                 {method}
               </span>
             ))}
           </div>
-          <p className="text-sm font-bold text-white/50 order-3">MXN $</p>
+          <p className="text-sm font-bold text-muted-foreground order-3">MXN $</p>
         </div>
       </div>
     </footer>

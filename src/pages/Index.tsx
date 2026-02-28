@@ -90,7 +90,9 @@ const Index = () => {
       <Header transparent />
       <main>
         {/* 1 · Hero */}
-        <HeroPapacho />
+        <div id="hero">
+          <HeroPapacho />
+        </div>
 
         {/* Marquee fijo, sin wrappers de reveal/animación */}
         <BrandMarquee />
@@ -99,19 +101,25 @@ const Index = () => {
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>
         <Suspense fallback={null}>
           <BarraConfianza />
-          <AboutPapachoa />
+          <div id="about">
+            <AboutPapachoa />
+          </div>
           <ColeccionesEditorial />
-          <ProductosDestacados />
+          <div id="productos">
+            <ProductosDestacados />
+          </div>
           <ResenasSection />
-          <ComplementaLook />
+          <div id="coleccion-completa">
+            <ComplementaLook />
+          </div>
           <ApatachoItems />
           <HistoriasHilo />
           <Suavidad />
           <MexicoAmor />
-          <CTAWhatsApp />
           <div id="contacto">
-            <Newsletter />
+            <CTAWhatsApp />
           </div>
+          <Newsletter />
         </Suspense>
         </div>
       </main>
