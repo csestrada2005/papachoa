@@ -272,9 +272,8 @@ const Header = ({ transparent = false }: HeaderProps) => {
             <img
               src={logo}
               alt="Papachoa México"
-              className="w-auto transition-all duration-300"
+              className="h-10 w-auto transition-all duration-300"
               style={{
-                height: scrolled ? "28px" : "34px",
                 filter: "none",
               }}
               loading="eager"
