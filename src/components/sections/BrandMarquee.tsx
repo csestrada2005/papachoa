@@ -1,4 +1,4 @@
-import pajaroAmarillo from "@/assets/brand/pajaro-amarillo.png";
+// Brand marquee — horizontal scrolling words
 
 const items = ["Calma", "Apapacho", "Suavidad", "Familia", "Descanso", "Ternura", "Hogar"];
 
