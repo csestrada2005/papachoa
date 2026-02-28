@@ -260,10 +260,17 @@ const Hero = () => {
                 pointerEvents: ctaP > 0.5 ? "auto" : "none",
               }}
             >
-              <Link to="/catalogo" className="btn-artisan inline-flex text-base px-10 py-4 group">
-                Ver colección
+              <a
+                href="#colecciones"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("colecciones")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="btn-artisan inline-flex text-base px-10 py-4 group"
+              >
+                Ver catálogo
                 <span className="text-xl inline-block transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
-              </Link>
+              </a>
             </div>
           </div>
         </div>

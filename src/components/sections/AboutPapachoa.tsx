@@ -116,18 +116,19 @@ const AboutPapachoa = () => (
             }}
           >
             <p>
-              Somos una marca mexicana que nació de una convicción simple:
-              los momentos de descanso merecen ser tan especiales como el amor
-              que los rodea.
+              Papachoa significa apapacho en náhuatl. Y eso es exactamente lo que
+              queremos lograr con cada prenda: abrazar el alma de los niños… y
+              también la de mamá.
             </p>
             <p>
-              Cada pijama Papachoa lleva horas de cuidado artesanal, telas
-              seleccionadas con criterio y un diseño pensado para que toda la
-              familia duerma, ría y se abrace con la misma ropa puesta.
+              Somos una marca mexicana que nació de una convicción simple: los
+              momentos de descanso merecen ser tan especiales como el amor que
+              los rodea.
             </p>
             <p>
-              No vendemos pijamas. Vendemos el ritual de ponerse la pijama juntos,
-              la foto de esa noche, el olor a hogar que queda en la tela.
+              Cada prenda es única. Cada print ha sido diseñado por Miriam y
+              Mercedes. Y cada pieza es confeccionada con muchísimo cariño por
+              Fer, Alondra y Lucy.
             </p>
           </div>
         </SectionReveal>
