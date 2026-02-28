@@ -2,7 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from "react"; // refresh
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
-import BrandMarquee from "@/components/sections/BrandMarquee";
+
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
 
@@ -94,8 +94,6 @@ const Index = () => {
           <HeroPapacho />
         </div>
 
-        {/* Marquee fijo, sin wrappers de reveal/animación */}
-        <BrandMarquee />
 
         {/* Wrapper so everything after hero overlaps it */}
         <div className="relative z-10 bg-white transition-[margin] duration-700 ease-out" style={{ marginTop: heroComplete ? "-100vh" : 0 }}>

@@ -4,7 +4,7 @@ import { Search, X, Menu } from "lucide-react";
 import { products } from "@/data/products";
 import MiniCart from "@/components/MiniCart";
 import { useCart } from "@/context/CartContext";
-import logo from "@/assets/logo-papachoa.webp";
+import logo from "@/assets/brand/papachoa-logo.png";
 
 /* ─────────────────────────────────────────
    Papachoa Header — Japanese-minimal v6
