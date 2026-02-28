@@ -119,11 +119,11 @@ const Index = () => {
             <HistoriasHilo />
             <Suavidad />
             <MexicoAmor />
+            <Newsletter />
           </div>
 
           <div id="contacto">
             <CTAWhatsApp />
-            <Newsletter />
           </div>
         </Suspense>
         </div>
