@@ -42,7 +42,7 @@ const HistoriasHilo = () => (
     id="historias"
     className="relative overflow-hidden"
     style={{
-      background: "hsl(216 44% 14%)",
+      background: "#1C1110",
       paddingTop: "clamp(5rem, 10vw, 9rem)",
       paddingBottom: "clamp(5rem, 12vw, 10rem)",
     }}
@@ -180,7 +180,7 @@ const HistoriasHilo = () => (
                 {/* Texto flotante sobre imagen */}
                 <div
                   className="absolute bottom-0 left-0 right-0 p-5"
-                  style={{ background: "linear-gradient(to top, hsl(216 44% 14% / 0.9) 0%, transparent 100%)" }}
+                  style={{ background: "linear-gradient(to top, #1C1110E6 0%, transparent 100%)" }}
                 >
                   <span
                     className="block font-bold leading-none mb-2 select-none"
