@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, X } from "lucide-react";
+import { Search, X, Menu } from "lucide-react";
 import { products } from "@/data/products";
 import MiniCart from "@/components/MiniCart";
 import { useCart } from "@/context/CartContext";
@@ -18,6 +18,17 @@ const NAV_LINKS = [
   { label: "Colecciones", href: "/#colecciones" },
   { label: "Ver colección", href: "/catalogo", highlight: true },
   { label: "Contacto",    href: "/contacto" },
+];
+
+const MENU_LINKS = [
+  { label: "Inicio", href: "/#hero" },
+  { label: "Somos Papachoa", href: "/#about" },
+  { label: "Colecciones", href: "/#colecciones" },
+  { label: "Más Vendidos", href: "/#productos" },
+  { label: "Nuestra Colección", href: "/#coleccion-completa" },
+  { label: "Para Pintar", href: "/#para-pintar" },
+  { label: "Próximamente", href: "/#proximamente" },
+  { label: "Contacto", href: "/contacto" },
 ];
 
 interface HeaderProps {
@@ -173,6 +184,18 @@ const Header = ({ transparent = false }: HeaderProps) => {
   const [badgeKey, setBadgeKey] = useState(0);
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  /* lock body scroll when menu is open */
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   /* badge pop on new item */
   useEffect(() => {
@@ -341,6 +364,19 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 {itemCount > 0 && <CartBadge key={badgeKey} count={itemCount} />}
               </span>
             </button>
+
+            {/* Hamburger menu button */}
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Abrir menú"
+              className="pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
+            >
+              <PillDots />
+              <span className="pill-sunburst search-sunburst" aria-hidden="true" />
+              <span className="pill-icon-wrap">
+                <Menu className="w-[18px] h-[18px] text-foreground/70" strokeWidth={2} />
+              </span>
+            </button>
           </div>
 
           {/* Search palette (drops below header) */}
@@ -352,6 +388,83 @@ const Header = ({ transparent = false }: HeaderProps) => {
 
       {/* Spacer */}
       {!transparent && <div style={{ height: "74px" }} aria-hidden="true" />}
+
+      {/* ── Fullscreen Menu Overlay ── */}
+      <div
+        className="fixed inset-0 z-[60]"
+        style={{
+          pointerEvents: menuOpen ? "auto" : "none",
+          visibility: menuOpen ? "visible" : "hidden",
+        }}
+      >
+        {/* Backdrop */}
+        <div
+          onClick={() => setMenuOpen(false)}
+          style={{
+            position: "absolute", inset: 0,
+            background: "rgba(0,0,0,0.3)",
+            opacity: menuOpen ? 1 : 0,
+            transition: "opacity 300ms ease-out",
+          }}
+        />
+        {/* Panel */}
+        <div
+          style={{
+            position: "absolute", top: 0, right: 0, bottom: 0,
+            width: "100%", maxWidth: "420px",
+            background: "#FDF6F0",
+            transform: menuOpen ? "translateX(0)" : "translateX(100%)",
+            transition: "transform 350ms cubic-bezier(0.22,1,0.36,1)",
+            display: "flex", flexDirection: "column",
+            padding: "24px",
+          }}
+        >
+          {/* Close button */}
+          <div className="flex justify-end mb-8">
+            <button
+              onClick={() => setMenuOpen(false)}
+              aria-label="Cerrar menú"
+              className="p-2 rounded-full hover:bg-muted/60 transition-colors"
+            >
+              <X className="w-6 h-6 text-foreground/70" strokeWidth={1.5} />
+            </button>
+          </div>
+
+          {/* Menu links */}
+          <nav className="flex flex-col gap-1 flex-1" aria-label="Menú principal">
+            {MENU_LINKS.map((link, i) => (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setMenuOpen(false);
+                  if (link.href.startsWith("/#")) {
+                    const id = link.href.replace("/#", "");
+                    if (location.pathname !== "/") {
+                      navigate("/");
+                      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 400);
+                    } else {
+                      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 100);
+                    }
+                  } else {
+                    navigate(link.href);
+                  }
+                }}
+                className="text-lg font-medium tracking-wide py-3 px-2 rounded-xl hover:bg-muted/60 transition-all duration-200"
+                style={{
+                  color: "#3D3028",
+                  opacity: menuOpen ? 1 : 0,
+                  transform: menuOpen ? "translateX(0)" : "translateX(40px)",
+                  transition: `opacity 300ms ease-out ${100 + i * 100}ms, transform 300ms ease-out ${100 + i * 100}ms, background-color 200ms ease`,
+                }}
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
 
       <MiniCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
 
