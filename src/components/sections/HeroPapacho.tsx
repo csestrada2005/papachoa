@@ -7,7 +7,7 @@ import papachoaLogo from "@/assets/brand/papachoa-logo.png";
 const TEXT = "Pensado por mamás para mamás";
 
 /* Brand palette cycling per letter */
-const LETTER_COLORS = ["#ac3c72", "#f5ce3e", "#ff8d6b", "#416ba9"];
+const LETTER_COLORS = ["#416ba9"];
 
 interface LetterScatter {
   char: string;
