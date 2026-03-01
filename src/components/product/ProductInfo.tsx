@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Minus, Plus, ShoppingBag } from "lucide-react";
+import { Minus, Plus, ShoppingBag, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
@@ -14,6 +14,7 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedSizeSecondary, setSelectedSizeSecondary] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
+  const [descOpen, setDescOpen] = useState(false);
   const { addItem } = useCart();
 
   const formattedPrice = new Intl.NumberFormat("es-MX", {
@@ -54,13 +55,28 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
         {formattedPrice} <span className="text-sm font-body text-muted-foreground">MXN</span>
       </p>
 
+      {/* Description dropdown */}
+      {product.longDescription && (
+        <div className="border border-border/30 rounded-lg overflow-hidden">
+          <button
+            onClick={() => setDescOpen((o) => !o)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-muted/30 transition-colors"
+          >
+            <span className="font-display text-sm md:text-base text-foreground">Descripción</span>
+            <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${descOpen ? 'rotate-180' : ''}`} />
+          </button>
+          {descOpen && (
+            <div className="px-4 pb-4">
+              <p className="text-muted-foreground leading-relaxed font-light text-sm">
+                {product.longDescription}
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* Divider */}
       <div className="embroidery-line w-16" />
-
-      {/* Short description */}
-      <p className="text-muted-foreground leading-relaxed font-light">
-        {product.shortDescription}
-      </p>
 
       {/* Size selector — Mamá */}
       {product.sizes.length > 0 && (
