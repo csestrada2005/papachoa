@@ -194,9 +194,9 @@ const ProductCard = memo(({ product, isActive, onActivate, onDeactivate }: Produ
       onFocus={onActivate}
       onBlur={onDeactivate}
     >
-      {/* Image container */}
+      {/* Image container — 60% size */}
       <div
-        className="relative aspect-[4/5] overflow-hidden rounded-xl bg-papachoa-cream mb-3 border border-border/30 touch-pan-y"
+        className="relative aspect-[4/5] overflow-hidden rounded-lg bg-papachoa-cream mb-2 border border-border/30 touch-pan-y"
         onPointerDown={hasMultiple ? onPointerDown : undefined}
         onPointerUp={hasMultiple ? onPointerUp : undefined}
       >

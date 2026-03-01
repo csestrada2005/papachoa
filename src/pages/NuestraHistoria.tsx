@@ -5,34 +5,35 @@ import SectionReveal from "@/components/ui/SectionReveal";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 import texturaImg from "@/assets/textura-tela.png";
 import texturaDoodle from "@/assets/textura-doodle.png";
-import pijamaRosa1 from "@/assets/pijama-rosa-1-abrazo.jpg";
-import pijamaRosa7 from "@/assets/pijama-rosa-7-familia.jpg";
-import pijamaBlanca3 from "@/assets/pijama-blanca-3-familia.jpg";
+import pijamaRosa3 from "@/assets/pijama-rosa-3-jugando.jpg";
+import pijamaBlanca4 from "@/assets/pijama-blanca-4-abrazo.jpg";
+import pijamadinosaurio3 from "@/assets/pijama-dinosaurio-3-papa-upside.jpg";
+import pijamaRosa9 from "@/assets/pijama-rosa-9-acostados.jpg";
 
 const stories = [
   {
     num: "01",
-    title: "Recién nacido",
-    body: "Cada hilo es un primer abrazo. Desde el día uno, envolvemos a tu bebé con la suavidad que merece.",
+    title: "Primeros pasos juntos",
+    body: "Una pijama que crece contigo. Desde su primera noche en casa hasta sus primeras travesuras, cada hilo los acompaña.",
     accentColor: "hsl(var(--papachoa-coral))",
-    img: pijamaRosa1,
-    imgAlt: "Mamá abrazando bebé",
+    img: pijamaRosa3,
+    imgAlt: "Mamá e hija jugando en pijama",
   },
   {
     num: "02",
-    title: "Familia",
-    body: "Los momentos que se tejen juntos no se olvidan. Pijamas que unen a quienes más amas en una sola foto.",
+    title: "Complicidad de dos",
+    body: "Papá y su aventurera favorita. Pijamas que cuentan la historia de noches de cuentos, cosquillas y mundos inventados.",
     accentColor: "hsl(var(--papachoa-yellow))",
-    img: pijamaRosa7,
-    imgAlt: "Familia en pijamas iguales",
+    img: pijamadinosaurio3,
+    imgAlt: "Papá jugando con su hija en pijama de dinosaurios",
   },
   {
     num: "03",
-    title: "Descanso",
-    body: "El ritual de ponerse la pijama merece textiles pensados con intención. Para noches que se sienten como hogar.",
+    title: "Ritual de calma",
+    body: "Cuando la casa se queda quieta y todos respiran al mismo ritmo. Ese momento antes de dormir donde solo importa estar juntos.",
     accentColor: "hsl(var(--papachoa-blue))",
-    img: pijamaBlanca3,
-    imgAlt: "Familia durmiendo tranquila",
+    img: pijamaBlanca4,
+    imgAlt: "Abrazo familiar antes de dormir",
   },
 ];
 
@@ -101,7 +102,7 @@ const NuestraHistoria = () => {
                       {story.title}
                     </h3>
                     <p className="font-light text-muted-foreground leading-relaxed mb-4">{story.body}</p>
-                    <div className="overflow-hidden rounded-xl" style={{ aspectRatio: "3/4" }}>
+                    <div className="overflow-hidden rounded-xl mx-auto" style={{ aspectRatio: "3/4", maxWidth: "50%" }}>
                       <img src={story.img} alt={story.imgAlt} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                   </div>
@@ -134,9 +135,9 @@ const NuestraHistoria = () => {
 
             <div className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-start">
               <SectionReveal delay={60} className="lg:col-span-5">
-                <div className="relative">
+                <div className="relative mx-auto" style={{ maxWidth: "50%" }}>
                   <div className="overflow-hidden" style={{ aspectRatio: "3/4" }}>
-                    <img src={texturaImg} alt="Textura ultra suave de tela Papachoa" className="w-full h-full object-cover" loading="lazy" width={480} height={640} />
+                    <img src={pijamaRosa9} alt="Detalle de suavidad de tela Papachoa" className="w-full h-full object-cover" loading="lazy" width={480} height={640} />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%)" }}>
                     <p className="font-display text-white leading-snug" style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)" }}>

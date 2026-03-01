@@ -10,18 +10,16 @@ import printPajaritos from "@/assets/brand/print-pajaritos.png";
 const footerLinks = {
   tienda: [
     { label: "Catálogo", href: "/catalogo" },
-    { label: "Colecciones", href: "/catalogo" },
-    { label: "Novedades", href: "/catalogo" },
+    { label: "Nuestra Historia", href: "/nuestra-historia" },
   ],
   empresa: [
-    { label: "Nosotros", href: "/nosotros" },
     { label: "Contacto", href: "/contacto" },
+    { label: "Preguntas frecuentes", href: "/faq" },
   ],
   legal: [
     { label: "Términos y condiciones", href: "/terminos" },
     { label: "Política de devolución", href: "/devoluciones" },
     { label: "Privacidad", href: "/privacidad" },
-    { label: "Preguntas frecuentes", href: "/faq" },
   ],
 };
 

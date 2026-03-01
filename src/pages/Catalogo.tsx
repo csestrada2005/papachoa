@@ -112,7 +112,7 @@ const Catalogo = () => {
             </div>
           ) : (
             <>
-              <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 lg:gap-8">
+              <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 lg:gap-5 max-w-5xl mx-auto">
                 {filteredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
