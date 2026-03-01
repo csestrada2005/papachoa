@@ -163,7 +163,7 @@ const DesktopDropdown = ({ item }: { item: typeof NAV_LINKS[number] }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <button className="nav-link-underline text-sm font-medium px-3 py-1 inline-flex items-center gap-1" style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}>
+      <button className="nav-link-underline font-display text-sm px-3 py-1 inline-flex items-center gap-1" style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}>
         {item.label}
         <ChevronDown className="h-3.5 w-3.5 transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0)" }} />
       </button>
@@ -267,7 +267,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="nav-link-underline text-sm font-medium px-3 py-1"
+                  className="nav-link-underline font-display text-sm px-3 py-1"
                   style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}
                 >
                   {link.label}
@@ -276,30 +276,8 @@ const Header = ({ transparent = false }: HeaderProps) => {
             )}
           </nav>
 
-          {/* Right: Search + Cart + Hamburger (mobile only) */}
+          {/* Right: Cart + Hamburger (mobile only) */}
           <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => setSearchOpen((v) => !v)}
-              aria-label="Buscar productos"
-              aria-expanded={searchOpen}
-              className="pill-btn search-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
-            >
-              <PillDots />
-              <span className="pill-sunburst search-sunburst" aria-hidden="true" />
-              <span className="pill-icon-wrap">
-                {searchOpen
-                  ? <X className="w-[18px] h-[18px] text-[hsl(196,60%,52%)]" strokeWidth={2} />
-                  : (
-                    <svg viewBox="0 0 22 22" className="w-[20px] h-[20px]" fill="none" aria-hidden="true">
-                      <circle cx="9.5" cy="9.5" r="6.5" stroke="hsl(196,60%,52%)" strokeWidth="2.2" />
-                      <path d="M7.2 10.5 Q9.5 12.5 11.8 10.5" stroke="hsl(43,90%,58%)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-                      <line x1="14.2" y1="14.2" x2="18.5" y2="18.5" stroke="hsl(196,60%,52%)" strokeWidth="2.2" strokeLinecap="round"/>
-                    </svg>
-                  )
-                }
-              </span>
-            </button>
-
             <button
               key={`cart-${badgeKey}`}
               onClick={() => setIsCartOpen(true)}
@@ -350,7 +328,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
             </button>
           </div>
 
-          {searchOpen && <InlineSearch onClose={() => setSearchOpen(false)} />}
+          {/* Search removed from desktop */}
         </div>
       </header>
 
@@ -364,8 +342,9 @@ const Header = ({ transparent = false }: HeaderProps) => {
           visibility: menuOpen ? "visible" : "hidden",
         }}
       >
-        <div onClick={() => setMenuOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(253,246,240,0.97)", opacity: menuOpen ? 1 : 0, transition: "opacity 300ms ease-out" }} />
+        <div onClick={() => setMenuOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(253,246,240,0.55)", backdropFilter: "blur(4px)", opacity: menuOpen ? 1 : 0, transition: "opacity 300ms ease-out" }} />
         <div
+          onClick={(e) => e.stopPropagation()}
           style={{
             position: "absolute", top: 0, left: 0, right: 0,
             background: "rgba(253,246,240,0.98)",
@@ -381,7 +360,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 <div key={link.label} className="flex flex-col items-center">
                   <button
                     onClick={() => setMobileSubOpen((v) => !v)}
-                    className="text-xl font-medium tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center inline-flex items-center gap-2"
+                    className="font-display text-xl tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center inline-flex items-center gap-2"
                     style={{
                       color: "hsl(var(--foreground))",
                       opacity: menuOpen ? 1 : 0,
@@ -412,7 +391,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
                   key={link.href}
                   to={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="text-xl font-medium tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center"
+                  className="font-display text-xl tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center"
                   style={{
                     color: "hsl(var(--foreground))",
                     opacity: menuOpen ? 1 : 0,

@@ -62,7 +62,7 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
             onClick={() => setDescOpen((o) => !o)}
             className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-muted/30 transition-colors"
           >
-            <span className="font-display text-sm md:text-base text-foreground">Descripción</span>
+            <span className="font-display text-lg md:text-xl text-foreground">Descripción</span>
             <ChevronDown className={`w-4 h-4 text-muted-foreground transition-transform duration-200 ${descOpen ? 'rotate-180' : ''}`} />
           </button>
           {descOpen && (
