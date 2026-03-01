@@ -20,17 +20,18 @@ import pijamadinosaurio4 from "@/assets/pijama-dinosaurio-4-standing.jpg";
 
 export type Collection =
   | "todos"
-  | "mama-bebe"
-  | "mama-hija"
-  | "papa-hija"
-  | "matching";
+  | "hija"
+  | "hijo"
+  | "bebe"
+  | "adulto"
+  | "familia";
 
 export interface Product {
   id: string;
   slug: string;
   name: string;
   price: number;
-  collection: Exclude<Collection, "todos" | "matching">;
+  collection: Exclude<Collection, "todos">;
   image: string;
   images: string[];
   shortDescription: string;
@@ -50,18 +51,62 @@ export interface Product {
 
 export const collections: { id: Collection; label: string; color: string }[] = [
   { id: "todos", label: "Todos", color: "bg-papachoa-cream" },
-  { id: "mama-bebe", label: "Mamá & Hijos", color: "bg-papachoa-blush" },
-  { id: "mama-hija", label: "Mamá & Hija", color: "bg-papachoa-sky" },
-  { id: "papa-hija", label: "Papá & Hija", color: "bg-papachoa-sage" },
-  { id: "matching", label: "Matching", color: "bg-papachoa-peach" },
+  { id: "hija", label: "Hija", color: "bg-papachoa-blush" },
+  { id: "hijo", label: "Hijo", color: "bg-papachoa-sky" },
+  { id: "bebe", label: "Bebé", color: "bg-papachoa-sage" },
+  { id: "adulto", label: "Adulto", color: "bg-papachoa-peach" },
+  { id: "familia", label: "Toda la Familia", color: "bg-papachoa-cream" },
 ];
 
 export const collectionDescriptions: Record<Exclude<Collection, "todos">, string> = {
-  "mama-bebe": "Suavidad desde el primer abrazo",
-  "mama-hija": "Momentos iguales, recuerdos eternos",
-  "papa-hija": "Complicidad en cada detalle",
-  "matching": "Diseñados para verse juntos",
+  hija: "Para las pequeñas de la casa",
+  hijo: "Para los pequeños aventureros",
+  bebe: "Suavidad desde el primer abrazo",
+  adulto: "Comodidad y estilo para ti",
+  familia: "Diseñados para verse juntos",
 };
+
+/**
+ * Categorizes a product based on its title and description into
+ * one of: hija, hijo, bebe, adulto, familia
+ */
+export function categorizeProduct(title: string, description: string = "", tags: string[] = []): Exclude<Collection, "todos"> {
+  const t = title.toLowerCase();
+  const d = description.toLowerCase();
+  const allText = `${t} ${d} ${tags.join(" ").toLowerCase()}`;
+
+  // Family sets
+  if (allText.includes("familia") || allText.includes("family") || (allText.includes("mamá") && allText.includes("papá"))) {
+    return "familia";
+  }
+
+  // Baby
+  if (allText.includes("bebé") || allText.includes("bebe") || allText.includes("baby") || allText.includes("recién nacido") || allText.includes("0-3m") || allText.includes("3-6m")) {
+    return "bebe";
+  }
+
+  // Hijo (boy)
+  if (allText.includes("hijo") || allText.includes("niño") || allText.includes("boy")) {
+    return "hijo";
+  }
+
+  // Hija (girl)
+  if (allText.includes("hija") || allText.includes("niña") || allText.includes("girl")) {
+    return "hija";
+  }
+
+  // Adult
+  if (allText.includes("adulto") || allText.includes("adult") || allText.includes("turbante") || allText.includes("mamá") || allText.includes("papá")) {
+    return "adulto";
+  }
+
+  // Default to familia for matching/set products
+  if (allText.includes("matching") || allText.includes("set") || allText.includes("&")) {
+    return "familia";
+  }
+
+  return "familia";
+}
 
 export const products: Product[] = [
   {
@@ -69,7 +114,7 @@ export const products: Product[] = [
     slug: "pijama-mama-bebe",
     name: "Pijama Mamá & Hijos",
     price: 1290,
-    collection: "mama-bebe",
+    collection: "familia",
     image: pijamaRosa0,
     images: [pijamaRosa0, pijamaRosa1, pijamaRosa2, pijamaRosa3, pijamaRosa4, pijamaRosa5, pijamaRosa6, pijamaRosa7, pijamaRosa8, pijamaRosa9],
     shortDescription: "Combina con tu bebé en suavidad y estilo. Momentos que se quedan.",
@@ -89,7 +134,7 @@ export const products: Product[] = [
     slug: "pijama-doodle-mama-bebe",
     name: "Pijama Mamá & Hija – Doodle",
     price: 1390,
-    collection: "mama-hija",
+    collection: "hija",
     image: pijamaBlanca1,
     images: [pijamaBlanca1, pijamaBlanca3, pijamaBlanca2, pijamaBlanca5, pijamaBlanca4],
     shortDescription: "Dibujando momentos juntas. Pijama con print de doodles para mamá y su pequeña artista.",
@@ -109,7 +154,7 @@ export const products: Product[] = [
     slug: "pijama-dinosaurio-papa-nina",
     name: "Pijama Papá & Hija – Dinosaurio",
     price: 1490,
-    collection: "papa-hija",
+    collection: "hija",
     image: pijamadinosaurio1,
     images: [pijamadinosaurio1, pijamadinosaurio2, pijamadinosaurio3, pijamadinosaurio4],
     shortDescription: "Dinosaurios y diversión. Pijama para papá y su pequeña aventurera.",

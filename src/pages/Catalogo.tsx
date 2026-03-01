@@ -65,7 +65,7 @@ const Catalogo = () => {
 
   const filteredProducts = useMemo(() => {
     const realProducts = shopifyProducts.filter((p) => p.image !== "/placeholder.svg");
-    if (selectedCollection === "todos" || selectedCollection === "matching") return realProducts;
+    if (selectedCollection === "todos") return realProducts;
     return realProducts.filter((p) => p.collection === selectedCollection);
   }, [selectedCollection, shopifyProducts]);
 

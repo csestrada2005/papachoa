@@ -15,29 +15,35 @@ const chipColors: Record<Collection, { bg: string; bgActive: string; border: str
     border: "hsl(35 30% 84%)",
     borderActive: "hsl(35 38% 76%)",
   },
-  "mama-bebe": {
+  hija: {
+    bg: "hsl(331 28% 92%)",
+    bgActive: "hsl(331 38% 84%)",
+    border: "hsl(331 22% 84%)",
+    borderActive: "hsl(331 30% 76%)",
+  },
+  hijo: {
+    bg: "hsl(216 22% 90%)",
+    bgActive: "hsl(216 30% 80%)",
+    border: "hsl(216 18% 82%)",
+    borderActive: "hsl(216 26% 74%)",
+  },
+  bebe: {
     bg: "hsl(14 38% 90%)",
     bgActive: "hsl(14 44% 82%)",
     border: "hsl(14 28% 82%)",
     borderActive: "hsl(14 34% 74%)",
   },
-  "mama-hija": {
-    bg: "hsl(228 22% 90%)",
-    bgActive: "hsl(228 30% 80%)",
-    border: "hsl(228 18% 82%)",
-    borderActive: "hsl(228 26% 74%)",
-  },
-  "papa-hija": {
+  adulto: {
     bg: "hsl(162 16% 88%)",
     bgActive: "hsl(162 22% 78%)",
     border: "hsl(162 12% 80%)",
     borderActive: "hsl(162 18% 72%)",
   },
-  matching: {
-    bg: "hsl(38 40% 90%)",
-    bgActive: "hsl(38 48% 80%)",
-    border: "hsl(38 30% 82%)",
-    borderActive: "hsl(38 38% 74%)",
+  familia: {
+    bg: "hsl(47 40% 90%)",
+    bgActive: "hsl(47 48% 80%)",
+    border: "hsl(47 30% 82%)",
+    borderActive: "hsl(47 38% 74%)",
   },
 };
 
