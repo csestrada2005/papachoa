@@ -70,17 +70,6 @@ const catalogCollections: CollectionEntry[] = [
   },
 ];
 
-interface UpcomingCollection {
-  id: string;
-  title: string;
-}
-
-const upcomingCollections: UpcomingCollection[] = [
-  { id: "catarinas", title: "Catarinas" },
-  { id: "football", title: "Foot ball" },
-  { id: "perros", title: "Perros" },
-  { id: "ski", title: "Ski" },
-];
 
 const priceFormatter = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -310,28 +299,6 @@ const ColeccionesEditorial = () => {
         </div>
       </div>
 
-      {/* Próximamente badges */}
-      <div id="proximamente" className="container mt-16">
-        <SectionReveal delay={300}>
-          <p className="text-muted-foreground font-light mb-4" style={{ fontSize: "0.85rem", letterSpacing: "0.06em" }}>
-            Próximamente
-          </p>
-          <div className="flex flex-wrap gap-3">
-            {upcomingCollections.map((uc) => (
-              <span
-                key={uc.id}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-muted/60 text-muted-foreground font-medium"
-                style={{ borderRadius: 8, fontSize: "0.85rem" }}
-              >
-                {uc.title}
-                <span className="text-xs font-bold text-primary/70 bg-primary/10 px-2 py-0.5" style={{ borderRadius: 6 }}>
-                  Próximamente
-                </span>
-              </span>
-            ))}
-          </div>
-        </SectionReveal>
-      </div>
     </section>
   );
 };
