@@ -206,11 +206,13 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
     prevCount.current = itemCount;
   }, [itemCount]);
 
-  /* scroll listener */
+  /* scroll listener — scrolled for nav bg, scrollShadow for shadow */
+  const [scrollShadow, setScrollShadow] = useState(false);
   useEffect(() => {
     const onScroll = () => {
       const threshold = transparent ? window.innerHeight * 2.5 : 48;
       setScrolled(window.scrollY > threshold);
+      setScrollShadow(window.scrollY > 20);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
@@ -252,11 +254,13 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
       <header
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          background: isTransparent ? "transparent" : "rgba(247,244,243,0.94)",
-          backdropFilter: isTransparent ? "none" : "blur(16px)",
+          background: isTransparent ? "transparent" : "rgba(253,248,243,0.85)",
+          backdropFilter: isTransparent ? "none" : "blur(14px)",
+          WebkitBackdropFilter: isTransparent ? "none" : "blur(14px)",
           borderBottom: isTransparent
             ? "1px solid transparent"
-            : "1px solid hsl(var(--border) / 0.22)",
+            : "1px solid hsl(var(--border) / 0.15)",
+          boxShadow: scrollShadow && !isTransparent ? "0 1px 8px rgba(0,0,0,0.06)" : "none",
           animation: "header-fadein 0.22s ease-out forwards",
         }}
       >
@@ -268,44 +272,52 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           <Link
             to="/"
             onClick={handleLogoClick}
-            className="flex-shrink-0 flex items-center"
+            className="flex-shrink-0 flex items-center logo-hover"
             aria-label="Papachoa México — inicio"
           >
             <img
               src={logo}
               alt="Papachoa México"
               className="h-10 w-auto transition-all duration-300"
-              style={{
-                filter: "none",
-              }}
               loading="eager"
               fetchPriority="high"
             />
           </Link>
 
           {/* ── Nav (desktop) ── */}
-          <nav className="hidden md:flex items-center" aria-label="Navegación principal">
-            {NAV_LINKS.map((link, i) => (
-              <span key={link.href} className="flex items-center">
+          <nav className="hidden md:flex items-center gap-1" aria-label="Navegación principal">
+            {NAV_LINKS.map((link) => {
+              const isHighlight = !!(link as any).highlight;
+              if (isHighlight) {
+                return (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    onClick={(e) => handleAnchorClick(e, link.href)}
+                    className="ml-3 inline-flex items-center font-semibold text-sm rounded-full transition-all duration-200 hover:scale-105 active:scale-[0.97]"
+                    style={{
+                      background: "hsl(var(--primary))",
+                      color: "hsl(var(--primary-foreground))",
+                      padding: "8px 22px",
+                      letterSpacing: "0.04em",
+                    }}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+              return (
                 <Link
+                  key={link.href}
                   to={link.href}
                   onClick={(e) => handleAnchorClick(e, link.href)}
-                  className={`text-sm transition-all duration-200 relative group ${(link as any).highlight ? 'font-semibold' : 'font-medium'}`}
-                  style={{ color: (link as any).highlight ? '#ac3c72' : "hsl(var(--foreground))", letterSpacing: "0.03em", paddingBottom: "2px" }}
+                  className="nav-link-underline text-sm font-medium px-3 py-1"
+                  style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}
                 >
-                  <span className="relative">
-                    {link.label}
-                    <span
-                      className="absolute bottom-0 left-0 w-full h-px bg-foreground origin-right"
-                      style={{ transform: "scaleX(0)", transition: "transform 0.3s ease" }}
-                    />
-                  </span>
+                  {link.label}
                 </Link>
-                {i < NAV_LINKS.length - 1 && (
-                  <span className="mx-2.5 text-muted-foreground/40 text-sm select-none" aria-hidden="true">,</span>
-                )}
-              </span>
-            ))}
+              );
+            })}
           </nav>
 
           {/* ── Right: Search + Cart ── */}
@@ -423,22 +435,21 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
             transition: "opacity 300ms ease-out",
           }}
         />
-        {/* Panel */}
+        {/* Panel — slide down from top */}
         <div
           style={{
-            position: "absolute", top: 0, right: 0, bottom: 0,
-            width: "100%", maxWidth: "420px",
-            background: "rgba(253,246,240,0.97)",
-            transform: menuOpen ? "translateX(0)" : "translateX(100%)",
-            transition: "transform 350ms cubic-bezier(0.22,1,0.36,1)",
+            position: "absolute", top: 0, left: 0, right: 0,
+            background: "rgba(253,246,240,0.98)",
+            transform: menuOpen ? "translateY(0)" : "translateY(-100%)",
+            transition: "transform 400ms cubic-bezier(0.22,1,0.36,1)",
             display: "flex", flexDirection: "column",
-            padding: "24px",
+            alignItems: "center", justifyContent: "center",
+            minHeight: "100dvh",
+            padding: "80px 24px 40px",
           }}
         >
-          {/* Close button removed — hamburger toggles to X */}
-
-          {/* Menu links */}
-          <nav className="flex flex-col gap-1 flex-1" aria-label="Menú principal">
+          {/* Menu links — centered and large */}
+          <nav className="flex flex-col items-center gap-2 flex-1 justify-center" aria-label="Menú principal">
             {MENU_LINKS.map((link, i) => (
               <a
                 key={link.href}
@@ -446,31 +457,27 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
                 onClick={(e) => {
                   e.preventDefault();
                   setMenuOpen(false);
-
-                  // If this link needs to reveal a conditional section first
                   if (link.section && onShowSection) {
                     onShowSection(link.section);
                   }
-
                   if (link.href.startsWith("/#")) {
                     const id = link.href.replace("/#", "");
                     if (location.pathname !== "/") {
                       navigate("/");
                       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 400);
                     } else {
-                      // Small delay so the section renders before scrolling
                       setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 150);
                     }
                   } else {
                     navigate(link.href);
                   }
                 }}
-                className="text-lg font-medium tracking-wide py-3 px-2 rounded-xl transition-all duration-200 hover:scale-105 hover:text-[#ac3c72]"
+                className="text-xl md:text-2xl font-medium tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center"
                 style={{
-                  color: "#3D3028",
+                  color: "hsl(var(--foreground))",
                   opacity: menuOpen ? 1 : 0,
-                  transform: menuOpen ? "translateX(0)" : "translateX(40px)",
-                  transition: `opacity 300ms ease-out ${100 + i * 100}ms, transform 300ms ease-out ${100 + i * 100}ms, background-color 200ms ease`,
+                  transform: menuOpen ? "translateY(0)" : "translateY(-20px)",
+                  transition: `opacity 300ms ease-out ${80 + i * 60}ms, transform 300ms ease-out ${80 + i * 60}ms, color 200ms ease`,
                 }}
               >
                 {link.label}
@@ -513,10 +520,35 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           100% { opacity: 0; transform: scale(1) rotate(25deg); }
         }
 
-        /* ── Nav underline sweep ── */
-        header nav a:hover > span > span {
-          transform: scaleX(1) !important;
-          transform-origin: left !important;
+        /* ── Nav underline — grows from center, magenta ── */
+        .nav-link-underline {
+          position: relative;
+          display: inline-block;
+        }
+        .nav-link-underline::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 0;
+          height: 2px;
+          background: hsl(var(--primary));
+          transition: width 0.3s ease, left 0.3s ease;
+        }
+        .nav-link-underline:hover::after {
+          width: 100%;
+          left: 0;
+        }
+
+        /* ── Logo hover bounce ── */
+        .logo-hover:hover img {
+          animation: logo-soft-bounce 0.5s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes logo-soft-bounce {
+          0%   { transform: scale(1); }
+          40%  { transform: scale(1.08) translateY(-2px); }
+          70%  { transform: scale(0.97); }
+          100% { transform: scale(1); }
         }
 
         /* ── Pill button base ── */
