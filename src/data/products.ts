@@ -44,6 +44,8 @@ export interface Product {
   returnSummary: string;
   featured: boolean;
   colorway: string;
+  totalInventory?: number | null;
+  variantInventory?: Array<{ id: string; title: string; quantityAvailable: number | null }>;
 }
 
 export const collections: { id: Collection; label: string; color: string }[] = [

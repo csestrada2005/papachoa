@@ -10,6 +10,8 @@ export interface ShopifyProduct {
       edges: Array<{
         node: {
           id: string;
+          title: string;
+          quantityAvailable: number | null;
         };
       }>;
     };
@@ -31,6 +33,7 @@ export interface ShopifyProduct {
       name: string;
       values: string[];
     }>;
+    totalInventory: number | null;
   };
 }
 
@@ -67,8 +70,9 @@ export const STOREFRONT_QUERY = `
           description
           handle
           tags
-          variants(first: 1) {
-            edges { node { id } }
+          totalInventory
+          variants(first: 30) {
+            edges { node { id title quantityAvailable } }
           }
           priceRange {
             minVariantPrice { amount currencyCode }
