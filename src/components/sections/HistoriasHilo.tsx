@@ -86,7 +86,7 @@ const HistoriasHilo = () => (
       <div className="relative">
 
         {/* Desktop: 3 cols con alturas variables */}
-        <div className="hidden md:grid md:grid-cols-12 gap-6 lg:gap-8 items-start">
+        <div className="hidden md:grid md:grid-cols-12 gap-4 lg:gap-8 items-start">
 
           {stories.map((story, i) => (
             <SectionReveal

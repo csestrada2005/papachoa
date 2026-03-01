@@ -48,7 +48,7 @@ const Filosofia = () => (
       <div className="grid lg:grid-cols-12 gap-8 lg:gap-0 items-start">
 
         {/* LEFT — imágenes apiladas / desfasadas (cols 1-5) */}
-        <div className="lg:col-span-5 relative" style={{ paddingBottom: "4rem" }}>
+        <div className="lg:col-span-5 relative overflow-hidden" style={{ paddingBottom: "4rem" }}>
           <SectionReveal delay={40} distance={20}>
             {/* Imagen principal */}
             <div className="overflow-hidden" style={{ borderRadius: 0, marginRight: "clamp(0px, 3vw, 40px)" }}>
@@ -74,7 +74,7 @@ const Filosofia = () => (
               className="absolute overflow-hidden shadow-lg"
               style={{
                 bottom: "0",
-                right: "-1rem",
+                right: "0",
                 width: "clamp(110px, 24vw, 230px)",
                 aspectRatio: "4/5",
                 border: "4px solid white",
@@ -135,7 +135,7 @@ const Filosofia = () => (
                 <p
                   key={i}
                   className="text-foreground/75 font-light leading-relaxed"
-                  style={{ fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
+                  style={{ fontSize: "clamp(0.95rem, 1.4vw, 1.05rem)", lineHeight: 1.7 }}
                 >
                   {p}
                 </p>

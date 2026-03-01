@@ -202,8 +202,8 @@ const HeroPapacho = () => {
           }}
         >
           <h1
-            className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
-            style={{ transformStyle: "preserve-3d", minHeight: "1em", minWidth: "10ch" }}
+            className="relative text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
+            style={{ transformStyle: "preserve-3d", minHeight: "1em", maxWidth: "95vw" }}
             aria-label={TEXT}
           >
             {WORDS.map((word, wi) => (

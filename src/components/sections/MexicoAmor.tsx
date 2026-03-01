@@ -81,7 +81,7 @@ const MexicoAmor = () => (
 
 
       {/* 3 cols con alturas variables y color block de fondo */}
-      <div className="grid md:grid-cols-3 gap-4 md:gap-5 items-end">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 items-end">
         {commitments.map((c, i) => (
           <SectionReveal key={c.title} delay={100 + i * 100} distance={16}>
             <div

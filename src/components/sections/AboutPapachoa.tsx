@@ -22,7 +22,7 @@ const AboutPapachoa = () => {
     <section
       id="aboutpapachoa"
       className="relative overflow-hidden z-10"
-      style={{ minHeight: "100vh", backgroundColor: "#FFF8F5" }}>
+      style={{ minHeight: "auto", backgroundColor: "#FFF8F5" }}>
 
     {/* Textura decorativa de pajaritos */}
     <div
@@ -40,7 +40,7 @@ const AboutPapachoa = () => {
         className="relative container flex flex-col md:flex-row md:items-center md:gap-10 justify-center"
         style={{
           zIndex: 10,
-          minHeight: "100vh",
+          minHeight: "auto",
           paddingTop: "clamp(5rem, 10vw, 8rem)",
           paddingBottom: "clamp(4rem, 8vw, 7rem)"
         }}>

@@ -82,7 +82,7 @@ const CollectionCard = ({ col, index }: { col: CollectionEntry; index: number })
   return (
     <div
       className="flex-shrink-0"
-      style={{ width: "clamp(260px, 34vw, 420px)" }}
+      style={{ width: "clamp(240px, 34vw, 420px)" }}
     >
       <Link
         to={col.url}

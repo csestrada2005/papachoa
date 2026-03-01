@@ -87,6 +87,10 @@
     @apply border-border;
   }
 
+  html, body {
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-background antialiased;
     font-family: 'Lato', sans-serif;
