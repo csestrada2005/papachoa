@@ -1,15 +1,11 @@
 import { useMemo, useRef, useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import texturaDinosaurio from "@/assets/textura-dinosaurio.png";
-import texturaDoodle from "@/assets/textura-doodle.png";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductGallery from "@/components/product/ProductGallery";
 import SimpleGallery from "@/components/product/SimpleGallery";
 import MobileHeroGallery from "@/components/product/MobileHeroGallery";
 import ProductInfo from "@/components/product/ProductInfo";
-import ProductAccordion from "@/components/product/ProductAccordion";
-import TextureSection from "@/components/product/TextureSection";
 import BundleSuggestion from "@/components/product/BundleSuggestion";
 import ProductReviews from "@/components/product/ProductReviews";
 import RelatedProducts from "@/components/product/RelatedProducts";
@@ -104,11 +100,8 @@ const Producto = () => {
   const titleTranslateY = isMobile ? 0 : -titleProgress * 6;
   const titleOpacity = isMobile ? 1 : 1 - titleProgress * 0.15;
 
-  const textureImageMap: Record<string, string> = {
-    "pijama-dinosaurio-papa-nina": texturaDinosaurio,
-    "pijama-doodle-mama-bebe": texturaDoodle,
-  };
-  const textureImage = product.slug ? textureImageMap[product.slug] : undefined;
+  const textureImageMap: Record<string, string> = {};
+  const textureImage = undefined;
 
   return (
     <div className="min-h-screen bg-background">
@@ -155,21 +148,8 @@ const Producto = () => {
                 <ProductInfo product={product} collectionLabel={collectionLabel} />
               </div>
 
-              <div className="hidden lg:block">
-                <TextureSection image={textureImage} />
-              </div>
             </div>
           </div>
-        </div>
-
-        {/* Texture — mobile */}
-        <div className="container mt-12 md:mt-16 lg:hidden">
-          <TextureSection image={textureImage} />
-        </div>
-
-        {/* Accordion */}
-        <div className="container mt-12 md:mt-16">
-          <ProductAccordion product={product} />
         </div>
 
         {/* Bundle */}
