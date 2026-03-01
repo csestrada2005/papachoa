@@ -72,17 +72,27 @@ export function categorizeProduct(title: string, description: string = "", tags:
   const d = description.toLowerCase();
   const allText = `${t} ${d} ${tags.join(" ").toLowerCase()}`;
 
-  // 1. Products explicitly labeled "adulto" in the TITLE go to adulto
+  // 1. Specific baby products by name
+  if (t.includes("nido") || t.includes("colecho") || t.includes("sleeping") || t.includes("cascarón") || t.includes("cascaron")) {
+    return "bebe";
+  }
+
+  // 2. Specific kids products by name
+  if (t.includes("saco patita") || t.includes("saco") && t.includes("patita")) {
+    return "hijos";
+  }
+
+  // 3. Products explicitly labeled "adulto" in the TITLE go to adulto
   if (t.includes("adulto")) {
     return "adulto";
   }
 
-  // 2. Baby products
+  // 4. Baby products
   if (t.includes("bebé") || t.includes("bebe") || t.includes("baby") || t.includes("recién nacido")) {
     return "bebe";
   }
 
-  // 3. Kids (hijos) — hija, hijo, niña, niño in the TITLE
+  // 5. Kids (hijos) — hija, hijo, niña, niño in the TITLE
   if (t.includes("hija") || t.includes("hijo") || t.includes("niña") || t.includes("niño") || t.includes("kids")) {
     return "hijos";
   }
