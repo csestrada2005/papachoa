@@ -27,12 +27,11 @@ const StarBullet = ({ text }: { text: string }) => (
   </li>
 );
 
-const bullets = [
-  "Cada prenda es cosida a mano en talleres locales bajo principios de comercio justo.",
-  "Usamos telas ultra suaves, libres de químicos agresivos, aptas para piel de bebé.",
-  "Diseñadas para verse iguales en toda la familia — del recién nacido al papá.",
-  "Sin fast-fashion. Producimos por colecciones limitadas, con intención.",
-  "El nombre de cada pieza viene de un pájaro mexicano. Es nuestra firma.",
+const paragraphs = [
+  "Apapacho viene del náhuatl. Y eso es exactamente lo que queremos lograr con cada prenda: abrazar el alma de los niños… y también la de mamá.",
+  "Esto no es algo que encuentras en cualquier tienda. Nuestras pijamas tienen un propósito: dar apapachos. Que se sientan cómodos, libres, suaves, seguros. Que disfruten telas de la más alta calidad, cortes pensados para moverse y descansar, y prendas que duren mucho tiempo.",
+  "Es más que una pijama. Queremos que elijas un producto comprometido con México — donde cada proceso ha sido valorado y cada persona justamente remunerada.",
+  "Cada pieza es única. Cada print ha sido diseñado por Miriam y Mercedes. Y cada pieza es confeccionada con muchísimo cariño por Fer, Alondra y Lucy.",
 ];
 
 const Filosofia = () => (
@@ -131,11 +130,17 @@ const Filosofia = () => (
           </SectionReveal>
 
           <SectionReveal delay={200}>
-            <ul className="space-y-0">
-              {bullets.map((b, i) => (
-                <StarBullet key={i} text={b} />
+            <div className="space-y-6">
+              {paragraphs.map((p, i) => (
+                <p
+                  key={i}
+                  className="text-foreground/75 font-light leading-relaxed"
+                  style={{ fontSize: "clamp(0.93rem, 1.4vw, 1.05rem)" }}
+                >
+                  {p}
+                </p>
               ))}
-            </ul>
+            </div>
           </SectionReveal>
         </div>
 

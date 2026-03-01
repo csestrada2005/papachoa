@@ -16,7 +16,7 @@ import logo from "@/assets/brand/papachoa-logo-nuevo.png";
 const NAV_LINKS = [
   { label: "Filosofía",   href: "/#filosofia" },
   { label: "Colecciones", href: "/#colecciones" },
-  { label: "Ver colección", href: "/catalogo", highlight: true },
+  { label: "Más Vendidos", href: "/#productos", highlight: true },
   { label: "Contacto",    href: "/contacto" },
 ];
 

@@ -227,7 +227,7 @@ const ColeccionesEditorial = () => {
                   letterSpacing: "clamp(0.03em, 0.5vw, 0.08em)",
                 }}
               >
-                Nuestra<br />Colección
+                Catálogo
               </h2>
             </SectionReveal>
             <SectionReveal delay={100}>
@@ -297,6 +297,16 @@ const ColeccionesEditorial = () => {
             </Link>
           </SectionReveal>
         </div>
+      </div>
+
+      {/* Coming soon */}
+      <div className="container mt-10">
+        <p
+          className="text-muted-foreground/50 font-light text-center italic"
+          style={{ fontSize: "clamp(0.82rem, 1.1vw, 0.92rem)", letterSpacing: "0.03em" }}
+        >
+          Pronto habrá: Catarinas, football, perros, ski
+        </p>
       </div>
 
     </section>
