@@ -5,7 +5,6 @@ import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 const ProductosDestacados = () => {
   const { data: products } = useShopifyProducts();
 
-  // Pick 3 products with lowest stock > 0 (reactive)
   const lowStock = (products || [])
     .filter((p) => (p.totalInventory ?? 0) > 0 && p.image !== "/placeholder.svg")
     .sort((a, b) => (a.totalInventory ?? Infinity) - (b.totalInventory ?? Infinity))
@@ -18,7 +17,7 @@ const ProductosDestacados = () => {
       <section className="py-20 bg-white">
         <div className="container">
           <h2 className="text-3xl font-bold text-center text-primary mb-2">
-            más vendidos
+            Más vendidos
           </h2>
           <p className="text-center text-muted-foreground mb-12">
             ropa infantil hecha con amor
@@ -53,6 +52,16 @@ const ProductosDestacados = () => {
                 </div>
               </Link>
             ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link
+              to="/catalogo"
+              className="cta-premium-terracotta group inline-flex items-center gap-2"
+            >
+              Ver catálogo
+              <span className="text-lg inline-block transition-transform duration-300 ease-out group-hover:translate-x-1">→</span>
+            </Link>
           </div>
         </div>
       </section>

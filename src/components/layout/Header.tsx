@@ -1,34 +1,41 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Search, X, Menu } from "lucide-react";
+import { Search, X, ChevronDown } from "lucide-react";
 import { products } from "@/data/products";
 import MiniCart from "@/components/MiniCart";
 import { useCart } from "@/context/CartContext";
 import logo from "@/assets/brand/papachoa-logo-nuevo.png";
 
-/* ─────────────────────────────────────────
-   Papachoa Header — Japanese-minimal v6
-   – transparent → white on scroll
-   – inline search palette (no modal)
-   – premium cart button with stamp badge
-   ───────────────────────────────────────── */
-
-const NAV_LINKS = [
-  { label: "Filosofía",   href: "/#filosofia" },
-  { label: "Colecciones", href: "/#colecciones" },
-  { label: "Más Vendidos", href: "/#productos", highlight: true },
-  { label: "Contacto",    href: "/contacto" },
+const NAV_LINKS: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
+  { label: "Inicio", href: "/" },
+  { label: "Catálogo", href: "/catalogo" },
+  { label: "Nuestra Historia", href: "/nuestra-historia" },
+  { label: "Preguntas Frecuentes", href: "/faq" },
+  {
+    label: "Políticas",
+    href: "#",
+    children: [
+      { label: "Privacidad", href: "/privacidad" },
+      { label: "Términos", href: "/terminos" },
+      { label: "Devoluciones", href: "/devoluciones" },
+    ],
+  },
 ];
 
-const MENU_LINKS: { label: string; href: string; section?: string }[] = [
-  { label: "Inicio", href: "/#hero" },
-  { label: "Somos Papachoa", href: "/#about" },
-  { label: "Colecciones", href: "/#colecciones" },
-  { label: "Más Vendidos", href: "/#productos" },
-  { label: "Nuestra Historia", href: "/#historias", section: "historias" },
-  { label: "Materiales", href: "/#materiales", section: "materiales" },
-  { label: "Hecho con Manos Mexicanas", href: "/#mexico-amor" },
-  { label: "Contacto", href: "/#footer" },
+const MOBILE_LINKS: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
+  { label: "Inicio", href: "/" },
+  { label: "Catálogo", href: "/catalogo" },
+  { label: "Nuestra Historia", href: "/nuestra-historia" },
+  { label: "Preguntas Frecuentes", href: "/faq" },
+  {
+    label: "Políticas",
+    href: "#",
+    children: [
+      { label: "Privacidad", href: "/privacidad" },
+      { label: "Términos", href: "/terminos" },
+      { label: "Devoluciones", href: "/devoluciones" },
+    ],
+  },
 ];
 
 interface HeaderProps {
@@ -52,35 +59,22 @@ const InlineSearch = ({ onClose }: { onClose: () => void }) => {
         .slice(0, 5)
     : [];
 
-  useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+  useEffect(() => { inputRef.current?.focus(); }, []);
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
+    const handleKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
     window.addEventListener("keydown", handleKey);
     return () => window.removeEventListener("keydown", handleKey);
   }, [onClose]);
 
-  const handleResult = (id: string) => {
-    navigate(`/producto/${id}`);
-    onClose();
-  };
+  const handleResult = (id: string) => { navigate(`/producto/${id}`); onClose(); };
 
   const fmt = (price: number) =>
     new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN", minimumFractionDigits: 0 }).format(price);
 
   return (
     <>
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 z-40"
-        onClick={onClose}
-        aria-hidden="true"
-      />
-      {/* Palette — drops from header */}
+      <div className="fixed inset-0 z-40" onClick={onClose} aria-hidden="true" />
       <div
         className="absolute top-full left-0 right-0 z-50 mx-4 md:mx-auto md:left-1/2 md:-translate-x-1/2 md:w-[520px]"
         style={{ animation: "search-drop 0.22s cubic-bezier(0.22,1,0.36,1) forwards" }}
@@ -88,7 +82,6 @@ const InlineSearch = ({ onClose }: { onClose: () => void }) => {
         aria-label="Buscador"
       >
         <div className="mt-2 rounded-2xl overflow-hidden shadow-[0_8px_40px_-8px_rgba(0,0,0,0.14)] border border-border/20 bg-card/95 backdrop-blur-xl">
-          {/* Input row */}
           <div className="flex items-center gap-3 px-4 py-3.5 border-b border-border/15">
             <Search className="h-4 w-4 text-muted-foreground/60 shrink-0" strokeWidth={1.5} />
             <input
@@ -99,26 +92,16 @@ const InlineSearch = ({ onClose }: { onClose: () => void }) => {
               className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground/40 outline-none text-sm tracking-wide"
               aria-label="Buscar productos"
             />
-            <button
-              onClick={onClose}
-              className="p-1 text-muted-foreground/50 hover:text-foreground transition-colors rounded-full"
-              aria-label="Cerrar buscador"
-            >
+            <button onClick={onClose} className="p-1 text-muted-foreground/50 hover:text-foreground transition-colors rounded-full" aria-label="Cerrar buscador">
               <X className="h-4 w-4" />
             </button>
           </div>
-
-          {/* Results */}
           <div className="max-h-[56vh] overflow-y-auto">
             {!query.trim() && (
-              <p className="px-5 py-5 text-xs text-muted-foreground/50 tracking-widest uppercase text-center">
-                Escribe para buscar
-              </p>
+              <p className="px-5 py-5 text-xs text-muted-foreground/50 tracking-widest uppercase text-center">Escribe para buscar</p>
             )}
             {query.trim() && results.length === 0 && (
-              <p className="px-5 py-5 text-sm text-muted-foreground text-center">
-                Sin resultados para «{query}»
-              </p>
+              <p className="px-5 py-5 text-sm text-muted-foreground text-center">Sin resultados para «{query}»</p>
             )}
             {results.length > 0 && (
               <div className="py-2">
@@ -175,8 +158,34 @@ const CartBadge = ({ count }: { count: number }) => (
   </span>
 );
 
+/* ── Desktop dropdown ── */
+const DesktopDropdown = ({ item }: { item: typeof NAV_LINKS[number] }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
+      <button className="nav-link-underline text-sm font-medium px-3 py-1 inline-flex items-center gap-1" style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}>
+        {item.label}
+        <ChevronDown className="h-3.5 w-3.5 transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0)" }} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-1 py-2 min-w-[160px] rounded-xl bg-card/95 backdrop-blur-xl border border-border/20 shadow-lg z-50">
+          {item.children!.map((child) => (
+            <Link
+              key={child.href}
+              to={child.href}
+              className="block px-4 py-2 text-sm text-foreground hover:text-primary hover:bg-muted/40 transition-colors"
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 /* ── Main Header ── */
-const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
+const Header = ({ transparent = false }: HeaderProps) => {
   const [scrolled, setScrolled] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -187,26 +196,19 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [mobileSubOpen, setMobileSubOpen] = useState(false);
 
-  /* lock body scroll when menu is open */
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    if (menuOpen) { document.body.style.overflow = "hidden"; }
+    else { document.body.style.overflow = ""; }
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  /* badge pop on new item */
   useEffect(() => {
-    if (itemCount > prevCount.current) {
-      setBadgeKey((k) => k + 1);
-    }
+    if (itemCount > prevCount.current) setBadgeKey((k) => k + 1);
     prevCount.current = itemCount;
   }, [itemCount]);
 
-  /* scroll listener — scrolled for nav bg, scrollShadow for shadow */
   const [scrollShadow, setScrollShadow] = useState(false);
   useEffect(() => {
     const onScroll = () => {
@@ -232,21 +234,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
     [location.pathname, navigate]
   );
 
-  const handleAnchorClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-      if (!href.startsWith("/#")) return;
-      e.preventDefault();
-      const id = href.replace("/#", "");
-      if (location.pathname !== "/") {
-        navigate("/");
-        setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 350);
-      } else {
-        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-      }
-    },
-    [location.pathname, navigate]
-  );
-
   const isTransparent = transparent && !scrolled;
 
   return (
@@ -257,9 +244,7 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           background: isTransparent ? "transparent" : "rgba(253,248,243,0.85)",
           backdropFilter: isTransparent ? "none" : "blur(14px)",
           WebkitBackdropFilter: isTransparent ? "none" : "blur(14px)",
-          borderBottom: isTransparent
-            ? "1px solid transparent"
-            : "1px solid hsl(var(--border) / 0.15)",
+          borderBottom: isTransparent ? "1px solid transparent" : "1px solid hsl(var(--border) / 0.15)",
           boxShadow: scrollShadow && !isTransparent ? "0 1px 8px rgba(0,0,0,0.06)" : "none",
           animation: "header-fadein 0.22s ease-out forwards",
         }}
@@ -268,62 +253,31 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           className="container flex items-center justify-between transition-all duration-300 relative"
           style={{ paddingTop: scrolled ? "12px" : "20px", paddingBottom: scrolled ? "12px" : "20px" }}
         >
-          {/* ── Logo ── */}
-          <Link
-            to="/"
-            onClick={handleLogoClick}
-            className="flex-shrink-0 flex items-center logo-hover"
-            aria-label="Papachoa México — inicio"
-          >
-            <img
-              src={logo}
-              alt="Papachoa México"
-              className="h-10 w-auto transition-all duration-300"
-              loading="eager"
-              fetchPriority="high"
-            />
+          {/* Logo */}
+          <Link to="/" onClick={handleLogoClick} className="flex-shrink-0 flex items-center logo-hover" aria-label="Papachoa México — inicio">
+            <img src={logo} alt="Papachoa México" className="h-10 w-auto transition-all duration-300" loading="eager" fetchPriority="high" />
           </Link>
 
-          {/* ── Nav (desktop) ── */}
+          {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1" aria-label="Navegación principal">
-            {NAV_LINKS.map((link) => {
-              const isHighlight = !!(link as any).highlight;
-              if (isHighlight) {
-                return (
-                  <Link
-                    key={link.href}
-                    to={link.href}
-                    onClick={(e) => handleAnchorClick(e, link.href)}
-                    className="ml-3 inline-flex items-center font-semibold text-sm rounded-full transition-all duration-200 hover:scale-105 active:scale-[0.97]"
-                    style={{
-                      background: "hsl(var(--primary))",
-                      color: "hsl(var(--primary-foreground))",
-                      padding: "8px 22px",
-                      letterSpacing: "0.04em",
-                    }}
-                  >
-                    {link.label}
-                  </Link>
-                );
-              }
-              return (
+            {NAV_LINKS.map((link) =>
+              link.children ? (
+                <DesktopDropdown key={link.label} item={link} />
+              ) : (
                 <Link
                   key={link.href}
                   to={link.href}
-                  onClick={(e) => handleAnchorClick(e, link.href)}
                   className="nav-link-underline text-sm font-medium px-3 py-1"
                   style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}
                 >
                   {link.label}
                 </Link>
-              );
-            })}
+              )
+            )}
           </nav>
 
-          {/* ── Right: Search + Cart ── */}
+          {/* Right: Search + Cart + Hamburger (mobile only) */}
           <div className="flex items-center gap-2.5">
-
-            {/* Search pill button */}
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Buscar productos"
@@ -331,16 +285,13 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
               className="pill-btn search-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
             >
               <PillDots />
-              {/* Sunburst */}
               <span className="pill-sunburst search-sunburst" aria-hidden="true" />
-              {/* Icon */}
               <span className="pill-icon-wrap">
                 {searchOpen
                   ? <X className="w-[18px] h-[18px] text-[hsl(196,60%,52%)]" strokeWidth={2} />
                   : (
                     <svg viewBox="0 0 22 22" className="w-[20px] h-[20px]" fill="none" aria-hidden="true">
                       <circle cx="9.5" cy="9.5" r="6.5" stroke="hsl(196,60%,52%)" strokeWidth="2.2" />
-                      {/* Smile inside lens */}
                       <path d="M7.2 10.5 Q9.5 12.5 11.8 10.5" stroke="hsl(43,90%,58%)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
                       <line x1="14.2" y1="14.2" x2="18.5" y2="18.5" stroke="hsl(196,60%,52%)" strokeWidth="2.2" strokeLinecap="round"/>
                     </svg>
@@ -349,7 +300,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
               </span>
             </button>
 
-            {/* Cart pill button */}
             <button
               key={`cart-${badgeKey}`}
               onClick={() => setIsCartOpen(true)}
@@ -358,18 +308,12 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
               style={badgeKey > 0 ? { animation: "pill-bounce 0.42s cubic-bezier(0.34,1.56,0.64,1)" } : undefined}
             >
               <PillDots />
-              {/* Sunburst */}
               <span className="pill-sunburst cart-sunburst" aria-hidden="true" />
-              {/* Icon */}
               <span className="pill-icon-wrap">
                 <svg viewBox="0 0 22 22" className="w-[20px] h-[20px]" fill="none" aria-hidden="true">
-                  {/* Bag body */}
                   <path d="M4 8h14l-1.5 9.5a1.5 1.5 0 01-1.5 1.3H7a1.5 1.5 0 01-1.5-1.3L4 8z" stroke="hsl(340,55%,60%)" strokeWidth="2" fill="none"/>
-                  {/* Bag handle */}
                   <path d="M8 8V6.5a3 3 0 016 0V8" stroke="hsl(340,55%,60%)" strokeWidth="2" strokeLinecap="round"/>
-                  {/* Smile inside bag */}
                   <path d="M9 13.5 Q11 15.5 13 13.5" stroke="hsl(340,55%,60%)" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
-                  {/* Tag */}
                   <rect x="12.5" y="7" width="5" height="3.5" rx="0.8" fill="hsl(43,90%,65%)" opacity="0.9"/>
                   <line x1="14.5" y1="7" x2="14.5" y2="6" stroke="hsl(20,75%,65%)" strokeWidth="1" strokeLinecap="round"/>
                 </svg>
@@ -377,16 +321,15 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
               </span>
             </button>
 
-            {/* Hamburger / X toggle button */}
+            {/* Hamburger — mobile only */}
             <button
-              onClick={() => setMenuOpen((v) => !v)}
+              onClick={() => { setMenuOpen((v) => !v); setMobileSubOpen(false); }}
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-              className="pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
+              className="md:hidden pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
             >
               <PillDots />
               <span className="pill-sunburst search-sunburst" aria-hidden="true" />
               <span className="pill-icon-wrap relative w-[18px] h-[18px]">
-                {/* Two bars that rotate into an X */}
                 <span
                   className="absolute left-0 top-[5px] w-full h-[2px] bg-foreground/70 rounded-full origin-center"
                   style={{
@@ -407,82 +350,80 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
             </button>
           </div>
 
-          {/* Search palette (drops below header) */}
-          {searchOpen && (
-            <InlineSearch onClose={() => setSearchOpen(false)} />
-          )}
+          {searchOpen && <InlineSearch onClose={() => setSearchOpen(false)} />}
         </div>
       </header>
 
-      {/* Spacer */}
       {!transparent && <div style={{ height: "74px" }} aria-hidden="true" />}
 
-      {/* ── Fullscreen Menu Overlay ── */}
+      {/* Mobile Menu Overlay */}
       <div
-        className="fixed inset-0 z-[60]"
+        className="fixed inset-0 z-[60] md:hidden"
         style={{
           pointerEvents: menuOpen ? "auto" : "none",
           visibility: menuOpen ? "visible" : "hidden",
         }}
       >
-        {/* Backdrop */}
-        <div
-          onClick={() => setMenuOpen(false)}
-          style={{
-            position: "absolute", inset: 0,
-            background: "rgba(253,246,240,0.97)",
-            opacity: menuOpen ? 1 : 0,
-            transition: "opacity 300ms ease-out",
-          }}
-        />
-        {/* Panel — slide down from top */}
+        <div onClick={() => setMenuOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(253,246,240,0.97)", opacity: menuOpen ? 1 : 0, transition: "opacity 300ms ease-out" }} />
         <div
           style={{
             position: "absolute", top: 0, left: 0, right: 0,
             background: "rgba(253,246,240,0.98)",
             transform: menuOpen ? "translateY(0)" : "translateY(-100%)",
             transition: "transform 400ms cubic-bezier(0.22,1,0.36,1)",
-            display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            minHeight: "100dvh",
-            padding: "80px 24px 40px",
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+            minHeight: "100dvh", padding: "80px 24px 40px",
           }}
         >
-          {/* Menu links — centered and large */}
           <nav className="flex flex-col items-center gap-2 flex-1 justify-center" aria-label="Menú principal">
-            {MENU_LINKS.map((link, i) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMenuOpen(false);
-                  if (link.section && onShowSection) {
-                    onShowSection(link.section);
-                  }
-                  if (link.href.startsWith("/#")) {
-                    const id = link.href.replace("/#", "");
-                    if (location.pathname !== "/") {
-                      navigate("/");
-                      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 400);
-                    } else {
-                      setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 150);
-                    }
-                  } else {
-                    navigate(link.href);
-                  }
-                }}
-                className="text-xl md:text-2xl font-medium tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center"
-                style={{
-                  color: "hsl(var(--foreground))",
-                  opacity: menuOpen ? 1 : 0,
-                  transform: menuOpen ? "translateY(0)" : "translateY(-20px)",
-                  transition: `opacity 300ms ease-out ${80 + i * 60}ms, transform 300ms ease-out ${80 + i * 60}ms, color 200ms ease`,
-                }}
-              >
-                {link.label}
-              </a>
-            ))}
+            {MOBILE_LINKS.map((link, i) =>
+              link.children ? (
+                <div key={link.label} className="flex flex-col items-center">
+                  <button
+                    onClick={() => setMobileSubOpen((v) => !v)}
+                    className="text-xl font-medium tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center inline-flex items-center gap-2"
+                    style={{
+                      color: "hsl(var(--foreground))",
+                      opacity: menuOpen ? 1 : 0,
+                      transform: menuOpen ? "translateY(0)" : "translateY(-20px)",
+                      transition: `opacity 300ms ease-out ${80 + i * 60}ms, transform 300ms ease-out ${80 + i * 60}ms, color 200ms ease`,
+                    }}
+                  >
+                    {link.label}
+                    <ChevronDown className="h-4 w-4 transition-transform" style={{ transform: mobileSubOpen ? "rotate(180deg)" : "rotate(0)" }} />
+                  </button>
+                  {mobileSubOpen && (
+                    <div className="flex flex-col items-center gap-1 mt-1">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          to={child.href}
+                          onClick={() => setMenuOpen(false)}
+                          className="text-base font-light tracking-wide py-1.5 px-6 text-muted-foreground hover:text-primary transition-colors"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  onClick={() => setMenuOpen(false)}
+                  className="text-xl font-medium tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center"
+                  style={{
+                    color: "hsl(var(--foreground))",
+                    opacity: menuOpen ? 1 : 0,
+                    transform: menuOpen ? "translateY(0)" : "translateY(-20px)",
+                    transition: `opacity 300ms ease-out ${80 + i * 60}ms, transform 300ms ease-out ${80 + i * 60}ms, color 200ms ease`,
+                  }}
+                >
+                  {link.label}
+                </Link>
+              )
+            )}
           </nav>
         </div>
       </div>
@@ -509,18 +450,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           65%  { transform: scale(1.06) translateY(-3px); }
           100% { transform: scale(1) translateY(0); }
         }
-        @keyframes confetti-burst {
-          0%   { transform: scale(0.6); opacity: 0; }
-          50%  { transform: scale(1.12); opacity: 1; }
-          100% { transform: scale(1); opacity: 1; }
-        }
-        @keyframes sunburst-pop {
-          0%   { opacity: 0; transform: scale(0.6) rotate(0deg); }
-          60%  { opacity: 1; transform: scale(1.1) rotate(15deg); }
-          100% { opacity: 0; transform: scale(1) rotate(25deg); }
-        }
-
-        /* ── Nav underline — grows from center, magenta ── */
         .nav-link-underline {
           position: relative;
           display: inline-block;
@@ -539,8 +468,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           width: 100%;
           left: 0;
         }
-
-        /* ── Logo hover bounce ── */
         .logo-hover:hover img {
           animation: logo-soft-bounce 0.5s cubic-bezier(0.34,1.56,0.64,1);
         }
@@ -550,8 +477,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           70%  { transform: scale(0.97); }
           100% { transform: scale(1); }
         }
-
-        /* ── Pill button base ── */
         .pill-btn {
           position: relative;
           display: flex;
@@ -563,7 +488,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           overflow: hidden;
           cursor: pointer;
           border: none;
-          /* 3D depth: top highlight + bottom shadow */
           background: linear-gradient(170deg, #fffdf9 0%, #f9f4ef 100%);
           box-shadow:
             0 1px 0 0 rgba(255,255,255,0.9) inset,
@@ -591,8 +515,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
             0 1px 0 0 rgba(0,0,0,0.10),
             0 2px 6px -1px rgba(0,0,0,0.08);
         }
-
-        /* Polka dots SVG (fills pill background) */
         .pill-dots {
           position: absolute;
           inset: 0;
@@ -600,8 +522,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           height: 100%;
           pointer-events: none;
         }
-
-        /* Icon wrapper */
         .pill-icon-wrap {
           position: relative;
           z-index: 10;
@@ -616,8 +536,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
         .pill-btn:active .pill-icon-wrap {
           transform: scale(0.93);
         }
-
-        /* Sunburst burst on hover */
         .pill-sunburst {
           position: absolute;
           inset: -4px;
@@ -636,8 +554,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
         .pill-btn:hover .pill-sunburst {
           opacity: 1;
         }
-
-        /* Extra sparkle rays on cart hover */
         .cart-pill::after {
           content: '';
           position: absolute;
@@ -656,8 +572,6 @@ const Header = ({ transparent = false, onShowSection }: HeaderProps) => {
           transform: scale(1);
           opacity: 0.8;
         }
-
-        /* New item pop: animate the whole cart pill */
         .cart-pill.item-added {
           animation: pill-bounce 0.42s cubic-bezier(0.34,1.56,0.64,1);
         }

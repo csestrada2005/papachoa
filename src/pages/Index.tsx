@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect, useState } from "react"; // refresh
+import React, { lazy, Suspense, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
@@ -6,15 +6,12 @@ import HeroPapacho from "@/components/sections/HeroPapacho";
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
 
-// Lazy load below-fold sections to keep initial bundle lean
 const AboutPapachoa         = lazy(() => import("@/components/sections/AboutPapachoa"));
 const ColeccionesEditorial  = lazy(() => import("@/components/sections/ColeccionesEditorial"));
 const ProductosDestacados   = lazy(() => import("@/components/sections/ProductosDestacados"));
 const ResenasSection        = lazy(() => import("@/components/sections/ResenasSection"));
 const ComplementaLook       = lazy(() => import("@/components/sections/ComplementaLook"));
 const ApatachoItems         = lazy(() => import("@/components/sections/ApatachoItems"));
-const HistoriasHilo         = lazy(() => import("@/components/sections/HistoriasHilo"));
-const Suavidad              = lazy(() => import("@/components/sections/Suavidad"));
 const MexicoAmor            = lazy(() => import("@/components/sections/MexicoAmor"));
 const Newsletter            = lazy(() => import("@/components/sections/Newsletter"));
 
@@ -23,10 +20,8 @@ const Index = () => {
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
   const [heroComplete, setHeroComplete] = useState(false);
-  const [visibleSection, setVisibleSection] = useState<string | null>(null);
   const autoScrollDone = React.useRef(false);
 
-  // Auto-scroll to hero assembled state — wait for hero image load to avoid flicker
   useEffect(() => {
     const targetY = Math.round(window.innerHeight * 2);
     const duration = 3200;
@@ -46,7 +41,6 @@ const Index = () => {
       if (progress < 1) {
         rafId = requestAnimationFrame(step);
       } else {
-        // Mark auto-scroll done; overlap activates on next user scroll
         autoScrollDone.current = true;
       }
     };
@@ -56,9 +50,7 @@ const Index = () => {
       rafId = requestAnimationFrame(step);
     };
 
-    // Wait 1.5s after load before starting the auto-scroll
     const initialDelay = 1500;
-
     const heroImg = document.querySelector<HTMLImageElement>("img[fetchpriority='high']");
     if (heroImg && !heroImg.complete) {
       heroImg.addEventListener("load", () => {
@@ -72,7 +64,6 @@ const Index = () => {
     }
   }, []);
 
-  // Activate overlap only when user scrolls AFTER auto-scroll finishes
   useEffect(() => {
     const onWheel = () => {
       if (autoScrollDone.current && !heroComplete) setHeroComplete(true);
@@ -84,16 +75,15 @@ const Index = () => {
       window.removeEventListener("touchmove", onWheel);
     };
   }, [heroComplete]);
+
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
-      <Header transparent onShowSection={setVisibleSection} />
+      <Header transparent />
       <main>
-        {/* 1 · Hero */}
         <div id="hero">
           <HeroPapacho />
         </div>
 
-        {/* Wrapper — solid bg, higher z so it covers the hero */}
         <div className="relative bg-white transition-[margin] duration-700 ease-out" style={{ zIndex: 10, marginTop: heroComplete ? "-100vh" : 0 }}>
         <Suspense fallback={null}>
           <div id="about">
@@ -106,23 +96,10 @@ const Index = () => {
             <ProductosDestacados />
           </div>
 
-          {/* Conditionally visible sections (toggled from menu) */}
-          {visibleSection === "historias" && (
-            <Suspense fallback={null}>
-              <div id="historias"><HistoriasHilo /></div>
-            </Suspense>
-          )}
-          {visibleSection === "materiales" && (
-            <Suspense fallback={null}>
-              <div id="materiales"><Suavidad /></div>
-            </Suspense>
-          )}
-
           <div id="mexico-amor">
             <MexicoAmor />
           </div>
 
-          {/* Hidden sections — kept in DOM but not visible */}
           <div className="hidden">
             <ComplementaLook />
             <ResenasSection />
