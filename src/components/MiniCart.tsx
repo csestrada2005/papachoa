@@ -9,7 +9,7 @@ interface MiniCartProps {
 }
 
 const MiniCart = ({ isOpen, onClose }: MiniCartProps) => {
-  const { items, removeItem, updateQuantity, subtotal } = useCart();
+  const { items, removeItem, updateQuantity, subtotal, checkoutUrl, isSyncing } = useCart();
   const panelRef = useRef<HTMLDivElement>(null);
 
   /* Close on Escape */
@@ -167,12 +167,23 @@ const MiniCart = ({ isOpen, onClose }: MiniCartProps) => {
             <p className="text-[11px] text-muted-foreground/60 text-center -mt-1">
               Envío calculado al finalizar la compra
             </p>
-            <button
-              className="w-full py-3.5 rounded-full text-xs tracking-[0.14em] uppercase font-semibold transition-all duration-200 hover:opacity-85 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-              style={{ background: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
-            >
-              Finalizar compra
-            </button>
+            {checkoutUrl ? (
+              <a
+                href={checkoutUrl}
+                className={`w-full py-3.5 rounded-full text-xs tracking-[0.14em] uppercase font-semibold transition-all duration-200 hover:opacity-85 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 block text-center ${isSyncing ? 'opacity-50 pointer-events-none' : ''}`}
+                style={{ background: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
+              >
+                {isSyncing ? 'Sincronizando...' : 'Finalizar compra'}
+              </a>
+            ) : (
+              <button
+                disabled={isSyncing}
+                className={`w-full py-3.5 rounded-full text-xs tracking-[0.14em] uppercase font-semibold transition-all duration-200 hover:opacity-85 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 ${isSyncing ? 'opacity-50 cursor-not-allowed' : ''}`}
+                style={{ background: "hsl(var(--foreground))", color: "hsl(var(--background))" }}
+              >
+                {isSyncing ? 'Sincronizando...' : 'Finalizar compra'}
+              </button>
+            )}
             <button
               onClick={onClose}
               className="w-full text-[11px] tracking-wider uppercase text-muted-foreground hover:text-foreground transition-colors py-1"

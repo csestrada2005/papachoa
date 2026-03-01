@@ -12,8 +12,10 @@ function mapShopifyProduct(node: ShopifyProduct["node"]): Product {
   else if (hasMamaHija) collectionAssigned = "mama-hija";
   else if (hasPapaHija) collectionAssigned = "papa-hija";
 
+  const firstVariantId = node.variants?.edges[0]?.node?.id || node.id;
+
   return {
-    id: node.id,
+    id: firstVariantId,
     slug: node.handle,
     name: node.title,
     price: parseFloat(node.priceRange.minVariantPrice.amount),
