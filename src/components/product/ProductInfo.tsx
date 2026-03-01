@@ -51,7 +51,7 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
       </h1>
 
       {/* Price */}
-      <p className="font-display text-xl md:text-2xl text-foreground/80">
+      <p className="font-display text-xl md:text-2xl text-foreground">
         {formattedPrice} <span className="text-sm font-body text-muted-foreground">MXN</span>
       </p>
 

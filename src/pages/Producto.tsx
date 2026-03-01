@@ -115,7 +115,7 @@ const Producto = () => {
             <span className="text-border">/</span>
             <Link to="/catalogo" className="hover:text-primary transition-colors">Catálogo</Link>
             <span className="text-border">/</span>
-            <span className="text-foreground/70">{product.name}</span>
+            <span className="text-foreground">{product.name}</span>
           </nav>
         </div>
 

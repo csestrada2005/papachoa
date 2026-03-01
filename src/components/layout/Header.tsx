@@ -163,7 +163,7 @@ const DesktopDropdown = ({ item }: { item: typeof NAV_LINKS[number] }) => {
   const [open, setOpen] = useState(false);
   return (
     <div className="relative" onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
-      <button className="nav-link-underline font-display text-sm px-3 py-1 inline-flex items-center gap-1" style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}>
+      <button className="nav-link-underline font-display text-lg px-3 py-1 inline-flex items-center gap-1" style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}>
         {item.label}
         <ChevronDown className="h-3.5 w-3.5 transition-transform" style={{ transform: open ? "rotate(180deg)" : "rotate(0)" }} />
       </button>
@@ -173,7 +173,7 @@ const DesktopDropdown = ({ item }: { item: typeof NAV_LINKS[number] }) => {
             <Link
               key={child.href}
               to={child.href}
-              className="block px-4 py-2 text-sm text-foreground hover:text-primary hover:bg-muted/40 transition-colors"
+              className="block px-4 py-2 text-base text-foreground hover:text-primary hover:bg-muted/40 transition-colors"
             >
               {child.label}
             </Link>
@@ -267,7 +267,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
                 <Link
                   key={link.href}
                   to={link.href}
-                  className="nav-link-underline font-display text-sm px-3 py-1"
+                  className="nav-link-underline font-display text-lg px-3 py-1"
                   style={{ color: "hsl(var(--foreground))", letterSpacing: "0.03em" }}
                 >
                   {link.label}
@@ -303,7 +303,9 @@ const Header = ({ transparent = false }: HeaderProps) => {
             <button
               onClick={() => { setMenuOpen((v) => !v); setMobileSubOpen(false); }}
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-              className="md:hidden pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
+              className="pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
+              style={{ display: undefined }}
+              id="mobile-hamburger"
             >
               <PillDots />
               <span className="pill-sunburst search-sunburst" aria-hidden="true" />

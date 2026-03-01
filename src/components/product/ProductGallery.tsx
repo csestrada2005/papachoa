@@ -176,7 +176,7 @@ const GalleryImage = ({ src, alt, index, loaded, onLoad, animateIn, delayMs = 0 
       ref={ref}
       className="relative aspect-[4/5] overflow-hidden rounded-xl bg-papachoa-cream border border-border/30 mx-auto"
       style={{
-        maxWidth: "60%",
+        maxWidth: "80%",
         opacity: inView ? 1 : 0,
         transform: inView ? "translateY(0)" : "translateY(20px)",
         transition: `opacity 0.5s ease-out ${delayMs}ms, transform 0.5s ease-out ${delayMs}ms`,

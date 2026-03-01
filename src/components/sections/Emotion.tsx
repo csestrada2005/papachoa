@@ -55,7 +55,7 @@ const Emotion = () => (
             {["Textiles ultra suaves", "Diseñados para compartir en familia", "Cada prenda lleva el nombre de un pájaro"].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <img src={pajaroAmarillo} alt="" aria-hidden="true" className="w-5 h-5 mt-0.5 flex-shrink-0 opacity-70" />
-                <span className="text-foreground/80 font-light">{item}</span>
+                <span className="text-foreground font-light">{item}</span>
               </li>
             ))}
           </ul>

@@ -102,7 +102,7 @@ const NuestraHistoria = () => {
                       {story.title}
                     </h3>
                     <p className="font-light text-muted-foreground leading-relaxed mb-4">{story.body}</p>
-                    <div className="overflow-hidden rounded-xl mx-auto" style={{ aspectRatio: "3/4", maxWidth: "50%" }}>
+                    <div className="overflow-hidden rounded-xl mx-auto" style={{ aspectRatio: "3/4", maxWidth: "80%" }}>
                       <img src={story.img} alt={story.imgAlt} className="w-full h-full object-cover" loading="lazy" />
                     </div>
                   </div>
@@ -135,7 +135,7 @@ const NuestraHistoria = () => {
 
             <div className="grid lg:grid-cols-12 gap-10 lg:gap-8 items-start">
               <SectionReveal delay={60} className="lg:col-span-5">
-                <div className="relative mx-auto" style={{ maxWidth: "50%" }}>
+                <div className="relative mx-auto" style={{ maxWidth: "80%" }}>
                   <div className="overflow-hidden" style={{ aspectRatio: "3/4" }}>
                     <img src={pijamaRosa9} alt="Detalle de suavidad de tela Papachoa" className="w-full h-full object-cover" loading="lazy" width={480} height={640} />
                   </div>
@@ -156,7 +156,7 @@ const NuestraHistoria = () => {
                       </span>
                       <div className="flex-1 pt-1">
                         <span className="text-primary mr-2" style={{ fontSize: "0.65rem" }} aria-hidden="true">★</span>
-                        <span className="text-foreground/75 font-light leading-relaxed" style={{ fontSize: "clamp(0.93rem, 1.4vw, 1.02rem)" }}>
+                        <span className="text-foreground font-light leading-relaxed" style={{ fontSize: "clamp(0.93rem, 1.4vw, 1.02rem)" }}>
                           {q.text}
                         </span>
                       </div>

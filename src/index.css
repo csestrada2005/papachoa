@@ -22,7 +22,7 @@
     --secondary: 47 90% 60%;
     --secondary-foreground: 220 15% 18%;
     --muted: 20 10% 92%;
-    --muted-foreground: 220 10% 46%;
+    --muted-foreground: 220 15% 18%;
     --accent: 216 44% 46%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 50% 50%;
@@ -63,7 +63,7 @@
     --secondary: 47 80% 50%;
     --secondary-foreground: 20 15% 90%;
     --muted: 220 12% 18%;
-    --muted-foreground: 20 10% 55%;
+    --muted-foreground: 220 12% 25%;
     --accent: 216 44% 55%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 45% 42%;
@@ -506,6 +506,11 @@
 .blob-menu-item:active {
   transform: scale(0.98) !important;
   transition-duration: 0.1s !important;
+}
+
+/* Hide hamburger on desktop — overrides .pill-btn display:flex */
+@media (min-width: 768px) {
+  #mobile-hamburger { display: none !important; }
 }
 
 /* Thread particles (legacy) */

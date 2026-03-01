@@ -21,7 +21,7 @@ const SimpleGallery = ({ images, name }: SimpleGalleryProps) => {
         <div
           key={idx}
           className="relative aspect-[4/5] overflow-hidden rounded-xl bg-papachoa-cream border border-border/30 mx-auto"
-          style={{ maxWidth: "60%" }}
+          style={{ maxWidth: "80%" }}
         >
           {!loadedImages.has(idx) && (
             <Skeleton className="absolute inset-0 rounded-xl" />

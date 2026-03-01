@@ -88,7 +88,7 @@ const Testimonials = () => {
               ))}
             </div>
 
-            <blockquote className="text-foreground/80 leading-relaxed mb-6 text-lg md:text-xl font-light italic animate-fade-in">
+            <blockquote className="text-foreground leading-relaxed mb-6 text-lg md:text-xl font-light italic animate-fade-in">
               &ldquo;{testimonial.text}&rdquo;
             </blockquote>
 

@@ -155,7 +155,7 @@ const Suavidad = () => (
                     aria-hidden="true"
                   >★</span>
                   <span
-                    className="text-foreground/75 font-light leading-relaxed"
+                    className="text-foreground font-light leading-relaxed"
                     style={{ fontSize: "clamp(0.93rem, 1.4vw, 1.02rem)" }}
                   >
                     {q.text}
