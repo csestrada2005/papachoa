@@ -45,6 +45,8 @@ function preloadNeighbors(images: string[], currentIndex: number) {
 const ProductCard = memo(({ product, isActive, onActivate, onDeactivate }: ProductCardProps) => {
   const navigate = useNavigate();
   const formattedPrice = useMemo(() => priceFormatter.format(product.price), [product.price]);
+  const isSoldOut = product.totalInventory != null && product.totalInventory <= 0;
+  const isLowStock = !isSoldOut && product.totalInventory != null && product.totalInventory <= 5;
   const realImages = useMemo(
     () => product.images.filter((img) => img !== "/placeholder.svg"),
     [product.images],
@@ -202,12 +204,28 @@ const ProductCard = memo(({ product, isActive, onActivate, onDeactivate }: Produ
           key={`${product.id}-${displayedIndex}`}
           src={currentImage}
           alt={product.name}
-          className={`carousel-image w-full h-full object-cover ${getAnimationClass()}`}
+          className={`carousel-image w-full h-full object-cover ${getAnimationClass()} ${isSoldOut ? 'opacity-50 grayscale' : ''}`}
           loading="lazy"
           decoding="async"
           width={300}
           height={375}
         />
+
+        {/* Sold out overlay */}
+        {isSoldOut && (
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <span className="bg-foreground/80 text-background text-xs font-bold tracking-widest uppercase px-4 py-2 rounded-md">
+              Agotado
+            </span>
+          </div>
+        )}
+
+        {/* Low stock badge */}
+        {!isSoldOut && isLowStock && (
+          <span className="absolute top-2 left-2 z-10 bg-amber-500/90 text-white text-[10px] font-semibold tracking-wide uppercase px-2.5 py-1 rounded-md backdrop-blur-sm">
+            Últimas {product.totalInventory} piezas
+          </span>
+        )}
 
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300" />

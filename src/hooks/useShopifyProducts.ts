@@ -14,6 +14,12 @@ function mapShopifyProduct(node: ShopifyProduct["node"]): Product {
 
   const firstVariantId = node.variants?.edges[0]?.node?.id || node.id;
 
+  const variantInventory = node.variants?.edges.map((v) => ({
+    id: v.node.id,
+    title: v.node.title,
+    quantityAvailable: v.node.quantityAvailable,
+  })) || [];
+
   return {
     id: firstVariantId,
     slug: node.handle,
@@ -38,6 +44,8 @@ function mapShopifyProduct(node: ShopifyProduct["node"]): Product {
     returnSummary: "30 días para cambios",
     featured: true,
     colorway: "Estándar",
+    totalInventory: node.totalInventory,
+    variantInventory,
   };
 }
 
