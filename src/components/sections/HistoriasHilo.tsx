@@ -86,125 +86,56 @@ const HistoriasHilo = () => (
       <div className="relative">
 
         {/* Desktop: 3 cols con alturas variables */}
-        <div className="hidden md:grid md:grid-cols-12 gap-6 lg:gap-8 items-end">
+        <div className="hidden md:grid md:grid-cols-12 gap-6 lg:gap-8 items-start">
 
-          {/* Col 1 — imagen grande + texto abajo */}
-          <SectionReveal delay={100} distance={20} className="md:col-span-4">
-            <div>
-              <div
-                className="overflow-hidden mb-6"
-                style={{ aspectRatio: "3/4" }}
-              >
-                <img
-                  src={stories[0].img}
-                  alt={stories[0].imgAlt}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  width={400}
-                  height={533}
-                />
-              </div>
-              <span
-                className="block font-bold leading-none mb-3 select-none"
-                style={{
-                  fontSize: "clamp(3rem, 5vw, 5rem)",
-                  color: stories[0].accentColor,
-                  opacity: 0.2,
-                  letterSpacing: "-0.02em",
-                }}
-                aria-hidden="true"
-              >{stories[0].num}</span>
-               <h3
-                 className="font-bold text-foreground mb-3"
-                 style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
-               >{stories[0].title}</h3>
-               <p
-                 className="font-light leading-relaxed text-muted-foreground"
-                 style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
-               >{stories[0].body}</p>
-            </div>
-          </SectionReveal>
+          {stories.map((story, i) => (
+            <SectionReveal
+              key={story.num}
+              delay={100 + i * 100}
+              distance={20}
+              className="md:col-span-4"
+            >
+              <div style={{ paddingTop: i === 1 ? "clamp(3rem, 8vw, 6rem)" : i === 2 ? "clamp(1rem, 4vw, 3rem)" : "0" }}>
+                {/* Number */}
+                <span
+                  className="block font-bold leading-none mb-3 select-none"
+                  style={{
+                    fontSize: "clamp(3rem, 5vw, 5rem)",
+                    color: story.accentColor,
+                    opacity: 0.2,
+                    letterSpacing: "-0.02em",
+                  }}
+                  aria-hidden="true"
+                >{story.num}</span>
 
-          {/* Col 2 — texto arriba + imagen más pequeña abajo, desfasada */}
-          <div className="md:col-span-4" style={{ paddingTop: "clamp(3rem, 8vw, 6rem)" }}>
-          <SectionReveal delay={180} distance={20}>
-            <div>
-              <span
-                className="block font-bold leading-none mb-3 select-none"
-                style={{
-                  fontSize: "clamp(3rem, 5vw, 5rem)",
-                  color: stories[1].accentColor,
-                  opacity: 0.2,
-                  letterSpacing: "-0.02em",
-                }}
-                aria-hidden="true"
-              >{stories[1].num}</span>
-               <h3
-                 className="font-bold text-foreground mb-3"
-                 style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
-               >{stories[1].title}</h3>
-               <p
-                 className="font-light leading-relaxed text-muted-foreground mb-8"
-                 style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
-              >{stories[1].body}</p>
-              <div className="overflow-hidden" style={{ aspectRatio: "1/1" }}>
-                <img
-                  src={stories[1].img}
-                  alt={stories[1].imgAlt}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  width={380}
-                  height={380}
-                />
-              </div>
-            </div>
-          </SectionReveal>
-          </div>
+                {/* Title */}
+                <h3
+                  className="font-display text-foreground mb-3"
+                  style={{ fontSize: "clamp(1.3rem, 2.2vw, 1.7rem)", letterSpacing: "0.05em" }}
+                >{story.title}</h3>
 
-          {/* Col 3 — imagen media + texto flotante encima */}
-          <div className="md:col-span-4" style={{ paddingTop: "clamp(1rem, 4vw, 3rem)" }}>
-          <SectionReveal delay={260} distance={20}>
-            <div>
-              <div className="relative overflow-hidden mb-6" style={{ aspectRatio: "4/5" }}>
-                <img
-                  src={stories[2].img}
-                  alt={stories[2].imgAlt}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  width={380}
-                  height={475}
-                />
-                {/* Texto flotante sobre imagen */}
+                {/* Description */}
+                <p
+                  className="font-light leading-relaxed text-muted-foreground mb-6"
+                  style={{ fontSize: "clamp(0.88rem, 1.3vw, 0.98rem)" }}
+                >{story.body}</p>
+
+                {/* Image */}
                 <div
-                  className="absolute bottom-0 left-0 right-0 p-5"
-                   style={{ background: "linear-gradient(to top, rgba(245,240,255,0.95) 0%, transparent 100%)" }}
-                 >
-                  <span
-                    className="block font-bold leading-none mb-2 select-none"
-                    style={{
-                      fontSize: "clamp(2.5rem, 4vw, 4rem)",
-                      color: stories[2].accentColor,
-                      opacity: 0.35,
-                      letterSpacing: "-0.02em",
-                    }}
-                    aria-hidden="true"
-                  >{stories[2].num}</span>
-                   <h3
-                     className="font-bold text-foreground mb-2"
-                     style={{ fontSize: "clamp(1.2rem, 2vw, 1.5rem)", letterSpacing: "0.05em" }}
-                   >{stories[2].title}</h3>
-                   <p
-                     className="font-light leading-relaxed text-muted-foreground"
-                     style={{ fontSize: "clamp(0.83rem, 1.2vw, 0.93rem)" }}
-                   >{stories[2].body}</p>
+                  className="overflow-hidden rounded-xl"
+                  style={{ aspectRatio: i === 0 ? "3/4" : i === 1 ? "1/1" : "4/5" }}
+                >
+                  <img
+                    src={story.img}
+                    alt={story.imgAlt}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
+                  />
                 </div>
               </div>
-            </div>
-          </SectionReveal>
-          </div>
+            </SectionReveal>
+          ))}
 
         </div>
 
@@ -223,7 +154,13 @@ const HistoriasHilo = () => (
                   }}
                   aria-hidden="true"
                 >{story.num}</span>
-                <div className="overflow-hidden mb-4" style={{ aspectRatio: "16/9" }}>
+                <h3 className="font-display text-foreground mb-2" style={{ fontSize: "1.4rem", letterSpacing: "0.05em" }}>
+                  {story.title}
+                </h3>
+                <p className="font-light text-muted-foreground leading-relaxed mb-4" style={{ fontSize: "0.95rem" }}>
+                  {story.body}
+                </p>
+                <div className="overflow-hidden rounded-xl" style={{ aspectRatio: "16/9" }}>
                   <img
                     src={story.img}
                     alt={story.imgAlt}
@@ -231,12 +168,6 @@ const HistoriasHilo = () => (
                     loading="lazy"
                   />
                 </div>
-                 <h3 className="font-bold text-foreground mb-2" style={{ fontSize: "1.4rem", letterSpacing: "0.05em" }}>
-                   {story.title}
-                 </h3>
-                 <p className="font-light text-muted-foreground leading-relaxed" style={{ fontSize: "0.95rem" }}>
-                   {story.body}
-                </p>
               </div>
             </SectionReveal>
           ))}
