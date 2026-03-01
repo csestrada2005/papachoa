@@ -1,16 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { storefrontApiRequest, STOREFRONT_QUERY, type ShopifyProduct } from "@/lib/shopify";
 import type { Product } from "@/data/products";
+import { categorizeProduct } from "@/data/products";
 
 function mapShopifyProduct(node: ShopifyProduct["node"]): Product {
-  const hasMamaBebe = node.tags?.includes("mama-bebe");
-  const hasMamaHija = node.tags?.includes("mama-hija");
-  const hasPapaHija = node.tags?.includes("papa-hija");
-
-  let collectionAssigned: Product["collection"] = "mama-bebe";
-  if (hasMamaBebe) collectionAssigned = "mama-bebe";
-  else if (hasMamaHija) collectionAssigned = "mama-hija";
-  else if (hasPapaHija) collectionAssigned = "papa-hija";
+  const collectionAssigned = categorizeProduct(node.title, node.description, node.tags);
 
   const firstVariantId = node.variants?.edges[0]?.node?.id || node.id;
 

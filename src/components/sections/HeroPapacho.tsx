@@ -247,9 +247,8 @@ const HeroPapacho = () => {
           </div>
           {/* Tagline — fade-in + slide-up after logo appears */}
           <p
-            className="mt-4 text-xl md:text-2xl font-bold text-center select-none"
+            className="mt-4 text-xl md:text-2xl font-bold text-center select-none font-display"
             style={{
-              fontFamily: "'Lato', sans-serif",
               color: "#000000",
               opacity: Math.max(0, Math.min(1, (logoOpacity - 0.5) * 2)),
               transform: `translateY(${(1 - Math.max(0, Math.min(1, (logoOpacity - 0.5) * 2))) * 16}px)`,
