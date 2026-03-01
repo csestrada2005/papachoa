@@ -61,19 +61,6 @@ const AboutPapachoa = () => {
               Hola
             </span>
           </SectionReveal>
-          <SectionReveal delay={60}>
-            
-
-
-
-
-
-
-
-
-
-
-          </SectionReveal>
         </div>
 
         {/* Título */}
