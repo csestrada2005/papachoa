@@ -15,19 +15,25 @@ import ProductReviews from "@/components/product/ProductReviews";
 import RelatedProducts from "@/components/product/RelatedProducts";
 import StickyMobileCTA from "@/components/product/StickyMobileCTA";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { products, collections } from "@/data/products";
+import { products as localProducts, collections } from "@/data/products";
+import { useShopifyProductBySlug } from "@/hooks/useShopifyProducts";
 
 const Producto = () => {
   const { slug } = useParams<{ slug: string }>();
-  const product = products.find((p) => p.slug === slug);
   const isMobile = useIsMobile();
+
+  // Try local first, then Shopify
+  const localProduct = localProducts.find((p) => p.slug === slug);
+  const { product: shopifyProduct, isLoading } = useShopifyProductBySlug(
+    localProduct ? undefined : slug
+  );
+  const product = localProduct || shopifyProduct;
 
   const collectionLabel = useMemo(() => {
     if (!product) return "";
     return collections.find((c) => c.id === product.collection)?.label ?? "";
   }, [product]);
 
-  // For pijama-mama-bebe only: split images into top (creative scroll) and remaining
   const { topImages, remainingImages } = useMemo(() => {
     if (!product) return { topImages: [], remainingImages: [] };
     if (product.slug === "pijama-mama-bebe") {
@@ -50,13 +56,26 @@ const Producto = () => {
     if (isMobile) return;
     const handleScroll = () => {
       const y = window.scrollY;
-      // Animate over the first 200px of scroll
       const progress = Math.min(y / 200, 1);
       setTitleProgress(progress);
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [isMobile]);
+
+  if (isLoading && !localProduct) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <main className="pt-32 pb-20">
+          <div className="container text-center">
+            <p className="text-muted-foreground font-light">Cargando producto…</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!product) {
     return (
@@ -81,9 +100,9 @@ const Producto = () => {
   }
 
   // Title animation values (desktop only)
-  const titleScale = isMobile ? 1 : 1 - titleProgress * 0.08; // 1 → 0.92
-  const titleTranslateY = isMobile ? 0 : -titleProgress * 6; // 0 → -6px
-  const titleOpacity = isMobile ? 1 : 1 - titleProgress * 0.15; // 1 → 0.85
+  const titleScale = isMobile ? 1 : 1 - titleProgress * 0.08;
+  const titleTranslateY = isMobile ? 0 : -titleProgress * 6;
+  const titleOpacity = isMobile ? 1 : 1 - titleProgress * 0.15;
 
   const textureImageMap: Record<string, string> = {
     "pijama-dinosaurio-papa-nina": texturaDinosaurio,
@@ -96,7 +115,7 @@ const Producto = () => {
       <Header />
 
       <main className="pt-24 md:pt-28 pb-24 md:pb-16">
-        {/* Breadcrumbs — editorial */}
+        {/* Breadcrumbs */}
         <div className="container">
           <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 md:mb-8 flex-wrap font-light">
             <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
@@ -107,7 +126,7 @@ const Producto = () => {
           </nav>
         </div>
 
-        {/* Main product section — sticky right column on desktop */}
+        {/* Main product section */}
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
             {/* LEFT — Gallery */}
@@ -123,7 +142,6 @@ const Producto = () => {
                 !isMobile ? "lg:sticky lg:top-28 lg:self-start" : ""
               }`}
             >
-              {/* Animated title wrapper (desktop) */}
               <div
                 ref={titleRef}
                 style={{
@@ -163,7 +181,6 @@ const Producto = () => {
         <div className="container mt-12 md:mt-16">
           <ProductReviews />
         </div>
-
 
         {/* Related */}
         <div className="container mt-12 md:mt-16">

@@ -1,12 +1,12 @@
-import { useState, useMemo, useEffect, useRef, useCallback, useId } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useSeo } from "@/hooks/useSeo";
 import { useSearchParams } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import ProductCard from "@/components/catalog/ProductCard";
 import CollectionFilter from "@/components/catalog/CollectionFilter";
-import { collections, type Collection, type Product } from "@/data/products";
-import { storefrontApiRequest, STOREFRONT_QUERY, type ShopifyProduct } from "@/lib/shopify";
+import { collections, type Collection } from "@/data/products";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 
 const validSlugs = new Set(collections.map((c) => c.id));
 
@@ -20,57 +20,7 @@ const Catalogo = () => {
     paramCategoria && validSlugs.has(paramCategoria) ? paramCategoria : "todos";
 
   const [selectedCollection, setSelectedCollection] = useState<Collection>(initial);
-  const [shopifyProducts, setShopifyProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await storefrontApiRequest(STOREFRONT_QUERY, { first: 20 });
-
-        const mappedProducts: Product[] = response.data.products.edges.map(({ node }: { node: ShopifyProduct['node'] }) => {
-          // Buscamos si el producto tiene un tag que corresponda a nuestras colecciones
-          const hasMamaBebe = node.tags?.includes("mama-bebe");
-          const hasMamaHija = node.tags?.includes("mama-hija");
-          const hasPapaHija = node.tags?.includes("papa-hija");
-
-          let collectionAssigned: Product['collection'] = "mama-bebe"; // default fallback
-          if (hasMamaBebe) collectionAssigned = "mama-bebe";
-          else if (hasMamaHija) collectionAssigned = "mama-hija";
-          else if (hasPapaHija) collectionAssigned = "papa-hija";
-
-          return {
-            id: node.id,
-            slug: node.handle,
-            name: node.title,
-            price: parseFloat(node.priceRange.minVariantPrice.amount),
-            collection: collectionAssigned,
-            image: node.images.edges[0]?.node.url || "/placeholder.svg",
-            images: node.images.edges.map(img => img.node.url),
-            shortDescription: node.description.substring(0, 100) + '...',
-            longDescription: node.description,
-            tags: node.tags || [],
-            sizes: node.options.find(opt => opt.name === 'Size' || opt.name === 'Talla')?.values || ["CH", "M", "G"],
-            material: "Jersey de algodón peinado",
-            care: ["Lavar con agua fría"],
-            shippingSummary: "Envío a toda la República",
-            returnSummary: "30 días para cambios",
-            featured: true,
-            colorway: "Estándar",
-          };
-        });
-
-        setShopifyProducts(mappedProducts);
-      } catch (error) {
-        console.error("Error fetching Shopify products:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+  const { data: shopifyProducts = [], isLoading: loading } = useShopifyProducts();
 
   useEffect(() => {
     const cat = searchParams.get("categoria") as Collection | null;
@@ -98,7 +48,6 @@ const Catalogo = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  /* ── Active card state (lifted from ProductCard for mobile persistence) ── */
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
   const gridRef = useRef<HTMLDivElement>(null);
 
@@ -126,7 +75,6 @@ const Catalogo = () => {
 
       {/* Hero — editorial style */}
       <section className="pt-28 md:pt-32 pb-10 md:pb-14 bg-papachoa-cream relative overflow-hidden texture-linen">
-        {/* Subtle background shapes */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute -top-16 -right-16 w-64 h-64 rounded-full opacity-8"
             style={{ background: "radial-gradient(circle, hsl(14 52% 46% / 0.12), transparent 70%)" }} />

@@ -63,7 +63,7 @@ export const STOREFRONT_QUERY = `
           priceRange {
             minVariantPrice { amount currencyCode }
           }
-          images(first: 5) {
+          images(first: 10) {
             edges { node { url altText } }
           }
           options { name values }

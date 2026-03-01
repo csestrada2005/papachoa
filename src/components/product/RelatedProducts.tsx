@@ -1,6 +1,7 @@
 import { useState } from "react";
 import ProductCard from "@/components/catalog/ProductCard";
-import { products, type Product } from "@/data/products";
+import { products as localProducts, type Product } from "@/data/products";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 
 interface RelatedProductsProps {
   currentProduct: Product;
@@ -8,8 +9,18 @@ interface RelatedProductsProps {
 
 const RelatedProducts = ({ currentProduct }: RelatedProductsProps) => {
   const [activeCardId, setActiveCardId] = useState<string | null>(null);
-  const realProducts = products.filter((p) => p.image !== "/placeholder.svg");
-  
+  const { data: shopifyProducts = [] } = useShopifyProducts();
+
+  // Merge local + shopify, deduplicate by slug
+  const allProducts = [...localProducts];
+  for (const sp of shopifyProducts) {
+    if (!allProducts.some((p) => p.slug === sp.slug)) {
+      allProducts.push(sp);
+    }
+  }
+
+  const realProducts = allProducts.filter((p) => p.image !== "/placeholder.svg");
+
   const related = realProducts
     .filter((p) => p.id !== currentProduct.id)
     .filter((p) => p.collection === currentProduct.collection)

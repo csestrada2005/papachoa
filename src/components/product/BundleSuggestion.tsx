@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
-import { products, type Product } from "@/data/products";
+import { products as localProducts, type Product } from "@/data/products";
+import { useShopifyProducts } from "@/hooks/useShopifyProducts";
 
 interface BundleSuggestionProps {
   currentProduct: Product;
@@ -11,9 +12,18 @@ interface BundleSuggestionProps {
 const BundleSuggestion = ({ currentProduct }: BundleSuggestionProps) => {
   const { addItem } = useCart();
   const navigate = useNavigate();
+  const { data: shopifyProducts = [] } = useShopifyProducts();
 
-  const suggestions = products
-    .filter((p) => p.id !== currentProduct.id)
+  // Merge local + shopify, deduplicate by slug
+  const allProducts = [...localProducts];
+  for (const sp of shopifyProducts) {
+    if (!allProducts.some((p) => p.slug === sp.slug)) {
+      allProducts.push(sp);
+    }
+  }
+
+  const suggestions = allProducts
+    .filter((p) => p.id !== currentProduct.id && p.image !== "/placeholder.svg")
     .sort((a, b) => {
       if (a.collection === currentProduct.collection && b.collection !== currentProduct.collection) return -1;
       if (b.collection === currentProduct.collection && a.collection !== currentProduct.collection) return 1;
