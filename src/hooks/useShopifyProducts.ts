@@ -32,7 +32,7 @@ function mapShopifyProduct(node: ShopifyProduct["node"]): Product {
       node.description.length > 100
         ? node.description.substring(0, 100) + "..."
         : node.description,
-    longDescription: node.description,
+    longDescription: node.descriptionHtml || node.description,
     tags: node.tags || [],
     sizes:
       node.options.find(

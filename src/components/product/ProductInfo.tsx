@@ -67,9 +67,11 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
           </button>
           {descOpen && (
             <div className="px-4 pb-4">
-              <p className="text-muted-foreground leading-relaxed font-light text-sm">
-                {product.longDescription}
-              </p>
+              <div
+                className="text-foreground leading-relaxed font-light text-sm prose prose-sm max-w-none
+                  [&>p]:mb-3 [&>p:last-child]:mb-0 [&>br]:block [&>br]:mb-2"
+                dangerouslySetInnerHTML={{ __html: product.longDescription }}
+              />
             </div>
           )}
         </div>
