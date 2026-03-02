@@ -40,6 +40,7 @@ function mapShopifyProduct(node: ShopifyProduct["node"]): Product {
     colorway: "Estándar",
     totalInventory: node.totalInventory,
     variantInventory,
+    shopifyOptions: node.options || [],
   };
 }
 

@@ -16,7 +16,17 @@ const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
     minimumFractionDigits: 0,
   }).format(product.price);
 
+  const needsOptions = (product.shopifyOptions && product.shopifyOptions.length > 0) ||
+    product.sizes.length > 1 ||
+    (product.sizesSecondary && product.sizesSecondary.length > 0);
+
   const handleAdd = () => {
+    if (needsOptions) {
+      // Scroll to product info section where options are
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      toast("Selecciona tus opciones antes de agregar al carrito", { duration: 3000 });
+      return;
+    }
     addItem(product);
     toast(`${product.name} agregado al carrito`, { duration: 3000 });
   };
@@ -33,7 +43,7 @@ const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
           className="btn-artisan text-sm shrink-0"
         >
           <ShoppingBag className="h-4 w-4" />
-          Agregar
+          {needsOptions ? "Ver opciones" : "Agregar"}
         </button>
       </div>
     </div>

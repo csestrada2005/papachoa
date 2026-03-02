@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Minus, Plus, ShoppingBag, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
@@ -10,12 +10,69 @@ interface ProductInfoProps {
   collectionLabel: string;
 }
 
+/**
+ * Given selected options and variant inventory, find the matching variant.
+ * Shopify variant titles are "Option1 / Option2 / ..." joined by " / ".
+ */
+function findMatchingVariant(
+  selections: Record<string, string>,
+  variants: Product["variantInventory"],
+  optionNames: string[]
+) {
+  if (!variants || optionNames.length === 0) return undefined;
+  // All options must be selected
+  if (optionNames.some((name) => !selections[name])) return undefined;
+
+  const selectedValues = optionNames.map((name) => selections[name].toLowerCase().trim());
+
+  return variants.find((v) => {
+    const parts = v.title.split(" / ").map((p) => p.toLowerCase().trim());
+    // Match if every selected value corresponds to a part
+    return selectedValues.every((val, i) => parts[i] === val);
+  });
+}
+
+/**
+ * Check if a specific option value has ANY in-stock variant when combined
+ * with the current selections for other options.
+ */
+function isOptionValueAvailable(
+  optionName: string,
+  optionValue: string,
+  optionIndex: number,
+  allOptions: Array<{ name: string; values: string[] }>,
+  selections: Record<string, string>,
+  variants: Product["variantInventory"]
+): boolean {
+  if (!variants || variants.length === 0) return true;
+
+  return variants.some((v) => {
+    const parts = v.title.split(" / ").map((p) => p.toLowerCase().trim());
+    // Check this option matches the value we're testing
+    if (parts[optionIndex]?.toLowerCase().trim() !== optionValue.toLowerCase().trim()) return false;
+    // Check other selected options also match
+    for (let i = 0; i < allOptions.length; i++) {
+      if (i === optionIndex) continue;
+      const sel = selections[allOptions[i].name];
+      if (sel && parts[i]?.toLowerCase().trim() !== sel.toLowerCase().trim()) return false;
+    }
+    return (v.quantityAvailable ?? 0) > 0;
+  });
+}
+
 const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
-  const [selectedSize, setSelectedSize] = useState<string | null>(null);
-  const [selectedSizeSecondary, setSelectedSizeSecondary] = useState<string | null>(null);
+  // Use shopifyOptions if available, otherwise fall back to sizes/sizesSecondary
+  const hasShopifyOptions = product.shopifyOptions && product.shopifyOptions.length > 0;
+  const options = hasShopifyOptions ? product.shopifyOptions! : [];
+
+  const [selections, setSelections] = useState<Record<string, string>>({});
   const [quantity, setQuantity] = useState(1);
   const [descOpen, setDescOpen] = useState(false);
   const { addItem } = useCart();
+
+  // Fallback for local products without shopifyOptions
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedSizeSecondary, setSelectedSizeSecondary] = useState<string | null>(null);
 
   const formattedPrice = new Intl.NumberFormat("es-MX", {
     style: "currency",
@@ -23,19 +80,65 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
     minimumFractionDigits: 0,
   }).format(product.price);
 
+  const allOptionsSelected = useMemo(() => {
+    if (hasShopifyOptions) {
+      return options.every((opt) => !!selections[opt.name]);
+    }
+    // Local product fallback
+    const sizeOk = product.sizes.length <= 1 || !!selectedSize;
+    const secOk = !product.sizesSecondary || product.sizesSecondary.length === 0 || !!selectedSizeSecondary;
+    return sizeOk && secOk;
+  }, [hasShopifyOptions, options, selections, product, selectedSize, selectedSizeSecondary]);
+
+  const selectedVariant = useMemo(() => {
+    if (!hasShopifyOptions) return undefined;
+    return findMatchingVariant(
+      selections,
+      product.variantInventory,
+      options.map((o) => o.name)
+    );
+  }, [hasShopifyOptions, selections, product.variantInventory, options]);
+
+  const isSelectedOutOfStock = useMemo(() => {
+    if (!hasShopifyOptions || !allOptionsSelected) return false;
+    if (!selectedVariant) return true; // no matching variant found
+    return (selectedVariant.quantityAvailable ?? 0) <= 0;
+  }, [hasShopifyOptions, allOptionsSelected, selectedVariant]);
+
+  const handleSelectOption = (optionName: string, value: string) => {
+    setSelections((prev) => ({ ...prev, [optionName]: value }));
+  };
+
   const handleAddToCart = () => {
-    if (product.sizes.length > 1 && !selectedSize) {
-      toast("Selecciona una talla de Mamá antes de agregar al carrito.", { duration: 3000 });
+    if (!allOptionsSelected) {
+      if (hasShopifyOptions) {
+        const missing = options.find((opt) => !selections[opt.name]);
+        toast(`Selecciona ${missing?.name || "una opción"} antes de agregar al carrito.`, { duration: 3000 });
+      } else {
+        if (product.sizes.length > 1 && !selectedSize) {
+          toast("Selecciona una talla antes de agregar al carrito.", { duration: 3000 });
+        } else if (product.sizesSecondary?.length && !selectedSizeSecondary) {
+          toast("Selecciona una talla de Bebé antes de agregar al carrito.", { duration: 3000 });
+        }
+      }
       return;
     }
-    if (product.sizesSecondary && product.sizesSecondary.length > 0 && !selectedSizeSecondary) {
-      toast("Selecciona una talla de Bebé antes de agregar al carrito.", { duration: 3000 });
+    if (isSelectedOutOfStock) {
+      toast("Esta combinación está agotada.", { duration: 3000 });
       return;
     }
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
     toast(`${product.name} agregado al carrito`, { duration: 3000 });
+  };
+
+  // Friendly option name mapping
+  const friendlyName = (name: string) => {
+    const n = name.toLowerCase();
+    if (n === "size" || n === "talla" || n === "tallas") return "Talla";
+    if (n === "color" || n === "colour") return "Color";
+    return name;
   };
 
   return (
@@ -80,8 +183,45 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
       {/* Divider */}
       <div className="embroidery-line w-16" />
 
-      {/* Size selector — Mamá */}
-      {product.sizes.length > 0 && (
+      {/* Shopify dynamic options */}
+      {hasShopifyOptions && options.map((opt, optIdx) => (
+        <div key={opt.name}>
+          <p className="text-sm font-medium text-foreground mb-2 tracking-wide">
+            {friendlyName(opt.name)}
+            {selections[opt.name] && (
+              <span className="text-muted-foreground font-light ml-2">— {selections[opt.name]}</span>
+            )}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {opt.values.map((value) => {
+              const available = isOptionValueAvailable(
+                opt.name, value, optIdx, options, selections, product.variantInventory
+              );
+              const isSelected = selections[opt.name] === value;
+
+              return (
+                <button
+                  key={value}
+                  onClick={() => available && handleSelectOption(opt.name, value)}
+                  disabled={!available}
+                  className={`px-4 py-2 rounded-lg text-sm font-medium border transition-all ${
+                    !available
+                      ? "bg-muted/40 text-muted-foreground/50 border-border/30 cursor-not-allowed line-through"
+                      : isSelected
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : "bg-card text-foreground border-border hover:border-primary/40 active:scale-95"
+                  }`}
+                >
+                  {value}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      ))}
+
+      {/* Fallback: local product size selectors */}
+      {!hasShopifyOptions && product.sizes.length > 0 && (
         <div>
           <p className="text-sm font-medium text-foreground mb-2 tracking-wide">
             {product.sizesSecondary ? "Talla Mamá" : "Talla"}
@@ -104,8 +244,7 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
         </div>
       )}
 
-      {/* Size selector — Bebé */}
-      {product.sizesSecondary && product.sizesSecondary.length > 0 && (
+      {!hasShopifyOptions && product.sizesSecondary && product.sizesSecondary.length > 0 && (
         <div>
           <p className="text-sm font-medium text-foreground mb-2 tracking-wide">Talla Bebé</p>
           <div className="flex flex-wrap gap-2">
@@ -123,6 +262,15 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Out of stock message */}
+      {allOptionsSelected && isSelectedOutOfStock && (
+        <div className="bg-muted/50 border border-border/40 rounded-lg px-4 py-3">
+          <p className="text-sm text-muted-foreground font-medium">
+            😔 Esta combinación está agotada
+          </p>
         </div>
       )}
 
@@ -152,14 +300,25 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
       <div className="flex flex-col gap-3 mt-1">
         <Button
           onClick={handleAddToCart}
-          className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-6 rounded-lg text-base hover:shadow-md active:scale-[0.98] transition-all"
+          disabled={isSelectedOutOfStock}
+          className={`w-full font-medium py-6 rounded-lg text-base transition-all ${
+            isSelectedOutOfStock
+              ? "bg-muted text-muted-foreground cursor-not-allowed"
+              : !allOptionsSelected
+                ? "bg-primary/70 hover:bg-primary text-primary-foreground hover:shadow-md active:scale-[0.98]"
+                : "bg-primary hover:bg-primary/90 text-primary-foreground hover:shadow-md active:scale-[0.98]"
+          }`}
         >
           <ShoppingBag className="h-5 w-5 mr-2" />
-          Agregar al carrito
+          {isSelectedOutOfStock
+            ? "Agotado"
+            : !allOptionsSelected
+              ? "Selecciona tus opciones"
+              : "Agregar al carrito"}
         </Button>
       </div>
 
-      {/* Trust microcopy — no emojis */}
+      {/* Trust microcopy */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground pt-2 tracking-wide">
         <span>Hecho en México</span>
         <span className="text-border">&middot;</span>

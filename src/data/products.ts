@@ -46,6 +46,7 @@ export interface Product {
   colorway: string;
   totalInventory?: number | null;
   variantInventory?: Array<{ id: string; title: string; quantityAvailable: number | null }>;
+  shopifyOptions?: Array<{ name: string; values: string[] }>;
 }
 
 export const collections: { id: Collection; label: string; color: string }[] = [
