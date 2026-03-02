@@ -1,4 +1,5 @@
 import { useSeo } from "@/hooks/useSeo";
+import { Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SectionReveal from "@/components/ui/SectionReveal";
@@ -226,20 +227,22 @@ const NuestraHistoria = () => {
               <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
                 {shopifyProducts.filter(p => p.image !== "/placeholder.svg").slice(0, 6).map((product, i) => (
                   <SectionReveal key={product.id} delay={i * 80}>
-                    <div className="bg-card rounded-2xl border border-border/30 overflow-hidden">
-                      <div className="aspect-video overflow-hidden">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
+                    <Link to={`/producto/${product.slug}`} className="block group">
+                      <div className="bg-card rounded-2xl border border-border/30 overflow-hidden transition-shadow hover:shadow-md">
+                        <div className="aspect-video overflow-hidden">
+                          <img src={product.image} alt={product.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+                        </div>
+                        <div className="p-6">
+                          <h3 className="font-display text-lg text-foreground mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
+                          {product.longDescription && (
+                            <div
+                              className="text-sm text-muted-foreground leading-relaxed line-clamp-4 prose prose-sm max-w-none [&>p]:mb-2"
+                              dangerouslySetInnerHTML={{ __html: product.longDescription }}
+                            />
+                          )}
+                        </div>
                       </div>
-                      <div className="p-6">
-                        <h3 className="font-display text-lg text-foreground mb-2">{product.name}</h3>
-                        {product.longDescription && (
-                          <div
-                            className="text-sm text-muted-foreground leading-relaxed line-clamp-4 prose prose-sm max-w-none [&>p]:mb-2"
-                            dangerouslySetInnerHTML={{ __html: product.longDescription }}
-                          />
-                        )}
-                      </div>
-                    </div>
+                    </Link>
                   </SectionReveal>
                 ))}
               </div>
