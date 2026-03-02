@@ -346,7 +346,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
       >
         <div onClick={() => setMenuOpen(false)} style={{ position: "absolute", inset: 0, background: "rgba(253,246,240,0.55)", backdropFilter: "blur(4px)", opacity: menuOpen ? 1 : 0, transition: "opacity 300ms ease-out" }} />
         <div
-          onClick={(e) => e.stopPropagation()}
+          onClick={() => setMenuOpen(false)}
           style={{
             position: "absolute", top: 0, left: 0, right: 0,
             background: "rgba(253,246,240,0.98)",
@@ -356,7 +356,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
             minHeight: "100dvh", padding: "80px 24px 40px",
           }}
         >
-          <nav className="flex flex-col items-center gap-2 flex-1 justify-center" aria-label="Menú principal">
+          <nav className="flex flex-col items-center gap-2 flex-1 justify-center" aria-label="Menú principal" onClick={(e) => e.stopPropagation()}>
             {MOBILE_LINKS.map((link, i) =>
               link.children ? (
                 <div key={link.label} className="flex flex-col items-center">
