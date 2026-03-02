@@ -356,7 +356,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
             minHeight: "100dvh", padding: "80px 24px 40px",
           }}
         >
-          <nav className="flex flex-col items-center gap-2 flex-1 justify-center" aria-label="Menú principal" onClick={(e) => e.stopPropagation()}>
+          <nav className="flex flex-col items-center gap-2 flex-1 justify-center" aria-label="Menú principal">
             {MOBILE_LINKS.map((link, i) =>
               link.children ? (
                 <div key={link.label} className="flex flex-col items-center">
