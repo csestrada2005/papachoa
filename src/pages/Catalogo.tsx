@@ -90,9 +90,12 @@ const Catalogo = () => {
             Nuestra <em>Colección</em>
           </h1>
           <p className="text-muted-foreground max-w-md mx-auto font-light">
-            Piezas únicas llenas de suavidad y amor para tu familia
+            Piezas únicas llenas de suavidad y apapachos para hacer match con tu familia
           </p>
           <div className="embroidery-line w-16 mx-auto mt-6" />
+          <p className="text-sm text-primary/70 font-display mt-4 tracking-wide">
+            Pronto habrá: Catarinas, Football, Perros, Ski
+          </p>
         </div>
       </section>
 

@@ -3,7 +3,6 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
-import texturaImg from "@/assets/textura-tela.png";
 import texturaDoodle from "@/assets/textura-doodle.png";
 import pijamaRosa3 from "@/assets/pijama-rosa-3-jugando.jpg";
 import pijamaBlanca4 from "@/assets/pijama-blanca-4-abrazo.jpg";
@@ -13,24 +12,24 @@ import pijamaRosa9 from "@/assets/pijama-rosa-9-acostados.jpg";
 const stories = [
   {
     num: "01",
-    title: "Primeros pasos juntos",
-    body: "Una pijama que crece contigo. Desde su primera noche en casa hasta sus primeras travesuras, cada hilo los acompaña.",
+    title: "Descanso",
+    body: "Para que tu bebé y niño duerman envueltos en suavidad. Cada pijama está pensada para acompañar sus noches, sus siestas y esos momentos donde solo necesitan sentirse seguros y cómodos.",
     accentColor: "hsl(var(--papachoa-coral))",
     img: pijamaRosa3,
     imgAlt: "Mamá e hija jugando en pijama",
   },
   {
     num: "02",
-    title: "Complicidad de dos",
-    body: "Papá y su aventurera favorita. Pijamas que cuentan la historia de noches de cuentos, cosquillas y mundos inventados.",
+    title: "Cuidado",
+    body: "Cada puntada es un gesto de ternura. Telas seleccionadas para pieles sensibles, cortes que abrazan sin apretar y detalles hechos con el cariño de quien entiende lo que significa cuidar a los que más amas.",
     accentColor: "hsl(var(--papachoa-yellow))",
     img: pijamadinosaurio3,
     imgAlt: "Papá jugando con su hija en pijama de dinosaurios",
   },
   {
     num: "03",
-    title: "Ritual de calma",
-    body: "Cuando la casa se queda quieta y todos respiran al mismo ritmo. Ese momento antes de dormir donde solo importa estar juntos.",
+    title: "Regala apapachos",
+    body: "Más que una pijama, es un abrazo que se queda. Regala momentos de conexión, noches de cuentos y mañanas de risas. Regala algo que se siente, que se disfruta y que se recuerda.",
     accentColor: "hsl(var(--papachoa-blue))",
     img: pijamaBlanca4,
     imgAlt: "Abrazo familiar antes de dormir",
@@ -73,11 +72,54 @@ const NuestraHistoria = () => {
                 Nuestra <em className="text-primary">historia</em>
               </h1>
               <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed max-w-xl mx-auto">
-                No hacemos solo pijamas. Hacemos{" "}
-                <span className="text-primary font-semibold">momentos de calma</span>, rituales de
-                descanso y espacios donde la familia se siente{" "}
-                <span className="text-primary font-semibold">acunada</span>.
+                <span className="text-primary font-semibold">Papachoa</span> significa{" "}
+                <span className="text-primary font-semibold">apapacho</span> en náhuatl.
+                Y eso es exactamente lo que queremos lograr con cada prenda: abrazar el alma de los niños… y también la de mamá.
               </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Brand pillars */}
+        <section className="py-12 md:py-20">
+          <div className="container max-w-3xl mx-auto">
+            <div className="space-y-10 text-center">
+              <SectionReveal>
+                <div>
+                  <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
+                    Creamos productos diferentes
+                  </h2>
+                  <p className="text-muted-foreground font-light leading-relaxed text-lg">
+                    Diferentes a los que encuentras en cualquier tienda. Nuestras pijamas tienen un propósito:{" "}
+                    <span className="text-primary font-semibold">dar apapachos</span>. Que se sientan cómodos, libres, suaves, seguros. Que disfruten telas de la más alta calidad, cortes pensados para moverse y descansar, y prendas que duren mucho tiempo.
+                  </p>
+                </div>
+              </SectionReveal>
+
+              <SectionReveal delay={100}>
+                <div>
+                  <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4">
+                    Queremos que compres algo más que una pijama
+                  </h2>
+                  <p className="text-muted-foreground font-light leading-relaxed text-lg">
+                    Queremos que elijas un producto{" "}
+                    <span className="text-primary font-semibold">comprometido con México</span> — donde cada proceso ha sido valorado y cada persona justamente remunerada.
+                  </p>
+                </div>
+              </SectionReveal>
+
+              <SectionReveal delay={200}>
+                <div className="bg-papachoa-cream/50 rounded-2xl p-8 md:p-10 border border-border/20">
+                  <h3 className="font-display text-xl md:text-2xl text-foreground mb-4">
+                    Cada prenda es única
+                  </h3>
+                  <p className="text-muted-foreground font-light leading-relaxed">
+                    Cada print ha sido diseñado por <span className="text-foreground font-medium">Miriam y Mercedes</span>.
+                    Y cada pieza es confeccionada con muchísimo cariño por{" "}
+                    <span className="text-foreground font-medium">Fer, Alondra y Lucy</span>.
+                  </p>
+                </div>
+              </SectionReveal>
             </div>
           </div>
         </section>
