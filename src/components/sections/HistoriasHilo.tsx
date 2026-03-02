@@ -49,7 +49,7 @@ const HistoriasHilo = () => (
   >
     {/* Pájaro decorativo — flotante */}
     <div className="absolute top-14 right-12 pointer-events-none" aria-hidden="true">
-      <img
+      <img loading="lazy"
         src={pajaroAzulClaro}
         alt=""
         style={{ width: "clamp(60px, 10vw, 120px)", height: "auto", opacity: 0.12 }}
@@ -125,7 +125,7 @@ const HistoriasHilo = () => (
                   className="overflow-hidden rounded-xl"
                   style={{ aspectRatio: i === 0 ? "3/4" : i === 1 ? "1/1" : "4/5" }}
                 >
-                  <img
+                  <img loading="lazy"
                     src={story.img}
                     alt={story.imgAlt}
                     className="w-full h-full object-cover"
@@ -161,7 +161,7 @@ const HistoriasHilo = () => (
                   {story.body}
                 </p>
                 <div className="overflow-hidden rounded-xl" style={{ aspectRatio: "16/9" }}>
-                  <img
+                  <img loading="lazy"
                     src={story.img}
                     alt={story.imgAlt}
                     className="w-full h-full object-cover"

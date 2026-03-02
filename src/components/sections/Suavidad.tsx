@@ -82,7 +82,7 @@ const Suavidad = () => (
             className="overflow-hidden opacity-40"
             style={{ width: "clamp(80px, 10vw, 140px)", aspectRatio: "1/1" }}
           >
-            <img
+            <img loading="lazy"
               src={texturaDoodle}
               alt=""
               aria-hidden="true"
@@ -100,7 +100,7 @@ const Suavidad = () => (
         <SectionReveal delay={60} distance={20} className="lg:col-span-5">
           <div className="relative">
             <div className="overflow-hidden" style={{ aspectRatio: "3/4" }}>
-              <img
+              <img loading="lazy"
                 src={texturaImg}
                 alt="Textura ultra suave de tela Papachoa"
                 className="w-full h-full object-cover"

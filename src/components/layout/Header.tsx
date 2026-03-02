@@ -113,7 +113,7 @@ const InlineSearch = ({ onClose }: { onClose: () => void }) => {
                     style={{ animationDelay: `${i * 30}ms` }}
                   >
                     <div className="w-11 h-11 rounded-xl overflow-hidden bg-muted shrink-0">
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm text-foreground truncate">{p.name}</p>
