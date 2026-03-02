@@ -118,7 +118,7 @@ const Testimonials = () => {
 
           {/* Avatar + bird below speech bubble */}
           <div className="ml-14 mt-4 flex items-center gap-2">
-            <img src={pajaroAmarillo} alt="" aria-hidden="true" className="w-5 h-5 opacity-50" loading="lazy" />
+            <img loading="lazy" src={pajaroAmarillo} alt="" aria-hidden="true" className="w-5 h-5 opacity-50" loading="lazy" />
             <span className="text-xs text-muted-foreground">{testimonial.category}</span>
           </div>
 

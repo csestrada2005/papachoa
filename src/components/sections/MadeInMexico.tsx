@@ -28,7 +28,7 @@ const MadeInMexico = () => (
                 className="w-20 h-20 md:w-24 md:h-24 mx-auto mb-4 flex items-center justify-center rounded-full"
                 style={{ background: `${item.color}15` }}
               >
-                <img src={item.icon} alt="" aria-hidden="true" className="w-10 h-10 md:w-12 md:h-12" loading="lazy" />
+                <img loading="lazy" src={item.icon} alt="" aria-hidden="true" className="w-10 h-10 md:w-12 md:h-12" loading="lazy" />
               </div>
               <p className="text-sm md:text-base font-bold text-foreground">{item.label}</p>
             </div>

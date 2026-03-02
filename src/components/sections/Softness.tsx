@@ -45,7 +45,7 @@ const Softness = () => (
 
         <div className="order-1 lg:order-2 relative">
           <div className="rounded-2xl overflow-hidden shadow-lg">
-            <img
+            <img loading="lazy"
               src={lifestyleImage}
               alt="Textura suave de tela Papachoa"
               className="w-full aspect-[4/5] object-cover"
@@ -56,7 +56,7 @@ const Softness = () => (
             />
           </div>
           {/* Floating bird */}
-          <img
+          <img loading="lazy"
             src={pajaroAmarillo}
             alt=""
             aria-hidden="true"

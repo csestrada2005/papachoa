@@ -52,7 +52,7 @@ const Filosofia = () => (
           <SectionReveal delay={40} distance={20}>
             {/* Imagen principal */}
             <div className="overflow-hidden" style={{ borderRadius: 0, marginRight: "clamp(0px, 3vw, 40px)" }}>
-              <img
+              <img loading="lazy"
                 src={lifestyleImage}
                 alt="Bebé con cobijo Papachoa"
                 className="w-full"
@@ -81,7 +81,7 @@ const Filosofia = () => (
                 zIndex: 2,
               }}
             >
-              <img
+              <img loading="lazy"
                 src={lifestyle2}
                 alt=""
                 aria-hidden="true"
@@ -99,7 +99,7 @@ const Filosofia = () => (
         >
           {/* Pájaro decorativo */}
           <SectionReveal className="mb-8">
-            <img
+            <img loading="lazy"
               src={pajaroAzulClaro}
               alt=""
               aria-hidden="true"

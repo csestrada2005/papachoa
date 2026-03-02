@@ -9,7 +9,7 @@ const Emotion = () => (
         {/* Image */}
         <div className="relative">
           <div className="rounded-2xl overflow-hidden shadow-lg">
-            <img
+            <img loading="lazy"
               src={lifestyleImage}
               alt="Bebé descansando con cobijo Papachoa"
               className="w-full aspect-[3/4] object-cover"
@@ -20,14 +20,14 @@ const Emotion = () => (
             />
           </div>
           {/* Decorative birds */}
-          <img
+          <img loading="lazy"
             src={pajaroAzul}
             alt=""
             aria-hidden="true"
             className="absolute -top-6 -right-6 w-16 md:w-20 opacity-20 animate-float-gentle pointer-events-none"
             loading="lazy"
           />
-          <img
+          <img loading="lazy"
             src={pajaroAmarillo}
             alt=""
             aria-hidden="true"
@@ -54,7 +54,7 @@ const Emotion = () => (
           <ul className="space-y-4">
             {["Textiles ultra suaves", "Diseñados para compartir en familia", "Cada prenda lleva el nombre de un pájaro"].map((item) => (
               <li key={item} className="flex items-start gap-3">
-                <img src={pajaroAmarillo} alt="" aria-hidden="true" className="w-5 h-5 mt-0.5 flex-shrink-0 opacity-70" />
+                <img loading="lazy" src={pajaroAmarillo} alt="" aria-hidden="true" className="w-5 h-5 mt-0.5 flex-shrink-0 opacity-70" />
                 <span className="text-foreground font-light">{item}</span>
               </li>
             ))}

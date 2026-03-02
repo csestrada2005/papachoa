@@ -10,7 +10,7 @@ const TextureSection = ({ image }: TextureSectionProps) => {
       <div className="flex flex-col sm:flex-row items-stretch gap-4 bg-card rounded-xl p-5 md:p-6 border border-border/30">
         {/* Texture swatch */}
         <div className="w-full sm:w-28 h-[160px] sm:h-auto shrink-0 overflow-hidden rounded-lg">
-          <img
+          <img loading="lazy"
             src={image || texturaTela}
             alt="Close-up de textura de tela ultra suave"
             className="w-full h-full object-cover rounded-lg"

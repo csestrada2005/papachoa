@@ -107,7 +107,7 @@ const MiniCart = ({ isOpen, onClose }: MiniCartProps) => {
                   }}
                 >
                   <div className="w-18 h-18 rounded-xl overflow-hidden shrink-0" style={{ width: "68px", height: "68px" }}>
-                    <img
+                    <img loading="lazy"
                       src={item.product.image}
                       alt={item.product.name}
                       className="w-full h-full object-cover"
