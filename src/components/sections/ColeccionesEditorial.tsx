@@ -113,14 +113,18 @@ const ColeccionesEditorial = () => {
         </div>
       </div>
 
+      {/* overflow-x-scroll (not hidden) creates a real scroll container so iOS allows scrollLeft changes via JS.
+          overflow-x:hidden blocks programmatic scrollLeft on iOS Safari. Scrollbar hidden via scrollbar-hide class. */}
       <div
         ref={trackRef}
-        className="flex gap-4 md:gap-5 overflow-x-hidden pb-6 select-none pointer-events-none"
+        className="flex gap-4 md:gap-5 overflow-x-scroll scrollbar-hide pb-6 select-none pointer-events-none"
         style={{
           paddingLeft: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
           paddingRight: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
           scrollbarWidth: "none",
           msOverflowStyle: "none",
+          // Enable iOS momentum scroll for smooth RAF-driven scrollLeft
+          WebkitOverflowScrolling: "touch",
         }}
       >
         {/* Duplicate products for seamless loop */}

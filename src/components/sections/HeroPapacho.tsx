@@ -81,6 +81,8 @@ const HeroPapacho = () => {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
+  // Detect touch device to skip mouse parallax (performance + avoids ghost state on iOS)
+  const isTouchDevice = useRef(typeof window !== "undefined" && "ontouchstart" in window);
 
   /* Expanding line on mount */
   useEffect(() => {
@@ -88,23 +90,30 @@ const HeroPapacho = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  /* Scroll progress */
+  /* Scroll progress — throttled with RAF to avoid excessive re-renders on iOS */
+  const rafScroll = useRef<number | null>(null);
   const onScroll = useCallback(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const scrollable = el.offsetHeight - window.innerHeight;
-    if (scrollable <= 0) return;
-    const raw = -rect.top / scrollable;
-    // Animation completes at 50% scroll (250vh of 500vh), rest is for logo + overlap
-    const capped = Math.min(raw / 0.5, 1);
-    setProgress(Math.max(0, Math.min(1, capped)));
+    if (rafScroll.current) return;
+    rafScroll.current = requestAnimationFrame(() => {
+      rafScroll.current = null;
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const scrollable = el.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const raw = -rect.top / scrollable;
+      const capped = Math.min(raw / 0.5, 1);
+      setProgress(Math.max(0, Math.min(1, capped)));
+    });
   }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafScroll.current) cancelAnimationFrame(rafScroll.current);
+    };
   }, [onScroll]);
 
   /* IntersectionObserver — hero shrink on exit */
@@ -119,7 +128,7 @@ const HeroPapacho = () => {
     return () => obs.disconnect();
   }, []);
 
-  /* Mouse parallax */
+  /* Mouse parallax — desktop only, skipped on touch devices */
   const onMouseMove = useCallback((e: MouseEvent) => {
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = (e.clientY / window.innerHeight) * 2 - 1;
@@ -127,6 +136,7 @@ const HeroPapacho = () => {
   }, []);
 
   useEffect(() => {
+    if (isTouchDevice.current) return;
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, [onMouseMove]);
@@ -142,16 +152,19 @@ const HeroPapacho = () => {
   const logoTranslateY = (1 - logoOpacity) * 20;
 
   return (
-    <section ref={sectionRef} style={{ height: "350vh", position: "relative", zIndex: 0 }}>
+    // Use --vh so iOS calculates height from real viewport (excludes browser chrome)
+    <section ref={sectionRef} style={{ height: "calc(var(--vh, 1vh) * 350)", position: "relative", zIndex: 0 }}>
       <div
         ref={stickyRef}
         className={exiting ? "hero-exiting" : ""}
         style={{
           position: "sticky",
           top: 0,
-          height: "100vh",
+          // Use --vh for accurate iOS viewport height (100vh includes browser toolbar on iOS)
+          height: "calc(var(--vh, 1vh) * 100)",
           width: "100%",
-          overflow: "hidden",
+          // overflow: visible here so 3D-transformed scattered letters are NOT clipped by iOS
+          overflow: "visible",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -161,14 +174,18 @@ const HeroPapacho = () => {
           transition: "transform 0.6s ease-out, opacity 0.6s ease-out",
         }}
       >
-        {/* Subtle grain texture via CSS — no image request */}
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.025]"
-          style={{
-            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-            backgroundSize: "150px",
-          }}
-        />
+        {/* Background layer — overflow:hidden here to clip grain to viewport bounds */}
+        <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
+          <div style={{ position: "absolute", inset: 0, background: "hsl(15 20% 96%)" }} />
+          {/* Subtle grain texture via CSS — no image request */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.025]"
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+              backgroundSize: "150px",
+            }}
+          />
+        </div>
 
         {/* Image with parallax — slides up and out */}
         <div
@@ -181,8 +198,14 @@ const HeroPapacho = () => {
           <img
             src={heroImage}
             alt="Familia feliz con pijamas Papachoa hechos en México"
-            className="object-cover object-top select-none max-h-[90vh] w-auto"
-            style={{ filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))", imageRendering: "auto", objectFit: "cover" }}
+            className="object-cover object-top select-none w-auto"
+            style={{
+              filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))",
+              imageRendering: "auto",
+              objectFit: "cover",
+              // Use --vh so image respects real iOS viewport height, not oversized 100vh
+              maxHeight: "calc(var(--vh, 1vh) * 90)",
+            }}
             loading="eager"
             // @ts-expect-error fetchpriority is valid HTML but not yet in React types
             fetchpriority="high"
@@ -196,14 +219,20 @@ const HeroPapacho = () => {
         <div
           className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
-            perspective: "1000px",
-            transform: textShift,
-            transition: "transform 0.15s ease-out",
+            // Disable perspective on touch devices — iOS has issues with preserve-3d + overflow
+            perspective: isTouchDevice.current ? "none" : "1000px",
+            transform: isTouchDevice.current ? "none" : textShift,
+            transition: isTouchDevice.current ? "none" : "transform 0.15s ease-out",
           }}
         >
           <h1
             className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
-            style={{ transformStyle: "preserve-3d", minHeight: "1em", minWidth: "10ch" }}
+            style={{
+              // Use flat transform on touch — preserve-3d causes Safari clipping issues
+              transformStyle: isTouchDevice.current ? "flat" : "preserve-3d",
+              minHeight: "1em",
+              minWidth: "10ch",
+            }}
             aria-label={TEXT}
           >
             {WORDS.map((word, wi) => (
@@ -216,7 +245,10 @@ const HeroPapacho = () => {
                       className="inline-block will-change-transform"
                       style={{
                         color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
-                        transform: `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
+                        // On touch: 2D translate only (no Z-axis) — avoids iOS 3D clipping bugs
+                        transform: isTouchDevice.current
+                          ? `translate(${l.tx * p}vw, ${l.ty * p}vh) rotateZ(${l.rot * p}deg)`
+                          : `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
                         transition: "transform 0.05s linear",
                       }}
                     >

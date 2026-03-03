@@ -23,6 +23,7 @@ const Index = () => {
   const autoScrollDone = React.useRef(false);
 
   useEffect(() => {
+    // Use window.innerHeight (real iOS viewport height) instead of 100vh
     const targetY = Math.round(window.innerHeight * 2);
     const duration = 3200;
     let startTime: number | null = null;
@@ -50,6 +51,13 @@ const Index = () => {
       rafId = requestAnimationFrame(step);
     };
 
+    // Cancel auto-scroll immediately on any touch — prevents competing with iOS native scroll
+    const cancelOnTouch = () => {
+      cancelled = true;
+      cancelAnimationFrame(rafId);
+    };
+    window.addEventListener("touchstart", cancelOnTouch, { passive: true, once: true });
+
     const initialDelay = 1500;
     const heroImg = document.querySelector<HTMLImageElement>("img[fetchpriority='high']");
     if (heroImg && !heroImg.complete) {
@@ -57,10 +65,20 @@ const Index = () => {
         if (!cancelled) setTimeout(startScroll, initialDelay);
       }, { once: true });
       const fallback = setTimeout(startScroll, initialDelay + 2000);
-      return () => { cancelled = true; clearTimeout(fallback); cancelAnimationFrame(rafId); };
+      return () => {
+        cancelled = true;
+        clearTimeout(fallback);
+        cancelAnimationFrame(rafId);
+        window.removeEventListener("touchstart", cancelOnTouch);
+      };
     } else {
       const delay = setTimeout(startScroll, initialDelay);
-      return () => { cancelled = true; clearTimeout(delay); cancelAnimationFrame(rafId); };
+      return () => {
+        cancelled = true;
+        clearTimeout(delay);
+        cancelAnimationFrame(rafId);
+        window.removeEventListener("touchstart", cancelOnTouch);
+      };
     }
   }, []);
 
@@ -84,7 +102,15 @@ const Index = () => {
           <HeroPapacho />
         </div>
 
-        <div className="relative bg-white transition-[margin] duration-700 ease-out" style={{ zIndex: 10, marginTop: heroComplete ? "-100vh" : 0 }}>
+        {/* Use transform instead of marginTop to avoid iOS layout reflow (which causes scroll jumps) */}
+        <div
+          className="relative bg-white"
+          style={{
+            zIndex: 10,
+            transform: heroComplete ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
+            transition: "transform 700ms ease-out",
+          }}
+        >
         <Suspense fallback={null}>
           <div id="about">
             <AboutPapachoa />
