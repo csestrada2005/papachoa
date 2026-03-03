@@ -72,6 +72,9 @@ const BIRDS = [
 ];
 
 const IOS_INTRO_DURATION = 3000; // ms
+const HERO_ANIMATION_START_DELAY = 1000; // ms (all platforms)
+const HERO_SCROLL_HEIGHT_TOUCH = 300;
+const HERO_SCROLL_HEIGHT_DESKTOP = 350;
 
 const HeroPapacho = () => {
   const navigate = useNavigate();
@@ -84,12 +87,14 @@ const HeroPapacho = () => {
   const isTouchDevice = useRef(typeof window !== "undefined" && "ontouchstart" in window);
   const iosDevice = useRef(isIOS());
   const [heroLoaded, setHeroLoaded] = useState(!iosDevice.current);
+  const [animationReady, setAnimationReady] = useState(false);
 
   // Cached scroll metrics for stable progress calculation (avoids getBoundingClientRect per frame)
   const metricsRef = useRef({ sectionTop: 0, scrollable: 0 });
 
   // iOS intro autoplay progress
   const [introProgress, setIntroProgress] = useState(0);
+  const introDetachedRef = useRef(false);
 
   // Measure section metrics on mount + resize
   const measureMetrics = useCallback(() => {
@@ -113,19 +118,18 @@ const HeroPapacho = () => {
   }, [measureMetrics]);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLineVisible(true), 300);
-    return () => clearTimeout(timer);
-  }, []);
+    if (!heroLoaded) return;
+    const id = window.setTimeout(() => setAnimationReady(true), HERO_ANIMATION_START_DELAY);
+    return () => window.clearTimeout(id);
+  }, [heroLoaded]);
 
-  /* iOS intro autoplay: starts after hero image is loaded (prevents hidden-before-load state) */
+  /* iOS intro autoplay: starts after hero image is loaded + global animation delay */
   useEffect(() => {
-    if (!iosDevice.current) return;
+    if (!iosDevice.current || !animationReady) return;
 
     let startTime: number | null = null;
     let rafId = 0;
     let cancelled = false;
-    let startDelayId = 0;
-    let fallbackId = 0;
 
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
@@ -143,15 +147,11 @@ const HeroPapacho = () => {
         if (t < 1) rafId = requestAnimationFrame(step);
       };
 
-      startDelayId = window.setTimeout(() => {
-        if (!cancelled) rafId = requestAnimationFrame(step);
-      }, 240);
+      rafId = requestAnimationFrame(step);
     };
 
     const cancelOnInteraction = () => {
       cancelled = true;
-      window.clearTimeout(startDelayId);
-      window.clearTimeout(fallbackId);
       cancelAnimationFrame(rafId);
     };
 
@@ -159,15 +159,13 @@ const HeroPapacho = () => {
 
     if (heroLoaded) {
       startIntro();
-    } else {
-      fallbackId = window.setTimeout(startIntro, 2200);
     }
 
     return () => {
       cancelOnInteraction();
       window.removeEventListener("touchstart", cancelOnInteraction);
     };
-  }, [heroLoaded]);
+  }, [heroLoaded, animationReady]);
 
   /* Scroll progress — throttled with RAF, using cached metrics */
   const rafScroll = useRef<number | null>(null);
@@ -181,7 +179,12 @@ const HeroPapacho = () => {
       const stableScrollTop = document.scrollingElement?.scrollTop ?? window.scrollY;
       const clampedScrollTop = Math.max(0, stableScrollTop);
       const raw = (clampedScrollTop - sectionTop) / scrollable;
-      const nextProgress = Math.max(0, Math.min(1, Math.min(raw / 0.5, 1)));
+      const normalized = isTouchDevice.current ? Math.min(raw / 0.42, 1) : Math.min(raw / 0.5, 1);
+      const nextProgress = Math.max(0, Math.min(1, normalized));
+
+      if (iosDevice.current && !introDetachedRef.current && raw >= 0.42) {
+        introDetachedRef.current = true;
+      }
 
       setProgress((prev) => (Math.abs(prev - nextProgress) > 0.002 ? nextProgress : prev));
     });
@@ -222,13 +225,15 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, [onMouseMove]);
 
-  // Effective progress: on iOS use max of scroll and intro autoplay only after image is ready
-  const effectiveProgress = iosDevice.current
-    ? Math.max(progress, heroLoaded ? introProgress : 0)
-    : progress;
+  // Effective progress: iOS gets intro autoplay only during first pass; all platforms wait 1s after image load
+  const effectiveProgress = !animationReady
+    ? 0
+    : iosDevice.current
+      ? Math.max(progress, !introDetachedRef.current && heroLoaded ? introProgress : 0)
+      : progress;
 
   const p = 1 - effectiveProgress;
-  const imgSlide = iosDevice.current && !heroLoaded ? 0 : Math.min(effectiveProgress / 0.6, 1);
+  const imgSlide = Math.min(effectiveProgress / 0.6, 1);
   const imgShift = iosDevice.current
     ? `translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -1.2 * window.innerHeight}px)`
     : `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
@@ -248,7 +253,7 @@ const HeroPapacho = () => {
   };
 
   return (
-    <section ref={sectionRef} style={{ height: "calc(var(--vh, 1vh) * 350)", position: "relative", zIndex: 0 }}>
+    <section ref={sectionRef} style={{ height: `calc(var(--vh, 1vh) * ${isTouchDevice.current ? HERO_SCROLL_HEIGHT_TOUCH : HERO_SCROLL_HEIGHT_DESKTOP})`, position: "relative", zIndex: 0 }}>
       <div
         ref={stickyRef}
         className={!iosDevice.current && exiting ? "hero-exiting" : ""}
@@ -288,6 +293,7 @@ const HeroPapacho = () => {
           }}
         >
           <img
+            id="hero-main-image"
             src={heroImage}
             alt="Familia feliz con pijamas Papachoa hechos en México"
             className="object-cover object-top select-none w-auto"

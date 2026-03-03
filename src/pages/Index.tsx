@@ -27,6 +27,7 @@ const Index = () => {
   // Auto-scroll — skip on iOS to avoid momentum scroll conflicts
   useEffect(() => {
     if (iosDevice.current) { autoScrollDone.current = true; return; }
+    if (window.scrollY > 0) window.scrollTo(0, 0);
 
     const targetY = Math.round(window.innerHeight * 2);
     const duration = 3200;
@@ -61,37 +62,58 @@ const Index = () => {
     };
     window.addEventListener("touchstart", cancelOnTouch, { passive: true, once: true });
 
-    const initialDelay = 1500;
-    const heroImg = document.querySelector<HTMLImageElement>("img[fetchpriority='high']");
-    if (heroImg && !heroImg.complete) {
-      heroImg.addEventListener("load", () => {
-        if (!cancelled) setTimeout(startScroll, initialDelay);
-      }, { once: true });
-      const fallback = setTimeout(startScroll, initialDelay + 2000);
-      return () => {
-        cancelled = true;
-        clearTimeout(fallback);
-        cancelAnimationFrame(rafId);
-        window.removeEventListener("touchstart", cancelOnTouch);
-      };
+    const initialDelay = 1000;
+    let probeId: number | null = null;
+    let fallbackId: ReturnType<typeof setTimeout> | number | null = null;
+
+    const armWithImage = (img: HTMLImageElement) => {
+      if (img.complete) {
+        const delay = setTimeout(startScroll, initialDelay);
+        fallbackId = delay;
+      } else {
+        img.addEventListener("load", () => {
+          if (!cancelled) fallbackId = window.setTimeout(startScroll, initialDelay);
+        }, { once: true });
+        fallbackId = window.setTimeout(startScroll, initialDelay + 2500);
+      }
+    };
+
+    const existingHeroImg = document.querySelector<HTMLImageElement>("#hero-main-image");
+    if (existingHeroImg) {
+      armWithImage(existingHeroImg);
     } else {
-      const delay = setTimeout(startScroll, initialDelay);
-      return () => {
-        cancelled = true;
-        clearTimeout(delay);
-        cancelAnimationFrame(rafId);
-        window.removeEventListener("touchstart", cancelOnTouch);
-      };
+      probeId = window.setInterval(() => {
+        const lateHeroImg = document.querySelector<HTMLImageElement>("#hero-main-image");
+        if (!lateHeroImg) return;
+        if (probeId) {
+          window.clearInterval(probeId);
+          probeId = null;
+        }
+        armWithImage(lateHeroImg);
+      }, 120);
+      fallbackId = window.setTimeout(startScroll, initialDelay + 2500);
     }
+
+    return () => {
+      cancelled = true;
+      if (probeId) window.clearInterval(probeId);
+      if (fallbackId) clearTimeout(fallbackId);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("touchstart", cancelOnTouch);
+    };
   }, []);
 
   // heroComplete listener — all platforms
   useEffect(() => {
     const onWheel = () => {
-      if (autoScrollDone.current && !heroComplete) setHeroComplete(true);
+      if (autoScrollDone.current && !heroComplete) {
+        setHeroComplete(true);
+        window.removeEventListener("wheel", onWheel);
+        window.removeEventListener("touchmove", onWheel);
+      }
     };
-    window.addEventListener("wheel", onWheel, { passive: true, once: true });
-    window.addEventListener("touchmove", onWheel, { passive: true, once: true });
+    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("touchmove", onWheel, { passive: true });
     return () => {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchmove", onWheel);
