@@ -2,7 +2,6 @@ import React, { lazy, Suspense, useEffect, useState } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
-import { isIOS } from "@/lib/platform";
 
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
@@ -20,15 +19,11 @@ const Index = () => {
   usePrefetchRoutes();
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
-  const iosDevice = isIOS();
-
   const [heroComplete, setHeroComplete] = useState(false);
   const autoScrollDone = React.useRef(false);
 
-  // Auto-scroll only on non-iOS (desktop & Android)
+  // Auto-scroll on all platforms
   useEffect(() => {
-    if (iosDevice) return;
-
     const targetY = Math.round(window.innerHeight * 2);
     const duration = 3200;
     let startTime: number | null = null;
@@ -84,12 +79,10 @@ const Index = () => {
         window.removeEventListener("touchstart", cancelOnTouch);
       };
     }
-  }, [iosDevice]);
+  }, []);
 
-  // heroComplete listener — only on non-iOS
+  // heroComplete listener — all platforms
   useEffect(() => {
-    if (iosDevice) return;
-
     const onWheel = () => {
       if (autoScrollDone.current && !heroComplete) setHeroComplete(true);
     };
@@ -99,7 +92,7 @@ const Index = () => {
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("touchmove", onWheel);
     };
-  }, [heroComplete, iosDevice]);
+  }, [heroComplete]);
 
   return (
     <div className="min-h-screen bg-white overflow-x-clip">
@@ -113,13 +106,8 @@ const Index = () => {
           className="relative bg-white"
           style={{
             zIndex: 10,
-            // Only apply translateY hack on non-iOS
-            ...(iosDevice
-              ? {}
-              : {
-                  transform: heroComplete ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
-                  transition: "transform 700ms ease-out",
-                }),
+            transform: heroComplete ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
+            transition: "transform 700ms ease-out",
           }}
         >
         <Suspense fallback={null}>
