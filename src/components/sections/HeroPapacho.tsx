@@ -88,17 +88,21 @@ const HeroPapacho = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  /* Scroll progress */
+  /* Scroll progress — rAF-throttled for iOS perf */
+  const rafRef = useRef(0);
   const onScroll = useCallback(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const scrollable = el.offsetHeight - window.innerHeight;
-    if (scrollable <= 0) return;
-    const raw = -rect.top / scrollable;
-    // Animation completes at 50% scroll (250vh of 500vh), rest is for logo + overlap
-    const capped = Math.min(raw / 0.5, 1);
-    setProgress(Math.max(0, Math.min(1, capped)));
+    if (rafRef.current) return;
+    rafRef.current = requestAnimationFrame(() => {
+      rafRef.current = 0;
+      const el = sectionRef.current;
+      if (!el) return;
+      const rect = el.getBoundingClientRect();
+      const scrollable = el.offsetHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const raw = -rect.top / scrollable;
+      const capped = Math.min(raw / 0.5, 1);
+      setProgress(Math.max(0, Math.min(1, capped)));
+    });
   }, []);
 
   useEffect(() => {
@@ -151,7 +155,7 @@ const HeroPapacho = () => {
           top: 0,
           height: "100vh",
           width: "100%",
-          overflow: "hidden",
+          overflow: "clip",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -196,14 +200,15 @@ const HeroPapacho = () => {
         <div
           className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
-            perspective: "1000px",
             transform: textShift,
             transition: "transform 0.15s ease-out",
+            WebkitBackfaceVisibility: "hidden",
+            backfaceVisibility: "hidden",
           }}
         >
           <h1
             className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
-            style={{ transformStyle: "preserve-3d", minHeight: "1em", minWidth: "10ch" }}
+            style={{ minHeight: "1em", minWidth: "10ch", willChange: "transform" }}
             aria-label={TEXT}
           >
             {WORDS.map((word, wi) => (
@@ -213,11 +218,12 @@ const HeroPapacho = () => {
                     <span
                       key={li}
                       aria-hidden="true"
-                      className="inline-block will-change-transform"
+                      className="inline-block"
                       style={{
                         color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
-                        transform: `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
+                        transform: `translate(${(l.tx * p * window.innerWidth) / 100}px, ${(l.ty * p * window.innerHeight) / 100}px) rotate(${l.rot * p}deg)`,
                         transition: "transform 0.05s linear",
+                        WebkitBackfaceVisibility: "hidden",
                       }}
                     >
                       {l.char}
