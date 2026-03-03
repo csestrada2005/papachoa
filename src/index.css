@@ -528,6 +528,14 @@
 /* Thread particles (legacy) */
 .thread-particle { display: none; }
 
+/* iOS: prevent aggressive overscroll bounce */
+.ios-device {
+  overscroll-behavior-y: none;
+}
+.ios-device body {
+  overscroll-behavior-y: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glass-blob-btn, .glass-blob-shape, .animate-drift, .animate-drift-slow,
   .animate-float-gentle, .hero-slide, .hero-letter {

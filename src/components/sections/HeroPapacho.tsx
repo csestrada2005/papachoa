@@ -23,7 +23,6 @@ interface WordData {
   letters: LetterScatter[];
 }
 
-/* Original scatter values (vw/vh units) — used on desktop & Android */
 const SCATTER_MAP: Record<number, { tx: number; ty: number; tz: number; rot: number }> = {
   0:  { tx:   8, ty: 12, tz: -20, rot:  35 },
   1:  { tx:   4, ty: 18, tz: -10, rot: -25 },
@@ -72,6 +71,8 @@ const BIRDS = [
   { src: birdOrange, alt: "Pajarito naranja", style: { bottom: "14%", left: "8%", width: 90 }, delay: "2.1s" },
 ];
 
+const IOS_INTRO_DURATION = 3000; // ms
+
 const HeroPapacho = () => {
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -83,23 +84,80 @@ const HeroPapacho = () => {
   const isTouchDevice = useRef(typeof window !== "undefined" && "ontouchstart" in window);
   const iosDevice = useRef(isIOS());
 
+  // Cached scroll metrics for stable progress calculation (avoids getBoundingClientRect per frame)
+  const metricsRef = useRef({ sectionTop: 0, scrollable: 0 });
+
+  // iOS intro autoplay progress
+  const [introProgress, setIntroProgress] = useState(0);
+
+  // Measure section metrics on mount + resize
+  const measureMetrics = useCallback(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    metricsRef.current = {
+      sectionTop: rect.top + window.scrollY,
+      scrollable: el.offsetHeight - window.innerHeight,
+    };
+  }, []);
+
+  useEffect(() => {
+    measureMetrics();
+    window.addEventListener("resize", measureMetrics, { passive: true });
+    window.addEventListener("orientationchange", measureMetrics);
+    return () => {
+      window.removeEventListener("resize", measureMetrics);
+      window.removeEventListener("orientationchange", measureMetrics);
+    };
+  }, [measureMetrics]);
+
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
 
-  /* Scroll progress — throttled with RAF */
+  /* iOS intro autoplay: animate progress 0→1 with RAF + easing */
+  useEffect(() => {
+    if (!iosDevice.current) return;
+    let startTime: number | null = null;
+    let rafId: number;
+    let cancelled = false;
+
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    // Cancel intro if user starts scrolling
+    const cancelOnInteraction = () => { cancelled = true; cancelAnimationFrame(rafId); };
+    window.addEventListener("touchstart", cancelOnInteraction, { passive: true, once: true });
+
+    const delay = setTimeout(() => {
+      const step = (timestamp: number) => {
+        if (cancelled) return;
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const t = Math.min(elapsed / IOS_INTRO_DURATION, 1);
+        setIntroProgress(easeOutCubic(t));
+        if (t < 1) rafId = requestAnimationFrame(step);
+      };
+      rafId = requestAnimationFrame(step);
+    }, 800);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(delay);
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("touchstart", cancelOnInteraction);
+    };
+  }, []);
+
+  /* Scroll progress — throttled with RAF, using cached metrics */
   const rafScroll = useRef<number | null>(null);
   const onScroll = useCallback(() => {
     if (rafScroll.current) return;
     rafScroll.current = requestAnimationFrame(() => {
       rafScroll.current = null;
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
+      const { sectionTop, scrollable } = metricsRef.current;
       if (scrollable <= 0) return;
-      const raw = -rect.top / scrollable;
+      const raw = (window.scrollY - sectionTop) / scrollable;
       const capped = Math.min(raw / 0.5, 1);
       setProgress(Math.max(0, Math.min(1, capped)));
     });
@@ -114,8 +172,9 @@ const HeroPapacho = () => {
     };
   }, [onScroll]);
 
-  /* IntersectionObserver — hero shrink on exit */
+  /* IntersectionObserver — hero shrink on exit (disabled on iOS) */
   useEffect(() => {
+    if (iosDevice.current) return; // Skip on iOS to avoid jitter
     const el = stickyRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
@@ -139,20 +198,22 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, [onMouseMove]);
 
-  const p = 1 - progress;
-  const imgSlide = Math.min(progress / 0.6, 1);
+  // Effective progress: on iOS use max of scroll and intro autoplay
+  const effectiveProgress = iosDevice.current ? Math.max(progress, introProgress) : progress;
+
+  const p = 1 - effectiveProgress;
+  const imgSlide = Math.min(effectiveProgress / 0.6, 1);
   const imgShift = iosDevice.current
     ? `translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -1.2 * window.innerHeight}px)`
     : `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
-  const logoOpacity = Math.max(0, Math.min(1, (progress - 0.6) / 0.3));
+  const logoOpacity = Math.max(0, Math.min(1, (effectiveProgress - 0.6) / 0.3));
   const logoTranslateY = (1 - logoOpacity) * 20;
 
   // iOS: use px-based 2D transforms; Desktop/Android: use vw/vh 3D transforms
   const getLetterTransform = (l: LetterScatter) => {
     if (iosDevice.current) {
-      // Convert vw/vh to conservative px values for iOS
       const pxX = l.tx * 4.5 * p;
       const pxY = l.ty * 4.5 * p;
       return `translate(${pxX}px, ${pxY}px) rotate(${l.rot * p}deg)`;
@@ -164,7 +225,7 @@ const HeroPapacho = () => {
     <section ref={sectionRef} style={{ height: "calc(var(--vh, 1vh) * 350)", position: "relative", zIndex: 0 }}>
       <div
         ref={stickyRef}
-        className={exiting ? "hero-exiting" : ""}
+        className={!iosDevice.current && exiting ? "hero-exiting" : ""}
         style={{
           position: "sticky",
           top: 0,
