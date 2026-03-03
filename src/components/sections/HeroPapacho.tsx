@@ -80,8 +80,6 @@ const HeroPapacho = () => {
   const [lineVisible, setLineVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [progress, setProgress] = useState(0);
-  const [exiting, setExiting] = useState(false);
-
   /* Expanding line on mount */
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
@@ -111,17 +109,6 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  /* IntersectionObserver — hero shrink on exit */
-  useEffect(() => {
-    const el = stickyRef.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => setExiting(!entry.isIntersecting),
-      { threshold: 0.15 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
 
   /* Mouse parallax */
   const onMouseMove = useCallback((e: MouseEvent) => {
@@ -138,7 +125,8 @@ const HeroPapacho = () => {
   const p = 1 - progress;
   // Image slides upward as user scrolls (no fade, just translate)
   const imgSlide = Math.min(progress / 0.6, 1); // image exits by 60% scroll
-  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
+  const imgYPx = mouse.y * -6 + (imgSlide * -120 * window.innerHeight) / 100;
+  const imgShift = `translate(${mouse.x * -6}px, ${imgYPx}px)`;
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   // Logo fade-in between 60%-90% scroll
@@ -149,7 +137,6 @@ const HeroPapacho = () => {
     <section ref={sectionRef} style={{ height: "350vh", position: "relative", zIndex: 0 }}>
       <div
         ref={stickyRef}
-        className={exiting ? "hero-exiting" : ""}
         style={{
           position: "sticky",
           top: 0,
