@@ -80,6 +80,7 @@ const HeroPapacho = () => {
   const [lineVisible, setLineVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [progress, setProgress] = useState(0);
+  const [imageLoaded, setImageLoaded] = useState(false);
   /* Expanding line on mount */
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
@@ -98,10 +99,10 @@ const HeroPapacho = () => {
       const scrollable = el.offsetHeight - window.innerHeight;
       if (scrollable <= 0) return;
       const raw = -rect.top / scrollable;
-      const capped = Math.min(raw / 0.5, 1);
-      setProgress(Math.max(0, Math.min(1, capped)));
+      const capped = Math.min(raw / 0.65, 1);
+      setProgress(imageLoaded ? Math.max(0, Math.min(1, capped)) : 0);
     });
-  }, []);
+  }, [imageLoaded]);
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -180,6 +181,7 @@ const HeroPapacho = () => {
             draggable={false}
             width={800}
             height={900}
+            onLoad={() => setImageLoaded(true)}
           />
         </div>
 

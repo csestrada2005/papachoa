@@ -116,7 +116,7 @@
 }
 /* Hero scroll height — shorter on mobile to reduce dead scroll after animation */
 .hero-scroll-height {
-  height: 220vh;
+  height: 280vh;
 }
 @media (min-width: 768px) {
   .hero-scroll-height {
