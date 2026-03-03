@@ -77,46 +77,29 @@ const HeroPapacho = () => {
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const heroImgRef = useRef<HTMLImageElement>(null);
   const [lineVisible, setLineVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [progress, setProgress] = useState(0);
-  const [autoProgress, setAutoProgress] = useState(0);
-  const [imageLoaded, setImageLoaded] = useState(false);
+  const [exiting, setExiting] = useState(false);
+
   /* Expanding line on mount */
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
 
-  // Ensure cached image also unlocks animation
-  useEffect(() => {
-    if (heroImgRef.current?.complete) setImageLoaded(true);
-  }, []);
-
-  // Fallback for iOS/Safari cases where onLoad can be delayed or skipped
-  useEffect(() => {
-    if (imageLoaded) return;
-    const fallback = window.setTimeout(() => setImageLoaded(true), 1400);
-    return () => window.clearTimeout(fallback);
-  }, [imageLoaded]);
-
-  /* Scroll progress — rAF-throttled for iOS perf */
-  const rafRef = useRef(0);
+  /* Scroll progress */
   const onScroll = useCallback(() => {
-    if (rafRef.current) return;
-    rafRef.current = requestAnimationFrame(() => {
-      rafRef.current = 0;
-      const el = sectionRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const scrollable = el.offsetHeight - window.innerHeight;
-      if (scrollable <= 0) return;
-      const raw = -rect.top / scrollable;
-      const capped = Math.min(raw / 0.65, 1);
-      setProgress(imageLoaded ? Math.max(0, Math.min(1, capped)) : 0);
-    });
-  }, [imageLoaded]);
+    const el = sectionRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const scrollable = el.offsetHeight - window.innerHeight;
+    if (scrollable <= 0) return;
+    const raw = -rect.top / scrollable;
+    // Animation completes at 50% scroll (250vh of 500vh), rest is for logo + overlap
+    const capped = Math.min(raw / 0.5, 1);
+    setProgress(Math.max(0, Math.min(1, capped)));
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -124,25 +107,17 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, [onScroll]);
 
-  // Auto-trigger assembly once the hero image is ready
+  /* IntersectionObserver — hero shrink on exit */
   useEffect(() => {
-    if (!imageLoaded) return;
-    setAutoProgress(0);
-    const target = 0.42;
-    const duration = window.innerWidth < 768 ? 2800 : 2200;
-    const tickMs = 33;
-    const step = target / (duration / tickMs);
-
-    const interval = window.setInterval(() => {
-      setAutoProgress((prev) => {
-        const next = Math.min(target, prev + step);
-        if (next >= target) window.clearInterval(interval);
-        return next;
-      });
-    }, tickMs);
-
-    return () => window.clearInterval(interval);
-  }, [imageLoaded]);
+    const el = stickyRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setExiting(!entry.isIntersecting),
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   /* Mouse parallax */
   const onMouseMove = useCallback((e: MouseEvent) => {
@@ -156,28 +131,27 @@ const HeroPapacho = () => {
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, [onMouseMove]);
 
-  const effectiveProgress = Math.max(progress, autoProgress);
-  const p = 1 - effectiveProgress;
+  const p = 1 - progress;
   // Image slides upward as user scrolls (no fade, just translate)
-  const imgSlide = Math.min(effectiveProgress / 0.85, 1); // keep image visible longer on mobile
-  const imgYPx = mouse.y * -6 + (imgSlide * -120 * window.innerHeight) / 100;
-  const imgShift = `translate(${mouse.x * -6}px, ${imgYPx}px)`;
+  const imgSlide = Math.min(progress / 0.6, 1); // image exits by 60% scroll
+  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   // Logo fade-in between 60%-90% scroll
-  const logoOpacity = Math.max(0, Math.min(1, (effectiveProgress - 0.6) / 0.3));
+  const logoOpacity = Math.max(0, Math.min(1, (progress - 0.6) / 0.3));
   const logoTranslateY = (1 - logoOpacity) * 20;
 
   return (
-    <section ref={sectionRef} className="hero-scroll-height" style={{ position: "relative", zIndex: 0 }}>
+    <section ref={sectionRef} style={{ height: "350vh", position: "relative", zIndex: 0 }}>
       <div
         ref={stickyRef}
+        className={exiting ? "hero-exiting" : ""}
         style={{
           position: "sticky",
           top: 0,
           height: "100vh",
           width: "100%",
-          overflow: "clip",
+          overflow: "hidden",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -205,7 +179,6 @@ const HeroPapacho = () => {
           }}
         >
           <img
-            ref={heroImgRef}
             src={heroImage}
             alt="Familia feliz con pijamas Papachoa hechos en México"
             className="object-cover object-top select-none max-h-[90vh] w-auto"
@@ -216,8 +189,6 @@ const HeroPapacho = () => {
             draggable={false}
             width={800}
             height={900}
-            onLoad={() => setImageLoaded(true)}
-            onError={() => setImageLoaded(true)}
           />
         </div>
 
@@ -225,15 +196,14 @@ const HeroPapacho = () => {
         <div
           className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
+            perspective: "1000px",
             transform: textShift,
             transition: "transform 0.15s ease-out",
-            WebkitBackfaceVisibility: "hidden",
-            backfaceVisibility: "hidden",
           }}
         >
           <h1
             className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
-            style={{ minHeight: "1em", minWidth: "10ch", willChange: "transform" }}
+            style={{ transformStyle: "preserve-3d", minHeight: "1em", minWidth: "10ch" }}
             aria-label={TEXT}
           >
             {WORDS.map((word, wi) => (
@@ -243,12 +213,11 @@ const HeroPapacho = () => {
                     <span
                       key={li}
                       aria-hidden="true"
-                      className="inline-block"
+                      className="inline-block will-change-transform"
                       style={{
                         color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
-                        transform: `translate(${(l.tx * p * window.innerWidth) / 100}px, ${(l.ty * p * window.innerHeight) / 100}px) rotate(${l.rot * p}deg)`,
+                        transform: `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
                         transition: "transform 0.05s linear",
-                        WebkitBackfaceVisibility: "hidden",
                       }}
                     >
                       {l.char}

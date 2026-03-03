@@ -65,39 +65,28 @@ const ColeccionesEditorial = () => {
     (p) => p.image && p.image !== "/placeholder.svg"
   );
 
-  // Auto-scroll animation — paused when off-screen for iOS perf
-  const sectionRef = useRef<HTMLElement>(null);
+  // Auto-scroll animation
   useEffect(() => {
     const track = trackRef.current;
-    const section = sectionRef.current;
-    if (!track || !section) return;
+    if (!track) return;
     let raf: number;
-    let isVisible = false;
-    const speed = 0.5;
+    const speed = 0.5; // px per frame
 
     const step = () => {
-      if (!isVisible) { raf = 0; return; }
+      if (!track) return;
       track.scrollLeft += speed;
+      // Loop back when reaching end
       if (track.scrollLeft >= track.scrollWidth - track.clientWidth) {
         track.scrollLeft = 0;
       }
       raf = requestAnimationFrame(step);
     };
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        isVisible = entry.isIntersecting;
-        if (isVisible && !raf) raf = requestAnimationFrame(step);
-      },
-      { threshold: 0.05 }
-    );
-    obs.observe(section);
-    return () => { obs.disconnect(); if (raf) cancelAnimationFrame(raf); };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
   }, [displayProducts.length]);
 
   return (
     <section
-      ref={sectionRef}
       id="colecciones"
       className="overflow-hidden"
       style={{

@@ -1,53 +1,36 @@
 
 
-## iOS Performance Issues — Root Cause Analysis & Fix Plan
+## Add Papachoa Logo Below "Pijamas que abrazan"
 
-### Root Causes Identified
+### Approach: Fade-in with subtle scale
 
-There are **5 interrelated problems** causing the broken scroll experience on iOS:
+**Why fade-in over letter-by-letter?**
+The Papachoa logo is a hand-drawn, stylized image with unique letter shapes, colors, and the decorative sun/rays element. Recreating it as individual text characters would lose its artistic quality. A smooth fade-in with a slight upward slide creates an elegant reveal that complements the letter assembly without competing with it.
 
-**1. Programmatic auto-scroll fights iOS scroll engine (Index.tsx, lines 25-65)**
-The landing page runs `window.scrollTo()` inside a `requestAnimationFrame` loop on mount, scrolling to `2 × innerHeight` over 3.2 seconds. iOS treats programmatic scroll differently from user-initiated scroll — it conflicts with the native momentum engine, causing stuttering and "jumpy" sections.
+### How it works
 
-**2. `marginTop: -100vh` transition causes full layout reflow (Index.tsx, line 87)**
-When `heroComplete` triggers, the entire content block below the hero animates from `marginTop: 0` to `marginTop: -100vh`. On iOS, this forces a complete layout recalculation of every element below, causing visible jumps and section overlap.
+1. Copy the uploaded logo image to `src/assets/brand/papachoa-logo.png`
+2. Place the logo below the assembled text in the sticky container
+3. As scroll progresses and letters converge (progress approaches 1), the logo fades in starting around 60% scroll progress and fully visible by 90%
+4. The logo starts slightly translated down and scales up to its final position, creating a gentle "bloom" entrance
 
-**3. `translate3d` still uses `vh` units for image shift (HeroPapacho.tsx, line 141)**
-The image parallax still uses `vh` in the Y component: `imgSlide * -120}vh`. iOS dynamically resizes `vh` as the address bar shows/hides, causing the image to jitter during scroll.
+### Visual timeline
 
-**4. Continuous rAF loop in ColeccionesEditorial (lines 69-86)**
-The auto-scrolling catalog runs `requestAnimationFrame` indefinitely, even when off-screen. On iOS this competes with the hero's scroll-driven animations for the single UI thread.
+```text
+Scroll 0%       -> Letters scattered, image visible, logo invisible
+Scroll 0-60%    -> Letters assembling, image sliding up/out, logo still invisible
+Scroll 60-90%   -> Letters nearly assembled, logo fading in + sliding up
+Scroll 100%     -> Text fully assembled, logo fully visible below it
+```
 
-**5. Multiple competing scroll listeners**
-The hero's `onScroll`, the Index auto-scroll `window.scrollTo`, and the `touchmove` listener all fight for control, creating unpredictable behavior on iOS's lower-frequency scroll event dispatch.
+### Technical details
 
----
-
-### Fix Plan
-
-#### Fix 1: Replace programmatic auto-scroll with CSS-driven intro (Index.tsx)
-- Remove the entire `useEffect` that calls `window.scrollTo` in a rAF loop (lines 25-65)
-- Remove the `heroComplete` / `autoScrollDone` state and the wheel/touchmove listener (lines 22-23, 67-77)
-- Remove the `marginTop: -100vh` transition trick (line 87) — replace with a simple static layout where sections flow naturally below the hero
-- The hero's own scroll-to-assemble animation (350vh sticky) already provides the cinematic intro; the forced auto-scroll on top of it is what breaks iOS
-
-#### Fix 2: Convert remaining `vh` to pixel values in HeroPapacho (HeroPapacho.tsx)
-- Line 141: Replace `imgSlide * -120}vh` with a pixel calculation: `(imgSlide * -120 * window.innerHeight) / 100`
-- This prevents iOS dynamic viewport resizing from causing jitter
-
-#### Fix 3: Pause ColeccionesEditorial rAF when off-screen (ColeccionesEditorial.tsx)
-- Add an IntersectionObserver to only run the auto-scroll rAF when the section is visible
-- This frees up the iOS UI thread for the hero animation and user scrolling
-
-#### Fix 4: Simplify hero exit behavior
-- Replace the `.hero-exiting` CSS class (scale + opacity transition triggered by IntersectionObserver) with a simpler approach — let the sticky container naturally unstick when its 350vh parent scrolls past, no additional transform needed
-- Remove the `exiting` state and its IntersectionObserver (lines 114-124)
-
----
-
-### Files to modify
-- `src/pages/Index.tsx` — Remove auto-scroll, remove marginTop hack, simplify layout
-- `src/components/sections/HeroPapacho.tsx` — Fix vh units, remove exit observer
-- `src/components/sections/ColeccionesEditorial.tsx` — Pause rAF when off-screen
-- `src/index.css` — Remove `.hero-exiting` class (no longer needed)
+- **File**: `src/components/sections/HeroPapacho.tsx`
+- Import the new logo image
+- Add a `div` below the `h1` containing the logo `img`
+- Compute `logoOpacity` and `logoTranslateY` from scroll progress:
+  - `logoOpacity = clamp((progress - 0.6) / 0.3, 0, 1)`
+  - `logoTranslateY = (1 - logoOpacity) * 20` px downward offset
+- Style with `opacity`, `transform`, and a smooth CSS transition
+- Logo sized to roughly 200-280px wide, centered below the text
 
