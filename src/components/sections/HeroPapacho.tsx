@@ -5,6 +5,7 @@ import papachoaLogo from "@/assets/brand/papachoa-logo-nuevo.png";
 import birdYellow from "@/assets/brand/pajaro-amarillo-sf.png";
 import birdBlue from "@/assets/brand/pajaro-azul-claro-sf.png";
 import birdOrange from "@/assets/brand/pajaro-naranja-sf.png";
+import { isIOS } from "@/lib/platform";
 
 const TEXT = "Pensado por mamás para mamás";
 
@@ -12,44 +13,45 @@ const LETTER_COLORS = ["#416ba9"];
 
 interface LetterScatter {
   char: string;
-  tx: number;  // px
-  ty: number;  // px
-  rot: number; // deg
+  tx: number;
+  ty: number;
+  tz: number;
+  rot: number;
 }
 
 interface WordData {
   letters: LetterScatter[];
 }
 
-/* Scatter values in PIXELS — small ranges to avoid iOS clipping */
-const SCATTER_MAP: Record<number, { tx: number; ty: number; rot: number }> = {
-  0:  { tx:  45, ty:  55, rot:  25 },
-  1:  { tx:  25, ty:  80, rot: -18 },
-  2:  { tx:  60, ty:  40, rot:  30 },
-  3:  { tx: -55, ty:  65, rot: -22 },
-  4:  { tx: -40, ty:  90, rot:  15 },
-  5:  { tx:  35, ty:  70, rot: -28 },
-  6:  { tx: -75, ty:  50, rot:  20 },
-  7:  { tx:  30, ty:  95, rot: -15 },
-  8:  { tx: -65, ty:  60, rot:  18 },
-  9:  { tx: -55, ty:  80, rot: -30 },
-  10: { tx:  50, ty:  45, rot:  22 },
-  11: { tx: -80, ty:  70, rot: -25 },
-  12: { tx:  20, ty:  90, rot:  18 },
-  13: { tx: -60, ty:  55, rot: -22 },
-  14: { tx:  40, ty:  95, rot:  30 },
-  15: { tx: -70, ty:  40, rot: -18 },
-  16: { tx:   0, ty:  80, rot:  25 },
-  17: { tx:  55, ty:  60, rot: -22 },
-  18: { tx: -45, ty:  90, rot:  18 },
-  19: { tx:  35, ty:  50, rot: -25 },
-  20: { tx: -55, ty:  70, rot:  30 },
-  21: { tx:  45, ty:  95, rot: -15 },
-  22: { tx: -65, ty:  55, rot:  22 },
-  23: { tx:  20, ty:  80, rot: -18 },
-  24: { tx: -35, ty:  60, rot:  25 },
-  25: { tx:  60, ty:  90, rot: -30 },
-  26: { tx: -45, ty:  50, rot:  22 },
+/* Original scatter values (vw/vh units) — used on desktop & Android */
+const SCATTER_MAP: Record<number, { tx: number; ty: number; tz: number; rot: number }> = {
+  0:  { tx:   8, ty: 12, tz: -20, rot:  35 },
+  1:  { tx:   4, ty: 18, tz: -10, rot: -25 },
+  2:  { tx:  10, ty:  8, tz: -25, rot:  40 },
+  3:  { tx: -10, ty: 14, tz: -15, rot: -30 },
+  4:  { tx:  -7, ty: 20, tz: -18, rot:  20 },
+  5:  { tx:   6, ty: 16, tz: -12, rot: -35 },
+  6:  { tx: -16, ty: 10, tz: -22, rot:  30 },
+  7:  { tx:   5, ty: 22, tz: -14, rot: -20 },
+  8:  { tx: -14, ty: 14, tz: -20, rot:  25 },
+  9:  { tx: -12, ty: 18, tz: -16, rot: -40 },
+  10: { tx:   9, ty: 10, tz: -24, rot:  30 },
+  11: { tx: -18, ty: 16, tz: -18, rot: -35 },
+  12: { tx:   3, ty: 20, tz: -12, rot:  25 },
+  13: { tx: -13, ty: 12, tz: -20, rot: -30 },
+  14: { tx:   7, ty: 22, tz: -26, rot:  40 },
+  15: { tx: -15, ty:  8, tz: -15, rot: -25 },
+  16: { tx:   0, ty: 18, tz: -20, rot:  35 },
+  17: { tx:  11, ty: 14, tz: -16, rot: -30 },
+  18: { tx:  -9, ty: 20, tz: -22, rot:  25 },
+  19: { tx:   6, ty: 10, tz: -18, rot: -35 },
+  20: { tx: -11, ty: 16, tz: -14, rot:  40 },
+  21: { tx:   8, ty: 22, tz: -20, rot: -20 },
+  22: { tx: -14, ty: 12, tz: -24, rot:  30 },
+  23: { tx:   3, ty: 18, tz: -16, rot: -25 },
+  24: { tx:  -6, ty: 14, tz: -20, rot:  35 },
+  25: { tx:  12, ty: 20, tz: -18, rot: -40 },
+  26: { tx:  -8, ty: 10, tz: -22, rot:  30 },
 };
 
 const WORDS: WordData[] = (() => {
@@ -58,7 +60,7 @@ const WORDS: WordData[] = (() => {
   return words.map((word) => ({
     letters: word.split("").map((char) => {
       const i = globalIdx++;
-      const scatter = SCATTER_MAP[i] ?? { tx: 0, ty: 60, rot: 20 };
+      const scatter = SCATTER_MAP[i] ?? { tx: 0, ty: 15, tz: -15, rot: 20 };
       return { char, ...scatter };
     }),
   }));
@@ -79,6 +81,7 @@ const HeroPapacho = () => {
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
   const isTouchDevice = useRef(typeof window !== "undefined" && "ontouchstart" in window);
+  const iosDevice = useRef(isIOS());
 
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
@@ -138,11 +141,24 @@ const HeroPapacho = () => {
 
   const p = 1 - progress;
   const imgSlide = Math.min(progress / 0.6, 1);
-  const imgShift = `translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}px)`;
-  const textShift = `translate(${mouse.x * 8}px, ${mouse.y * 8}px)`;
+  const imgShift = iosDevice.current
+    ? `translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}px)`
+    : `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
+  const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   const logoOpacity = Math.max(0, Math.min(1, (progress - 0.6) / 0.3));
   const logoTranslateY = (1 - logoOpacity) * 20;
+
+  // iOS: use px-based 2D transforms; Desktop/Android: use vw/vh 3D transforms
+  const getLetterTransform = (l: LetterScatter) => {
+    if (iosDevice.current) {
+      // Convert vw/vh to conservative px values for iOS
+      const pxX = l.tx * 4.5 * p;
+      const pxY = l.ty * 4.5 * p;
+      return `translate(${pxX}px, ${pxY}px) rotate(${l.rot * p}deg)`;
+    }
+    return `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`;
+  };
 
   return (
     <section ref={sectionRef} style={{ height: "calc(var(--vh, 1vh) * 350)", position: "relative", zIndex: 0 }}>
@@ -154,7 +170,7 @@ const HeroPapacho = () => {
           top: 0,
           height: "calc(var(--vh, 1vh) * 100)",
           width: "100%",
-          overflow: "clip",
+          overflow: iosDevice.current ? "clip" : "visible",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -207,6 +223,7 @@ const HeroPapacho = () => {
         <div
           className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
+            perspective: (isTouchDevice.current || iosDevice.current) ? "none" : "1000px",
             transform: isTouchDevice.current ? "none" : textShift,
             transition: isTouchDevice.current ? "none" : "transform 0.15s ease-out",
           }}
@@ -214,6 +231,7 @@ const HeroPapacho = () => {
           <h1
             className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
             style={{
+              transformStyle: (isTouchDevice.current || iosDevice.current) ? "flat" : "preserve-3d",
               minHeight: "1em",
               minWidth: "10ch",
             }}
@@ -226,10 +244,11 @@ const HeroPapacho = () => {
                     <span
                       key={li}
                       aria-hidden="true"
-                      className="inline-block"
+                      className={`inline-block ${iosDevice.current ? "" : "will-change-transform"}`}
                       style={{
                         color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
-                        transform: `translate(${l.tx * p}px, ${l.ty * p}px) rotate(${l.rot * p}deg)`,
+                        transform: getLetterTransform(l),
+                        transition: iosDevice.current ? "none" : "transform 0.05s linear",
                       }}
                     >
                       {l.char}

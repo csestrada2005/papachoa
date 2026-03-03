@@ -1,6 +1,8 @@
+import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
+import { isIOS } from "@/lib/platform";
 
 const CollectionCard = ({
   product,
@@ -57,15 +59,36 @@ const CollectionCard = ({
 };
 
 const ColeccionesEditorial = () => {
+  const trackRef = useRef<HTMLDivElement>(null);
   const { data: shopifyProducts } = useShopifyProducts();
+  const iosDevice = useRef(isIOS());
 
   const displayProducts = (shopifyProducts || []).filter(
     (p) => p.image && p.image !== "/placeholder.svg"
   );
 
-  // Calculate animation duration based on number of items
   const itemCount = displayProducts.length || 1;
-  const duration = itemCount * 3; // ~3s per item
+  const cssDuration = itemCount * 3; // for CSS animation on iOS
+
+  // scrollLeft-based auto-scroll for non-iOS (works on desktop & Android)
+  useEffect(() => {
+    if (iosDevice.current) return; // iOS uses CSS animation instead
+    const track = trackRef.current;
+    if (!track) return;
+    let raf: number;
+    const speed = 0.5;
+
+    const step = () => {
+      if (!track) return;
+      track.scrollLeft += speed;
+      if (track.scrollLeft >= track.scrollWidth - track.clientWidth) {
+        track.scrollLeft = 0;
+      }
+      raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [displayProducts.length]);
 
   return (
     <section
@@ -77,15 +100,18 @@ const ColeccionesEditorial = () => {
         paddingBottom: "clamp(4rem, 8vw, 7rem)",
       }}
     >
-      <style>{`
-        @keyframes catalog-scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .catalog-track { animation: none !important; }
-        }
-      `}</style>
+      {/* CSS animation keyframes for iOS */}
+      {iosDevice.current && (
+        <style>{`
+          @keyframes catalog-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .catalog-track-ios { animation: none !important; }
+          }
+        `}</style>
+      )}
 
       <div className="container">
         <div className="mb-10">
@@ -105,28 +131,49 @@ const ColeccionesEditorial = () => {
         </div>
       </div>
 
-      <div
-        className="overflow-hidden"
-        style={{
-          paddingLeft: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
-          paddingRight: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
-        }}
-      >
+      {iosDevice.current ? (
+        /* iOS: CSS translateX animation (no scrollLeft needed) */
         <div
-          className="catalog-track flex gap-4 md:gap-5 select-none pointer-events-none"
+          className="overflow-hidden"
           style={{
-            width: "max-content",
-            animation: `catalog-scroll ${duration}s linear infinite`,
+            paddingLeft: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
+            paddingRight: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
           }}
         >
-          {/* Duplicate for seamless loop */}
+          <div
+            className="catalog-track-ios flex gap-4 md:gap-5 select-none pointer-events-none"
+            style={{
+              width: "max-content",
+              animation: `catalog-scroll ${cssDuration}s linear infinite`,
+            }}
+          >
+            {[...displayProducts, ...displayProducts].map((product, i) => (
+              <div key={`${product.id}-${i}`}>
+                <CollectionCard product={product} index={i} />
+              </div>
+            ))}
+          </div>
+        </div>
+      ) : (
+        /* Desktop & Android: scrollLeft-based auto-scroll */
+        <div
+          ref={trackRef}
+          className="flex gap-4 md:gap-5 overflow-x-scroll scrollbar-hide pb-6 select-none pointer-events-none"
+          style={{
+            paddingLeft: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
+            paddingRight: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
           {[...displayProducts, ...displayProducts].map((product, i) => (
             <div key={`${product.id}-${i}`}>
               <CollectionCard product={product} index={i} />
             </div>
           ))}
         </div>
-      </div>
+      )}
 
       <div className="container mt-6 text-center">
         <SectionReveal delay={120}>
