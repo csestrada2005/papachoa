@@ -85,6 +85,15 @@
 @layer base {
   * {
     @apply border-border;
+    /* Remove default iOS tap highlight flash on interactive elements */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    /* iOS Safari uses -webkit-fill-available for actual viewport height without browser chrome */
+    min-height: -webkit-fill-available;
+    /* Prevent iOS font size inflation when rotating orientation */
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
@@ -92,6 +101,7 @@
     font-family: 'Lato', sans-serif;
     line-height: 1.7;
     color: #3D3028;
+    min-height: -webkit-fill-available;
   }
 
   p, li, span, blockquote, label, td, th {
@@ -107,6 +117,8 @@
   /* Global interactive transition */
   a, button, input, select, textarea, [role="button"] {
     transition: all 300ms ease-out;
+    /* Remove 300ms tap delay on iOS — makes interactions feel instant */
+    touch-action: manipulation;
   }
 
 /* Floating bird decoration */
