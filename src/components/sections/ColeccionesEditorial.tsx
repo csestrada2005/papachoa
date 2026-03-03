@@ -1,4 +1,3 @@
-import { useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { useShopifyProducts } from "@/hooks/useShopifyProducts";
@@ -58,32 +57,15 @@ const CollectionCard = ({
 };
 
 const ColeccionesEditorial = () => {
-  const trackRef = useRef<HTMLDivElement>(null);
   const { data: shopifyProducts } = useShopifyProducts();
 
   const displayProducts = (shopifyProducts || []).filter(
     (p) => p.image && p.image !== "/placeholder.svg"
   );
 
-  // Auto-scroll animation
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-    let raf: number;
-    const speed = 0.5; // px per frame
-
-    const step = () => {
-      if (!track) return;
-      track.scrollLeft += speed;
-      // Loop back when reaching end
-      if (track.scrollLeft >= track.scrollWidth - track.clientWidth) {
-        track.scrollLeft = 0;
-      }
-      raf = requestAnimationFrame(step);
-    };
-    raf = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(raf);
-  }, [displayProducts.length]);
+  // Calculate animation duration based on number of items
+  const itemCount = displayProducts.length || 1;
+  const duration = itemCount * 3; // ~3s per item
 
   return (
     <section
@@ -95,6 +77,16 @@ const ColeccionesEditorial = () => {
         paddingBottom: "clamp(4rem, 8vw, 7rem)",
       }}
     >
+      <style>{`
+        @keyframes catalog-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .catalog-track { animation: none !important; }
+        }
+      `}</style>
+
       <div className="container">
         <div className="mb-10">
           <SectionReveal>
@@ -113,26 +105,27 @@ const ColeccionesEditorial = () => {
         </div>
       </div>
 
-      {/* overflow-x-scroll (not hidden) creates a real scroll container so iOS allows scrollLeft changes via JS.
-          overflow-x:hidden blocks programmatic scrollLeft on iOS Safari. Scrollbar hidden via scrollbar-hide class. */}
       <div
-        ref={trackRef}
-        className="flex gap-4 md:gap-5 overflow-x-scroll scrollbar-hide pb-6 select-none pointer-events-none"
+        className="overflow-hidden"
         style={{
           paddingLeft: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
           paddingRight: "max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          // Enable iOS momentum scroll for smooth RAF-driven scrollLeft
-          WebkitOverflowScrolling: "touch",
         }}
       >
-        {/* Duplicate products for seamless loop */}
-        {[...displayProducts, ...displayProducts].map((product, i) => (
-          <div key={`${product.id}-${i}`}>
-            <CollectionCard product={product} index={i} />
-          </div>
-        ))}
+        <div
+          className="catalog-track flex gap-4 md:gap-5 select-none pointer-events-none"
+          style={{
+            width: "max-content",
+            animation: `catalog-scroll ${duration}s linear infinite`,
+          }}
+        >
+          {/* Duplicate for seamless loop */}
+          {[...displayProducts, ...displayProducts].map((product, i) => (
+            <div key={`${product.id}-${i}`}>
+              <CollectionCard product={product} index={i} />
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="container mt-6 text-center">

@@ -1,4 +1,3 @@
-// Optimized: removed printPapachoa (1MB) — replaced with inline SVG grain
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import heroImage from "@/assets/hero-mama-hija.png";
@@ -9,14 +8,12 @@ import birdOrange from "@/assets/brand/pajaro-naranja-sf.png";
 
 const TEXT = "Pensado por mamás para mamás";
 
-/* Brand palette cycling per letter */
 const LETTER_COLORS = ["#416ba9"];
 
 interface LetterScatter {
   char: string;
-  tx: number;  // vw
-  ty: number;  // vh
-  tz: number;  // vw
+  tx: number;  // px
+  ty: number;  // px
   rot: number; // deg
 }
 
@@ -24,35 +21,35 @@ interface WordData {
   letters: LetterScatter[];
 }
 
-/* Manually craft scatter so letters cross over each other dramatically */
-const SCATTER_MAP: Record<number, { tx: number; ty: number; tz: number; rot: number }> = {
-  0:  { tx:   8, ty: 12, tz: -20, rot:  35 },
-  1:  { tx:   4, ty: 18, tz: -10, rot: -25 },
-  2:  { tx:  10, ty:  8, tz: -25, rot:  40 },
-  3:  { tx: -10, ty: 14, tz: -15, rot: -30 },
-  4:  { tx:  -7, ty: 20, tz: -18, rot:  20 },
-  5:  { tx:   6, ty: 16, tz: -12, rot: -35 },
-  6:  { tx: -16, ty: 10, tz: -22, rot:  30 },
-  7:  { tx:   5, ty: 22, tz: -14, rot: -20 },
-  8:  { tx: -14, ty: 14, tz: -20, rot:  25 },
-  9:  { tx: -12, ty: 18, tz: -16, rot: -40 },
-  10: { tx:   9, ty: 10, tz: -24, rot:  30 },
-  11: { tx: -18, ty: 16, tz: -18, rot: -35 },
-  12: { tx:   3, ty: 20, tz: -12, rot:  25 },
-  13: { tx: -13, ty: 12, tz: -20, rot: -30 },
-  14: { tx:   7, ty: 22, tz: -26, rot:  40 },
-  15: { tx: -15, ty:  8, tz: -15, rot: -25 },
-  16: { tx:   0, ty: 18, tz: -20, rot:  35 },
-  17: { tx:  11, ty: 14, tz: -16, rot: -30 },
-  18: { tx:  -9, ty: 20, tz: -22, rot:  25 },
-  19: { tx:   6, ty: 10, tz: -18, rot: -35 },
-  20: { tx: -11, ty: 16, tz: -14, rot:  40 },
-  21: { tx:   8, ty: 22, tz: -20, rot: -20 },
-  22: { tx: -14, ty: 12, tz: -24, rot:  30 },
-  23: { tx:   3, ty: 18, tz: -16, rot: -25 },
-  24: { tx:  -6, ty: 14, tz: -20, rot:  35 },
-  25: { tx:  12, ty: 20, tz: -18, rot: -40 },
-  26: { tx:  -8, ty: 10, tz: -22, rot:  30 },
+/* Scatter values in PIXELS — small ranges to avoid iOS clipping */
+const SCATTER_MAP: Record<number, { tx: number; ty: number; rot: number }> = {
+  0:  { tx:  45, ty:  55, rot:  25 },
+  1:  { tx:  25, ty:  80, rot: -18 },
+  2:  { tx:  60, ty:  40, rot:  30 },
+  3:  { tx: -55, ty:  65, rot: -22 },
+  4:  { tx: -40, ty:  90, rot:  15 },
+  5:  { tx:  35, ty:  70, rot: -28 },
+  6:  { tx: -75, ty:  50, rot:  20 },
+  7:  { tx:  30, ty:  95, rot: -15 },
+  8:  { tx: -65, ty:  60, rot:  18 },
+  9:  { tx: -55, ty:  80, rot: -30 },
+  10: { tx:  50, ty:  45, rot:  22 },
+  11: { tx: -80, ty:  70, rot: -25 },
+  12: { tx:  20, ty:  90, rot:  18 },
+  13: { tx: -60, ty:  55, rot: -22 },
+  14: { tx:  40, ty:  95, rot:  30 },
+  15: { tx: -70, ty:  40, rot: -18 },
+  16: { tx:   0, ty:  80, rot:  25 },
+  17: { tx:  55, ty:  60, rot: -22 },
+  18: { tx: -45, ty:  90, rot:  18 },
+  19: { tx:  35, ty:  50, rot: -25 },
+  20: { tx: -55, ty:  70, rot:  30 },
+  21: { tx:  45, ty:  95, rot: -15 },
+  22: { tx: -65, ty:  55, rot:  22 },
+  23: { tx:  20, ty:  80, rot: -18 },
+  24: { tx: -35, ty:  60, rot:  25 },
+  25: { tx:  60, ty:  90, rot: -30 },
+  26: { tx: -45, ty:  50, rot:  22 },
 };
 
 const WORDS: WordData[] = (() => {
@@ -61,7 +58,7 @@ const WORDS: WordData[] = (() => {
   return words.map((word) => ({
     letters: word.split("").map((char) => {
       const i = globalIdx++;
-      const scatter = SCATTER_MAP[i] ?? { tx: 0, ty: 15, tz: -15, rot: 20 };
+      const scatter = SCATTER_MAP[i] ?? { tx: 0, ty: 60, rot: 20 };
       return { char, ...scatter };
     }),
   }));
@@ -81,16 +78,14 @@ const HeroPapacho = () => {
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
-  // Detect touch device to skip mouse parallax (performance + avoids ghost state on iOS)
   const isTouchDevice = useRef(typeof window !== "undefined" && "ontouchstart" in window);
 
-  /* Expanding line on mount */
   useEffect(() => {
     const timer = setTimeout(() => setLineVisible(true), 300);
     return () => clearTimeout(timer);
   }, []);
 
-  /* Scroll progress — throttled with RAF to avoid excessive re-renders on iOS */
+  /* Scroll progress — throttled with RAF */
   const rafScroll = useRef<number | null>(null);
   const onScroll = useCallback(() => {
     if (rafScroll.current) return;
@@ -128,7 +123,7 @@ const HeroPapacho = () => {
     return () => obs.disconnect();
   }, []);
 
-  /* Mouse parallax — desktop only, skipped on touch devices */
+  /* Mouse parallax — desktop only */
   const onMouseMove = useCallback((e: MouseEvent) => {
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = (e.clientY / window.innerHeight) * 2 - 1;
@@ -142,17 +137,14 @@ const HeroPapacho = () => {
   }, [onMouseMove]);
 
   const p = 1 - progress;
-  // Image slides upward as user scrolls (no fade, just translate)
-  const imgSlide = Math.min(progress / 0.6, 1); // image exits by 60% scroll
-  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
-  const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
+  const imgSlide = Math.min(progress / 0.6, 1);
+  const imgShift = `translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}px)`;
+  const textShift = `translate(${mouse.x * 8}px, ${mouse.y * 8}px)`;
 
-  // Logo fade-in between 60%-90% scroll
   const logoOpacity = Math.max(0, Math.min(1, (progress - 0.6) / 0.3));
   const logoTranslateY = (1 - logoOpacity) * 20;
 
   return (
-    // Use --vh so iOS calculates height from real viewport (excludes browser chrome)
     <section ref={sectionRef} style={{ height: "calc(var(--vh, 1vh) * 350)", position: "relative", zIndex: 0 }}>
       <div
         ref={stickyRef}
@@ -160,11 +152,9 @@ const HeroPapacho = () => {
         style={{
           position: "sticky",
           top: 0,
-          // Use --vh for accurate iOS viewport height (100vh includes browser toolbar on iOS)
           height: "calc(var(--vh, 1vh) * 100)",
           width: "100%",
-          // overflow: visible here so 3D-transformed scattered letters are NOT clipped by iOS
-          overflow: "visible",
+          overflow: "clip",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -174,10 +164,9 @@ const HeroPapacho = () => {
           transition: "transform 0.6s ease-out, opacity 0.6s ease-out",
         }}
       >
-        {/* Background layer — overflow:hidden here to clip grain to viewport bounds */}
+        {/* Background layer */}
         <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
           <div style={{ position: "absolute", inset: 0, background: "hsl(15 20% 96%)" }} />
-          {/* Subtle grain texture via CSS — no image request */}
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.025]"
             style={{
@@ -187,7 +176,7 @@ const HeroPapacho = () => {
           />
         </div>
 
-        {/* Image with parallax — slides up and out */}
+        {/* Image with parallax */}
         <div
           className="absolute z-10 flex flex-col items-center"
           style={{
@@ -203,7 +192,6 @@ const HeroPapacho = () => {
               filter: "drop-shadow(0 12px 40px rgba(0,0,0,0.15))",
               imageRendering: "auto",
               objectFit: "cover",
-              // Use --vh so image respects real iOS viewport height, not oversized 100vh
               maxHeight: "calc(var(--vh, 1vh) * 90)",
             }}
             loading="eager"
@@ -215,12 +203,10 @@ const HeroPapacho = () => {
           />
         </div>
 
-        {/* Scattered → assembled typography — stays centered */}
+        {/* Scattered → assembled typography */}
         <div
           className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
-            // Disable perspective on touch devices — iOS has issues with preserve-3d + overflow
-            perspective: isTouchDevice.current ? "none" : "1000px",
             transform: isTouchDevice.current ? "none" : textShift,
             transition: isTouchDevice.current ? "none" : "transform 0.15s ease-out",
           }}
@@ -228,8 +214,6 @@ const HeroPapacho = () => {
           <h1
             className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
             style={{
-              // Use flat transform on touch — preserve-3d causes Safari clipping issues
-              transformStyle: isTouchDevice.current ? "flat" : "preserve-3d",
               minHeight: "1em",
               minWidth: "10ch",
             }}
@@ -242,14 +226,10 @@ const HeroPapacho = () => {
                     <span
                       key={li}
                       aria-hidden="true"
-                      className="inline-block will-change-transform"
+                      className="inline-block"
                       style={{
                         color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
-                        // On touch: 2D translate only (no Z-axis) — avoids iOS 3D clipping bugs
-                        transform: isTouchDevice.current
-                          ? `translate(${l.tx * p}vw, ${l.ty * p}vh) rotateZ(${l.rot * p}deg)`
-                          : `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`,
-                        transition: "transform 0.05s linear",
+                        transform: `translate(${l.tx * p}px, ${l.ty * p}px) rotate(${l.rot * p}deg)`,
                       }}
                     >
                       {l.char}
@@ -277,7 +257,6 @@ const HeroPapacho = () => {
               draggable={false}
             />
           </div>
-          {/* Tagline — fade-in + slide-up after logo appears */}
           <p
             className="mt-4 text-xl md:text-2xl font-bold text-center select-none font-display"
             style={{
@@ -289,7 +268,6 @@ const HeroPapacho = () => {
           >
             pijamas que abrazan
           </p>
-          {/* CTA — fade-in with greater delay */}
           <button
             onClick={() => navigate("/catalogo")}
             className="mt-6 px-8 py-4 rounded-full font-semibold text-base tracking-wide shadow-lg transition-all duration-200 hover:scale-105 hover:brightness-110"
