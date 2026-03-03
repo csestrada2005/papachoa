@@ -1,51 +1,41 @@
 
 
-## Plan
+## Diagnosis
 
-### 1. Simplify AboutPapachoa (all platforms)
+Two distinct iOS problems visible from the screenshots and description:
 
-Remove all "special interaction" elements from the section:
-- Remove `IntersectionObserver` + `imgVisible` state + slide-in animation on the image
-- Remove `SectionReveal` wrappers (delayed fade-ins)
-- Remove `minHeight: 100vh` — let it size naturally with padding
-- Keep the content, background color, texture, image, and layout intact — just render everything immediately without animations
+### Problem 1: Image doesn't slide away on iOS
+On line 144-146, the iOS path uses `px` units for the image shift:
+```js
+// iOS: imgSlide * -120 = only 120 PIXELS up (barely moves)
+`translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}px)`
+// Desktop: imgSlide * -120 = 120 VIEWPORT HEIGHT units up (fully exits)
+`translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`
+```
+The iOS image only moves 120px up instead of 120vh. That's why the hero image stays visible on iOS after the animation completes — it needs to move ~120% of the viewport height, not 120 pixels.
 
-**File:** `src/components/sections/AboutPapachoa.tsx`
+**Fix**: Calculate actual viewport height in pixels for iOS and use that instead of the hardcoded 120px.
 
-### 2. Restore full hero scroll height on iOS (fix animation being too short)
+### Problem 2: Scroll lag / bouncing upwards on iOS
+The `window.scrollTo()` auto-scroll loop (Index.tsx lines 26-82) fights with iOS Safari's native momentum scrolling. When the user touches the screen during or after the programmatic scroll, iOS's rubber-banding and momentum engine conflicts with the RAF-driven `scrollTo`, causing the page to snap backwards or stutter.
 
-Currently the hero section uses `height: calc(var(--vh) * 350)` for all platforms. On iOS the `AboutPapachoa` section was previously `100vh` tall which gave enough scroll runway. Now that it's shorter, the hero animation completes too quickly on iOS.
+Additionally, the `translateY(calc(var(--vh) * -100))` transition (line 109) causes a massive layout reflow that iOS struggles with during active scrolling.
 
-The fix: On iOS, keep the same `350vh` scroll container height — the hero animation is driven by scroll progress within this container, so it will work the same. The real iOS clipping fix is already in place (2D px-based transforms + `overflow: clip`). No height change needed.
+**Fix (iOS only)**:
+- Skip the programmatic `window.scrollTo` auto-scroll on iOS — let the user scroll naturally
+- Skip the `translateY(-100vh)` hack on iOS — let the content flow naturally without the jump
+- Keep both behaviors intact for desktop/Android
 
-Actually, re-reading the user's message: "the hero animation doesn't work because this section is too small" — they're saying the **current** iOS hero is broken. Looking at the code, the hero height is `350vh` on all platforms, so the animation should have enough room. The issue is likely that on iOS, without the auto-scroll and without the `translateY(-100vh)` hack, the user scrolls through the hero normally but the letters aren't animating properly.
+---
 
-Looking at the scroll progress calculation: `raw = -rect.top / scrollable` where `scrollable = el.offsetHeight - window.innerHeight`. With 350vh height, scrollable = 250vh. Then `capped = Math.min(raw / 0.5, 1)` means animation completes at 50% scroll (125vh). This should work on iOS.
+## Changes
 
-The user says "return it to how it was before but only fix the letter clipping." The "before" state had the full 350vh scroll, auto-scroll animation, and the translateY hack — but those caused iOS stuttering. The user wants:
-- Keep the original hero behavior (350vh, full scatter animation)
-- Only fix: prevent letters from being clipped on iOS
+### `src/components/sections/HeroPapacho.tsx`
+- Fix the iOS `imgShift` calculation: use `window.innerHeight` to convert the `-120vh` to actual pixels: `imgSlide * -1.2 * window.innerHeight` instead of `imgSlide * -120`
 
-The current code already does this with the `isIOS()` conditional in `getLetterTransform`. So the hero code is correct as-is. The problem might be in `Index.tsx` where iOS skips auto-scroll and the translateY hack — the user wants those restored on iOS too since the hero animation "doesn't work."
-
-Wait — re-reading: "La animación del hero section ahora no sirve porque esta sección es muy chica" — "this section" likely refers to the AboutPapachoa section becoming smaller after simplification, which would mean there's less scroll distance... but the hero height is independent of AboutPapachoa. 
-
-Actually, I think the user means: on iOS currently, the hero animation is broken (not working at all). They want it restored to how it was before all the iOS fixes, but keeping only the letter-clipping fix. So: restore auto-scroll + translateY hack on iOS too (remove the `if (iosDevice) return` guards), keeping only the 2D transform + overflow:clip fixes.
-
-### Changes
-
-**`src/components/sections/AboutPapachoa.tsx`** — Simplify to a plain static section:
-- Remove `useEffect`, `useRef`, `useState`, `SectionReveal` imports
-- Remove IntersectionObserver logic
-- Remove `minHeight: 100vh` from section and content container
-- Remove `SectionReveal` wrappers — render text directly
-- Keep image visible immediately (opacity 1, no transform animation)
-- Use standard padding (`py-24 md:py-32`)
-
-**`src/pages/Index.tsx`** — Remove iOS guards so auto-scroll and translateY hack work on all platforms:
-- Remove `if (iosDevice) return` from both useEffects
-- Remove iOS conditional in the translateY style — apply to all platforms
-- Remove `isIOS` import (no longer needed here)
-
-**`src/components/sections/HeroPapacho.tsx`** — Keep as-is. The iOS letter clipping fix (2D px transforms + overflow:clip) is already correctly conditional.
+### `src/pages/Index.tsx`
+- Import `isIOS` from platform
+- Guard the auto-scroll `useEffect`: skip the `window.scrollTo` loop on iOS (return early)
+- Guard the `translateY(-100vh)`: on iOS, always use `translateY(0)` — no layout shift hack
+- On iOS, set `heroComplete` immediately (or skip the listener) since there's no auto-scroll to wait for
 
