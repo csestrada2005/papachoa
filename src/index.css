@@ -540,6 +540,12 @@
   overscroll-behavior-y: contain;
 }
 
+/* Hero mobile fade-up */
+@keyframes heroFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .glass-blob-btn, .glass-blob-shape, .animate-drift, .animate-drift-slow,
   .animate-float-gentle, .hero-slide, .hero-letter {
