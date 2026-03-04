@@ -2,7 +2,6 @@ import React, { lazy, Suspense, useEffect, useState, useRef } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
-import { isIOS } from "@/lib/platform";
 
 const isTouchDevice = typeof window !== "undefined" && "ontouchstart" in window;
 
@@ -22,13 +21,12 @@ const Index = () => {
   usePrefetchRoutes();
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
 
-  const iosDevice = useRef(isIOS());
   const [heroComplete, setHeroComplete] = useState(false);
   const autoScrollDone = React.useRef(false);
 
-  // Auto-scroll — skip on iOS to avoid momentum scroll conflicts
+  // Auto-scroll — desktop only (no touch devices)
   useEffect(() => {
-    if (iosDevice.current) { autoScrollDone.current = true; return; }
+    if (isTouchDevice) { autoScrollDone.current = true; return; }
     if (window.scrollY > 0) window.scrollTo(0, 0);
 
     const targetY = Math.round(window.innerHeight * 2);
@@ -87,10 +85,7 @@ const Index = () => {
       probeId = window.setInterval(() => {
         const lateHeroImg = document.querySelector<HTMLImageElement>("#hero-main-image");
         if (!lateHeroImg) return;
-        if (probeId) {
-          window.clearInterval(probeId);
-          probeId = null;
-        }
+        if (probeId) { window.clearInterval(probeId); probeId = null; }
         armWithImage(lateHeroImg);
       }, 120);
       fallbackId = window.setTimeout(startScroll, initialDelay + 2500);
@@ -105,21 +100,17 @@ const Index = () => {
     };
   }, []);
 
-  // heroComplete listener — all platforms
+  // heroComplete listener — desktop only
   useEffect(() => {
+    if (isTouchDevice) return;
     const onWheel = () => {
       if (autoScrollDone.current && !heroComplete) {
         setHeroComplete(true);
         window.removeEventListener("wheel", onWheel);
-        window.removeEventListener("touchmove", onWheel);
       }
     };
     window.addEventListener("wheel", onWheel, { passive: true });
-    window.addEventListener("touchmove", onWheel, { passive: true });
-    return () => {
-      window.removeEventListener("wheel", onWheel);
-      window.removeEventListener("touchmove", onWheel);
-    };
+    return () => window.removeEventListener("wheel", onWheel);
   }, [heroComplete]);
 
   return (
@@ -134,8 +125,8 @@ const Index = () => {
           className="relative bg-white"
           style={{
             zIndex: 10,
-            transform: (!isTouchDevice && !iosDevice.current && heroComplete) ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
-            transition: "transform 700ms ease-out",
+            transform: (!isTouchDevice && heroComplete) ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
+            transition: !isTouchDevice ? "transform 700ms ease-out" : "none",
           }}
         >
         <Suspense fallback={null}>
@@ -148,11 +139,9 @@ const Index = () => {
           <div id="productos">
             <ProductosDestacados />
           </div>
-
           <div id="mexico-amor">
             <MexicoAmor />
           </div>
-
           <div className="hidden">
             <ComplementaLook />
             <ResenasSection />

@@ -5,10 +5,88 @@ import papachoaLogo from "@/assets/brand/papachoa-logo-nuevo.png";
 import birdYellow from "@/assets/brand/pajaro-amarillo-sf.png";
 import birdBlue from "@/assets/brand/pajaro-azul-claro-sf.png";
 import birdOrange from "@/assets/brand/pajaro-naranja-sf.png";
-import { isIOS } from "@/lib/platform";
+
+/* ── Mobile: static hero with staggered fade-ins ── */
+const MobileHero = () => {
+  const navigate = useNavigate();
+
+  return (
+    <section
+      className="relative flex flex-col items-center justify-center overflow-hidden"
+      style={{
+        height: "100svh",
+        background: "hsl(var(--background))",
+      }}
+    >
+      {/* Noise texture */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.025]"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+          backgroundSize: "150px",
+        }}
+      />
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center px-6 gap-5">
+        {/* Tagline */}
+        <h1
+          className="text-2xl sm:text-3xl italic font-semibold text-center select-none"
+          style={{
+            color: "hsl(var(--papachoa-blue))",
+            opacity: 0,
+            animation: "heroFadeUp 0.8s ease-out 1s both",
+          }}
+        >
+          Pensado por mamás para mamás
+        </h1>
+
+        {/* Logo */}
+        <img
+          src={papachoaLogo}
+          alt="Papachoa"
+          className="w-56 sm:w-64 select-none"
+          draggable={false}
+          style={{
+            opacity: 0,
+            animation: "heroFadeUp 0.8s ease-out 0.3s both",
+          }}
+        />
+
+        {/* Subtitle */}
+        <p
+          className="text-xl sm:text-2xl font-bold text-center select-none font-display"
+          style={{
+            color: "hsl(var(--foreground))",
+            opacity: 0,
+            animation: "heroFadeUp 0.8s ease-out 1.6s both",
+          }}
+        >
+          pijamas que abrazan
+        </p>
+
+        {/* CTA */}
+        <button
+          onClick={() => navigate("/catalogo")}
+          className="px-8 py-4 rounded-full font-semibold text-base tracking-wide shadow-lg transition-all duration-200 hover:scale-105 hover:brightness-110"
+          style={{
+            backgroundColor: "hsl(var(--primary))",
+            color: "hsl(var(--primary-foreground))",
+            opacity: 0,
+            animation: "heroFadeUp 0.8s ease-out 2s both",
+          }}
+        >
+          Ver catálogo
+        </button>
+      </div>
+    </section>
+  );
+};
+
+/* ── Desktop: full cinematic scroll-driven animation ── */
 
 const TEXT = "Pensado por mamás para mamás";
-
 const LETTER_COLORS = ["#416ba9"];
 
 interface LetterScatter {
@@ -71,32 +149,21 @@ const BIRDS = [
   { src: birdOrange, alt: "Pajarito naranja", style: { bottom: "14%", left: "8%", width: 90 }, delay: "2.1s" },
 ];
 
-const IOS_INTRO_DURATION = 3000; // ms
-const HERO_ANIMATION_START_DELAY = 1000; // ms (all platforms)
-const HERO_SCROLL_HEIGHT_TOUCH = 300;
+const HERO_ANIMATION_START_DELAY = 1000;
 const HERO_SCROLL_HEIGHT_DESKTOP = 350;
 
-const HeroPapacho = () => {
+const DesktopHero = () => {
   const navigate = useNavigate();
   const sectionRef = useRef<HTMLDivElement>(null);
   const stickyRef = useRef<HTMLDivElement>(null);
-  const [lineVisible, setLineVisible] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
   const [progress, setProgress] = useState(0);
   const [exiting, setExiting] = useState(false);
-  const isTouchDevice = useRef(typeof window !== "undefined" && "ontouchstart" in window);
-  const iosDevice = useRef(isIOS());
-  const [heroLoaded, setHeroLoaded] = useState(!iosDevice.current);
+  const [heroLoaded, setHeroLoaded] = useState(false);
   const [animationReady, setAnimationReady] = useState(false);
 
-  // Cached scroll metrics for stable progress calculation (avoids getBoundingClientRect per frame)
   const metricsRef = useRef({ sectionTop: 0, scrollable: 0 });
 
-  // iOS intro autoplay progress
-  const [introProgress, setIntroProgress] = useState(0);
-  const introDetachedRef = useRef(false);
-
-  // Measure section metrics on mount + resize
   const measureMetrics = useCallback(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -123,51 +190,7 @@ const HeroPapacho = () => {
     return () => window.clearTimeout(id);
   }, [heroLoaded]);
 
-  /* iOS intro autoplay: starts after hero image is loaded + global animation delay */
-  useEffect(() => {
-    if (!iosDevice.current || !animationReady) return;
-
-    let startTime: number | null = null;
-    let rafId = 0;
-    let cancelled = false;
-
-    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-
-    const startIntro = () => {
-      if (cancelled) return;
-      const initialScrollTop = document.scrollingElement?.scrollTop ?? window.scrollY;
-      if (initialScrollTop > 10) return;
-
-      const step = (timestamp: number) => {
-        if (cancelled) return;
-        if (!startTime) startTime = timestamp;
-        const elapsed = timestamp - startTime;
-        const t = Math.min(elapsed / IOS_INTRO_DURATION, 1);
-        setIntroProgress(easeOutCubic(t));
-        if (t < 1) rafId = requestAnimationFrame(step);
-      };
-
-      rafId = requestAnimationFrame(step);
-    };
-
-    const cancelOnInteraction = () => {
-      cancelled = true;
-      cancelAnimationFrame(rafId);
-    };
-
-    window.addEventListener("touchstart", cancelOnInteraction, { passive: true, once: true });
-
-    if (heroLoaded) {
-      startIntro();
-    }
-
-    return () => {
-      cancelOnInteraction();
-      window.removeEventListener("touchstart", cancelOnInteraction);
-    };
-  }, [heroLoaded, animationReady]);
-
-  /* Scroll progress — throttled with RAF, using cached metrics */
+  /* Scroll progress */
   const rafScroll = useRef<number | null>(null);
   const onScroll = useCallback(() => {
     if (rafScroll.current) return;
@@ -175,17 +198,10 @@ const HeroPapacho = () => {
       rafScroll.current = null;
       const { sectionTop, scrollable } = metricsRef.current;
       if (scrollable <= 0) return;
-
       const stableScrollTop = document.scrollingElement?.scrollTop ?? window.scrollY;
-      const clampedScrollTop = Math.max(0, stableScrollTop);
-      const raw = (clampedScrollTop - sectionTop) / scrollable;
-      const normalized = isTouchDevice.current ? Math.min(raw / 0.42, 1) : Math.min(raw / 0.5, 1);
+      const raw = (Math.max(0, stableScrollTop) - sectionTop) / scrollable;
+      const normalized = Math.min(raw / 0.5, 1);
       const nextProgress = Math.max(0, Math.min(1, normalized));
-
-      if (iosDevice.current && !introDetachedRef.current && raw >= 0.42) {
-        introDetachedRef.current = true;
-      }
-
       setProgress((prev) => (Math.abs(prev - nextProgress) > 0.002 ? nextProgress : prev));
     });
   }, []);
@@ -199,9 +215,8 @@ const HeroPapacho = () => {
     };
   }, [onScroll]);
 
-  /* IntersectionObserver — hero shrink on exit (disabled on iOS) */
+  /* IntersectionObserver — hero shrink on exit */
   useEffect(() => {
-    if (iosDevice.current) return; // Skip on iOS to avoid jitter
     const el = stickyRef.current;
     if (!el) return;
     const obs = new IntersectionObserver(
@@ -212,7 +227,7 @@ const HeroPapacho = () => {
     return () => obs.disconnect();
   }, []);
 
-  /* Mouse parallax — desktop only */
+  /* Mouse parallax */
   const onMouseMove = useCallback((e: MouseEvent) => {
     const nx = (e.clientX / window.innerWidth) * 2 - 1;
     const ny = (e.clientY / window.innerHeight) * 2 - 1;
@@ -220,49 +235,40 @@ const HeroPapacho = () => {
   }, []);
 
   useEffect(() => {
-    if (isTouchDevice.current) return;
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", onMouseMove);
   }, [onMouseMove]);
 
-  // Effective progress: iOS gets intro autoplay only during first pass; all platforms wait 1s after image load
-  const effectiveProgress = !animationReady
-    ? 0
-    : iosDevice.current
-      ? Math.max(progress, !introDetachedRef.current && heroLoaded ? introProgress : 0)
-      : progress;
-
+  const effectiveProgress = !animationReady ? 0 : progress;
   const p = 1 - effectiveProgress;
   const imgSlide = Math.min(effectiveProgress / 0.6, 1);
-  const imgShift = iosDevice.current
-    ? `translate(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -1.2 * window.innerHeight}px)`
-    : `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
+  const imgShift = `translate3d(${mouse.x * -6}px, ${mouse.y * -6 + imgSlide * -120}vh, 0)`;
   const textShift = `translate3d(${mouse.x * 8}px, ${mouse.y * 8}px, 0)`;
 
   const logoOpacity = Math.max(0, Math.min(1, (effectiveProgress - 0.6) / 0.3));
   const logoTranslateY = (1 - logoOpacity) * 20;
 
-  // iOS: use px-based 2D transforms; Desktop/Android: use vw/vh 3D transforms
-  const getLetterTransform = (l: LetterScatter) => {
-    if (iosDevice.current) {
-      const pxX = l.tx * 4.5 * p;
-      const pxY = l.ty * 4.5 * p;
-      return `translate(${pxX}px, ${pxY}px) rotate(${l.rot * p}deg)`;
-    }
-    return `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`;
-  };
+  const getLetterTransform = (l: LetterScatter) =>
+    `translate3d(${l.tx * p}vw, ${l.ty * p}vh, ${l.tz * p}vw) rotateZ(${l.rot * p}deg)`;
 
   return (
-    <section ref={sectionRef} style={{ height: `calc(var(--vh, 1vh) * ${isTouchDevice.current ? HERO_SCROLL_HEIGHT_TOUCH : HERO_SCROLL_HEIGHT_DESKTOP})`, position: "relative", zIndex: 0 }}>
+    <section
+      ref={sectionRef}
+      style={{
+        height: `calc(var(--vh, 1vh) * ${HERO_SCROLL_HEIGHT_DESKTOP})`,
+        position: "relative",
+        zIndex: 0,
+      }}
+    >
       <div
         ref={stickyRef}
-        className={!iosDevice.current && exiting ? "hero-exiting" : ""}
+        className={exiting ? "hero-exiting" : ""}
         style={{
           position: "sticky",
           top: 0,
           height: "calc(var(--vh, 1vh) * 100)",
           width: "100%",
-          overflow: iosDevice.current ? "clip" : "visible",
+          overflow: "visible",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -272,13 +278,14 @@ const HeroPapacho = () => {
           transition: "transform 0.6s ease-out, opacity 0.6s ease-out",
         }}
       >
-        {/* Background layer */}
+        {/* Background */}
         <div className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
           <div style={{ position: "absolute", inset: 0, background: "hsl(15 20% 96%)" }} />
           <div
             className="absolute inset-0 pointer-events-none opacity-[0.025]"
             style={{
-              backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
               backgroundSize: "150px",
             }}
           />
@@ -287,10 +294,7 @@ const HeroPapacho = () => {
         {/* Image with parallax */}
         <div
           className="absolute z-10 flex flex-col items-center"
-          style={{
-            transform: imgShift,
-            transition: "transform 0.15s ease-out",
-          }}
+          style={{ transform: imgShift, transition: "transform 0.15s ease-out" }}
         >
           <img
             id="hero-main-image"
@@ -318,18 +322,14 @@ const HeroPapacho = () => {
         <div
           className="absolute z-20 inset-0 flex flex-col items-center justify-center"
           style={{
-            perspective: (isTouchDevice.current || iosDevice.current) ? "none" : "1000px",
-            transform: isTouchDevice.current ? "none" : textShift,
-            transition: isTouchDevice.current ? "none" : "transform 0.15s ease-out",
+            perspective: "1000px",
+            transform: textShift,
+            transition: "transform 0.15s ease-out",
           }}
         >
           <h1
             className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-none select-none text-center"
-            style={{
-              transformStyle: (isTouchDevice.current || iosDevice.current) ? "flat" : "preserve-3d",
-              minHeight: "1em",
-              minWidth: "10ch",
-            }}
+            style={{ transformStyle: "preserve-3d", minHeight: "1em", minWidth: "10ch" }}
             aria-label={TEXT}
           >
             {WORDS.map((word, wi) => (
@@ -339,11 +339,11 @@ const HeroPapacho = () => {
                     <span
                       key={li}
                       aria-hidden="true"
-                      className={`inline-block ${iosDevice.current ? "" : "will-change-transform"}`}
+                      className="inline-block will-change-transform"
                       style={{
                         color: LETTER_COLORS[(wi * 10 + li) % LETTER_COLORS.length],
                         transform: getLetterTransform(l),
-                        transition: iosDevice.current ? "none" : "transform 0.05s linear",
+                        transition: "transform 0.05s linear",
                       }}
                     >
                       {l.char}
@@ -364,12 +364,7 @@ const HeroPapacho = () => {
               transition: "opacity 0.2s linear, transform 0.2s ease-out",
             }}
           >
-            <img
-              src={papachoaLogo}
-              alt="Papachoa"
-              className="w-48 select-none"
-              draggable={false}
-            />
+            <img src={papachoaLogo} alt="Papachoa" className="w-48 select-none" draggable={false} />
           </div>
           <p
             className="mt-4 text-xl md:text-2xl font-bold text-center select-none font-display"
@@ -397,7 +392,7 @@ const HeroPapacho = () => {
           </button>
         </div>
 
-        {/* Floating birds — desktop only */}
+        {/* Floating birds */}
         {BIRDS.map((bird, i) => (
           <img
             key={i}
@@ -418,6 +413,14 @@ const HeroPapacho = () => {
       </div>
     </section>
   );
+};
+
+/* ── Entry point: pick mobile vs desktop ── */
+const isTouchDevice = typeof window !== "undefined" && "ontouchstart" in window;
+
+const HeroPapacho = () => {
+  if (isTouchDevice) return <MobileHero />;
+  return <DesktopHero />;
 };
 
 export default HeroPapacho;
