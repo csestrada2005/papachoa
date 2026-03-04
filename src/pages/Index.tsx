@@ -2,8 +2,7 @@ import React, { lazy, Suspense, useEffect, useState, useRef } from "react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import HeroPapacho from "@/components/sections/HeroPapacho";
-
-const isTouchDevice = typeof window !== "undefined" && "ontouchstart" in window;
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import { usePrefetchRoutes } from "@/hooks/usePrefetch";
 import { useSeo } from "@/hooks/useSeo";
@@ -20,13 +19,14 @@ const Newsletter            = lazy(() => import("@/components/sections/Newslette
 const Index = () => {
   usePrefetchRoutes();
   useSeo({ title: "Papachoa México — Pijamas que abrazan", description: "Pijamas ultra suaves hechos en México para mamá, papá e hijos. Telas certificadas, estampados únicos y amor en cada costura. Envíos a todo México.", path: "/" });
+  const isMobile = useIsMobile();
 
   const [heroComplete, setHeroComplete] = useState(false);
   const autoScrollDone = React.useRef(false);
 
   // Auto-scroll — desktop only (no touch devices)
   useEffect(() => {
-    if (isTouchDevice) { autoScrollDone.current = true; return; }
+    if (isMobile) { autoScrollDone.current = true; return; }
     if (window.scrollY > 0) window.scrollTo(0, 0);
 
     const targetY = Math.round(window.innerHeight * 2);
@@ -102,7 +102,7 @@ const Index = () => {
 
   // heroComplete listener — desktop only
   useEffect(() => {
-    if (isTouchDevice) return;
+    if (isMobile) return;
     const onWheel = () => {
       if (autoScrollDone.current && !heroComplete) {
         setHeroComplete(true);
@@ -125,8 +125,8 @@ const Index = () => {
           className="relative bg-white"
           style={{
             zIndex: 10,
-            transform: (!isTouchDevice && heroComplete) ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
-            transition: !isTouchDevice ? "transform 700ms ease-out" : "none",
+            transform: (!isMobile && heroComplete) ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
+            transition: !isMobile ? "transform 700ms ease-out" : "none",
           }}
         >
         <Suspense fallback={null}>

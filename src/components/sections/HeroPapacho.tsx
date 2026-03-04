@@ -416,10 +416,12 @@ const DesktopHero = () => {
 };
 
 /* ── Entry point: pick mobile vs desktop ── */
-const isTouchDevice = typeof window !== "undefined" && "ontouchstart" in window;
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const HeroPapacho = () => {
-  if (isTouchDevice) return <MobileHero />;
+  const isMobile = useIsMobile();
+  // On first render isMobile is undefined → default to mobile (lighter) to avoid flash
+  if (isMobile || isMobile === undefined) return <MobileHero />;
   return <DesktopHero />;
 };
 
