@@ -21,7 +21,7 @@ const stories = [
 },
 {
   num: "02",
-  title: "Cuidado",
+  title: "Ternura",
   body: "Cada puntada es un gesto de ternura. Telas seleccionadas para pieles sensibles, cortes que abrazan sin apretar y detalles hechos con el cariño de quien entiende lo que significa cuidar a los que más amas.",
   accentColor: "hsl(var(--papachoa-yellow))",
   img: pijamadinosaurio3,
@@ -29,8 +29,8 @@ const stories = [
 },
 {
   num: "03",
-  title: "Regala apapachos",
-  body: "Más que una pijama, es un abrazo que se queda. Regala momentos de conexión, noches de cuentos y mañanas de risas. Regala algo que se siente, que se disfruta y que se recuerda.",
+  title: "Regala Amor",
+  body: "Regala apapachos. Más que una pijama, es un abrazo que se queda. Regala momentos de conexión, noches de cuentos y mañanas de risas. Regala algo que se siente, que se disfruta y que se recuerda.",
   accentColor: "hsl(var(--papachoa-blue))",
   img: pijamaBlanca4,
   imgAlt: "Abrazo familiar antes de dormir"
