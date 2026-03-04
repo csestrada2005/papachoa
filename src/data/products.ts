@@ -76,6 +76,11 @@ export function categorizeProduct(title: string, description: string = "", tags:
   const d = description.toLowerCase();
   const allText = `${t} ${d} ${tags.join(" ").toLowerCase()}`;
 
+  // Hongos (check before para-pintar to avoid false matches on "color")
+  if (allText.includes("hongo") || allText.includes("hongos") || allText.includes("mushroom") || allText.includes("seta") || allText.includes("setas")) {
+    return "hongos";
+  }
+
   // Flores
   if (allText.includes("flor") || allText.includes("flores") || allText.includes("flower")) {
     return "flores";
@@ -86,14 +91,9 @@ export function categorizeProduct(title: string, description: string = "", tags:
     return "changos";
   }
 
-  // Para Pintar / Doodle / Colorear
-  if (allText.includes("pintar") || allText.includes("colorear") || allText.includes("doodle") || allText.includes("dibujo") || allText.includes("dibujar") || allText.includes("paint") || allText.includes("color")) {
+  // Para Pintar / Doodle / Colorear (no broad "color" match)
+  if (allText.includes("pintar") || allText.includes("colorear") || allText.includes("doodle") || allText.includes("dibujo") || allText.includes("dibujar") || allText.includes("paint")) {
     return "para-pintar";
-  }
-
-  // Hongos
-  if (allText.includes("hongo") || allText.includes("hongos") || allText.includes("mushroom") || allText.includes("seta") || allText.includes("setas")) {
-    return "hongos";
   }
 
   // Default
