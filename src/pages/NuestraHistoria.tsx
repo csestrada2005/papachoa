@@ -11,45 +11,45 @@ import pijamadinosaurio3 from "@/assets/pijama-dinosaurio-3-papa-upside.jpg";
 import pijamaRosa9 from "@/assets/pijama-rosa-9-acostados.jpg";
 
 const stories = [
-  {
-    num: "01",
-    title: "Descanso",
-    body: "Para que tu bebé y niño duerman envueltos en suavidad. Cada pijama está pensada para acompañar sus noches, sus siestas y esos momentos donde solo necesitan sentirse seguros y cómodos.",
-    accentColor: "hsl(var(--papachoa-coral))",
-    img: pijamaRosa3,
-    imgAlt: "Mamá e hija jugando en pijama",
-  },
-  {
-    num: "02",
-    title: "Cuidado",
-    body: "Cada puntada es un gesto de ternura. Telas seleccionadas para pieles sensibles, cortes que abrazan sin apretar y detalles hechos con el cariño de quien entiende lo que significa cuidar a los que más amas.",
-    accentColor: "hsl(var(--papachoa-yellow))",
-    img: pijamadinosaurio3,
-    imgAlt: "Papá jugando con su hija en pijama de dinosaurios",
-  },
-  {
-    num: "03",
-    title: "Regala apapachos",
-    body: "Más que una pijama, es un abrazo que se queda. Regala momentos de conexión, noches de cuentos y mañanas de risas. Regala algo que se siente, que se disfruta y que se recuerda.",
-    accentColor: "hsl(var(--papachoa-blue))",
-    img: pijamaBlanca4,
-    imgAlt: "Abrazo familiar antes de dormir",
-  },
-];
+{
+  num: "01",
+  title: "Descanso",
+  body: "Para que tu bebé y niño duerman envueltos en suavidad. Cada pijama está pensada para acompañar sus noches, sus siestas y esos momentos donde solo necesitan sentirse seguros y cómodos.",
+  accentColor: "hsl(var(--papachoa-coral))",
+  img: pijamaRosa3,
+  imgAlt: "Mamá e hija jugando en pijama"
+},
+{
+  num: "02",
+  title: "Cuidado",
+  body: "Cada puntada es un gesto de ternura. Telas seleccionadas para pieles sensibles, cortes que abrazan sin apretar y detalles hechos con el cariño de quien entiende lo que significa cuidar a los que más amas.",
+  accentColor: "hsl(var(--papachoa-yellow))",
+  img: pijamadinosaurio3,
+  imgAlt: "Papá jugando con su hija en pijama de dinosaurios"
+},
+{
+  num: "03",
+  title: "Regala apapachos",
+  body: "Más que una pijama, es un abrazo que se queda. Regala momentos de conexión, noches de cuentos y mañanas de risas. Regala algo que se siente, que se disfruta y que se recuerda.",
+  accentColor: "hsl(var(--papachoa-blue))",
+  img: pijamaBlanca4,
+  imgAlt: "Abrazo familiar antes de dormir"
+}];
+
 
 const qualities = [
-  { text: "Telas seleccionadas pieza por pieza — sin atajos.", offset: "0%" },
-  { text: "Ultra suaves desde el primer lavado, sin ablandar.", offset: "8%" },
-  { text: "Sin químicos agresivos. Aptas para piel de bebé.", offset: "2%" },
-  { text: "Diseñadas para abrazar sin apretar. Sin rigidez.", offset: "10%" },
-  { text: "Respiran con tu cuerpo toda la noche.", offset: "5%" },
-];
+{ text: "Telas seleccionadas pieza por pieza — sin atajos.", offset: "0%" },
+{ text: "Ultra suaves desde el primer lavado, sin ablandar.", offset: "8%" },
+{ text: "Sin químicos agresivos. Aptas para piel de bebé.", offset: "2%" },
+{ text: "Diseñadas para abrazar sin apretar. Sin rigidez.", offset: "10%" },
+{ text: "Respiran con tu cuerpo toda la noche.", offset: "5%" }];
+
 
 const NuestraHistoria = () => {
   useSeo({
     title: "Nuestra Historia | Papachoa México",
     description: "Conoce la historia detrás de Papachoa: materiales, procesos y el amor que ponemos en cada prenda hecha en México.",
-    path: "/nuestra-historia",
+    path: "/nuestra-historia"
   });
 
   const { data: shopifyProducts } = useShopifyProducts();
@@ -135,8 +135,8 @@ const NuestraHistoria = () => {
             </SectionReveal>
 
             <div className="grid md:grid-cols-3 gap-8">
-              {stories.map((story, i) => (
-                <SectionReveal key={story.num} delay={100 + i * 100}>
+              {stories.map((story, i) =>
+              <SectionReveal key={story.num} delay={100 + i * 100}>
                   <div>
                     <span className="block font-bold leading-none mb-3 select-none" style={{ fontSize: "3rem", color: story.accentColor, opacity: 0.2 }} aria-hidden="true">
                       {story.num}
@@ -150,7 +150,7 @@ const NuestraHistoria = () => {
                     </div>
                   </div>
                 </SectionReveal>
-              ))}
+              )}
             </div>
           </div>
         </section>
@@ -180,7 +180,7 @@ const NuestraHistoria = () => {
               <SectionReveal delay={60} className="lg:col-span-5">
                 <div className="relative mx-auto" style={{ maxWidth: "80%" }}>
                   <div className="overflow-hidden" style={{ aspectRatio: "3/4" }}>
-                    <img src={pijamaRosa9} alt="Detalle de suavidad de tela Papachoa" className="w-full h-full object-cover" loading="lazy" width={480} height={640} />
+                    <img alt="Detalle de suavidad de tela Papachoa" className="w-full h-full object-cover" loading="lazy" width={480} height={640} src="/lovable-uploads/13182a04-e5f9-4f1b-a854-0ff98c311554.jpg" />
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-6" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 100%)" }}>
                     <p className="font-display text-white leading-snug" style={{ fontSize: "clamp(1.2rem, 2.5vw, 1.8rem)" }}>
@@ -191,8 +191,8 @@ const NuestraHistoria = () => {
               </SectionReveal>
 
               <div className="lg:col-span-6 lg:col-start-7">
-                {qualities.map((q, i) => (
-                  <SectionReveal key={i} delay={100 + i * 80}>
+                {qualities.map((q, i) =>
+                <SectionReveal key={i} delay={100 + i * 80}>
                     <div className="flex items-start gap-5 py-5 border-b border-border/20" style={{ paddingLeft: q.offset }}>
                       <span className="flex-shrink-0 font-bold text-foreground/10 select-none" style={{ fontSize: "clamp(1.6rem, 3vw, 2.4rem)", lineHeight: 1.1, minWidth: "2rem" }} aria-hidden="true">
                         {String(i + 1).padStart(2, "0")}
@@ -205,15 +205,15 @@ const NuestraHistoria = () => {
                       </div>
                     </div>
                   </SectionReveal>
-                ))}
+                )}
               </div>
             </div>
           </div>
         </section>
 
         {/* Products from Shopify */}
-        {shopifyProducts && shopifyProducts.length > 0 && (
-          <section className="py-16 md:py-24 bg-background">
+        {shopifyProducts && shopifyProducts.length > 0 &&
+        <section className="py-16 md:py-24 bg-background">
             <div className="container">
               <SectionReveal>
                 <h2 className="font-bold text-foreground leading-none mb-4 text-center" style={{ fontSize: "clamp(1.8rem, 4vw, 3rem)" }}>
@@ -225,8 +225,8 @@ const NuestraHistoria = () => {
               </SectionReveal>
 
               <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                {shopifyProducts.filter(p => p.image !== "/placeholder.svg").slice(0, 6).map((product, i) => (
-                  <SectionReveal key={product.id} delay={i * 80}>
+                {shopifyProducts.filter((p) => p.image !== "/placeholder.svg").slice(0, 6).map((product, i) =>
+              <SectionReveal key={product.id} delay={i * 80}>
                     <Link to={`/producto/${product.slug}`} className="block group">
                       <div className="bg-card rounded-2xl border border-border/30 overflow-hidden transition-shadow hover:shadow-md">
                         <div className="aspect-video overflow-hidden">
@@ -234,25 +234,25 @@ const NuestraHistoria = () => {
                         </div>
                         <div className="p-6">
                           <h3 className="font-display text-lg text-foreground mb-2 group-hover:text-primary transition-colors">{product.name}</h3>
-                          {product.longDescription && (
-                            <div
-                              className="text-sm text-muted-foreground leading-relaxed line-clamp-4 prose prose-sm max-w-none [&>p]:mb-2"
-                              dangerouslySetInnerHTML={{ __html: product.longDescription }}
-                            />
-                          )}
+                          {product.longDescription &&
+                      <div
+                        className="text-sm text-muted-foreground leading-relaxed line-clamp-4 prose prose-sm max-w-none [&>p]:mb-2"
+                        dangerouslySetInnerHTML={{ __html: product.longDescription }} />
+
+                      }
                         </div>
                       </div>
                     </Link>
                   </SectionReveal>
-                ))}
+              )}
               </div>
             </div>
           </section>
-        )}
+        }
       </main>
       <Footer />
-    </div>
-  );
+    </div>);
+
 };
 
 export default NuestraHistoria;
