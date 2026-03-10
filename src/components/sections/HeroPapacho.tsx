@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import heroImage from "@/assets/hero-mama-hija.png";
+import heroImage from "@/assets/hero-mama-hija-new.svg";
 import papachoaLogo from "@/assets/brand/papachoa-logo-nuevo.png";
 import birdYellow from "@/assets/brand/pajaro-amarillo-sf.png";
 import birdBlue from "@/assets/brand/pajaro-azul-claro-sf.png";
