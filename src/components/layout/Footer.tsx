@@ -55,7 +55,7 @@ const Footer = () => {
           <div className="col-span-2 md:col-span-1">
              <img src={logo} alt="Papachoa México" className="h-10 w-auto mb-6 opacity-80" loading="lazy" decoding="async" width={120} height={40} />
             <p className="text-sm mb-6 max-w-xs leading-relaxed text-muted-foreground">
-              Pijamas y apapachos pensados por mamás, para mamás.
+              Pijamas y apapa ultra suaves pensados por mamás, para mamás.
             </p>
             <div className="flex gap-3">
                <button type="button" onClick={(e) => openExternal(brand.socials.instagramUrl, e)} aria-label="Síguenos en Instagram" className="w-10 h-10 flex items-center justify-center rounded-full border border-foreground/15 text-muted-foreground hover:text-foreground hover:border-foreground/30 transition-all cursor-pointer">
