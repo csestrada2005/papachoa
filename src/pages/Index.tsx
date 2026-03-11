@@ -149,10 +149,10 @@ const Index = () => {
             <ApatachoItems />
             <Newsletter />
           </div>
+          <Footer />
         </Suspense>
         </div>
       </main>
-      <Footer />
     </div>
   );
 };
