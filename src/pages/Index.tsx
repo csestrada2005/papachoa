@@ -117,12 +117,7 @@ const Index = () => {
     <div className="min-h-screen bg-white overflow-x-clip">
       <Header transparent />
       <main>
-        <div
-          id="hero"
-          style={{
-            marginBottom: (!isMobile && heroComplete) ? `calc(var(--vh, 1vh) * -100)` : undefined,
-          }}
-        >
+        <div id="hero">
           <HeroPapacho />
         </div>
 
@@ -132,6 +127,7 @@ const Index = () => {
             zIndex: 10,
             transform: (!isMobile && heroComplete) ? `translateY(calc(var(--vh, 1vh) * -100))` : "translateY(0)",
             transition: !isMobile ? "transform 700ms ease-out" : "none",
+            marginBottom: (!isMobile && heroComplete) ? `calc(var(--vh, 1vh) * -100)` : undefined,
           }}
         >
         <Suspense fallback={null}>
@@ -153,10 +149,10 @@ const Index = () => {
             <ApatachoItems />
             <Newsletter />
           </div>
-          <Footer />
         </Suspense>
         </div>
       </main>
+      <Footer />
     </div>
   );
 };
