@@ -30,7 +30,7 @@ const stories = [
 {
   num: "03",
   title: "Regala Amor",
-  body: "Regala apapachos. Más que una pijama, es un abrazo que se queda. Regala momentos de conexión, noches de cuentos y mañanas de risas. Regala algo que se siente, que se disfruta y que se recuerda.",
+  body: "Más que una pijama, es un abrazo que se queda.",
   accentColor: "hsl(var(--papachoa-blue))",
   img: "/lovable-uploads/a789a8e3-1b2f-482f-a04a-c6325aa702b5.webp",
   imgAlt: "Abrazo familiar antes de dormir"

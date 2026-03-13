@@ -18,7 +18,7 @@ const MadeInMexico = () => (
         </h2>
         <p className="text-lg md:text-xl text-muted-foreground font-light max-w-xl mx-auto mb-14 leading-relaxed">
           Trabajamos con talleres locales bajo principios de comercio justo.
-          Cada pijama lleva el cuidado de artesanas que ponen el corazón en cada puntada.
+          Nuestras costureras ponen el corazón en cada puntada.
         </p>
 
         <div className="grid grid-cols-3 gap-6 md:gap-12">

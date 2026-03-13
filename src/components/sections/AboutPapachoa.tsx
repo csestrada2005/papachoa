@@ -61,13 +61,8 @@ const AboutPapachoa = () => {
             también la de mamá.
           </p>
           <p>
-            Somos una marca mexicana que nació de una convicción simple: los
-            momentos de descanso merecen ser tan especiales como el amor que
-            los rodea.
-          </p>
-          <p>
-            Cada prenda es única. Cada print diseñado por Miriam y Mercedes.
-            Cada pieza confeccionada con cariño por Fer, Alondra y Lucy.
+            Somos una marca mexicana. Detrás de cada prenda está el trabajo y
+            el cariño de Miriam, Mer, Fer, Alondra, Lucy y muchas manos más.
           </p>
         </div>
 
