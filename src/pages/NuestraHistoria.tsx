@@ -21,8 +21,8 @@ const stories = [
 },
 {
   num: "02",
-  title: "Ternura",
-  body: "Cada puntada es un gesto de ternura. Telas seleccionadas para pieles sensibles, cortes que abrazan sin apretar y detalles hechos con el cariño de quien entiende lo que significa cuidar a los que más amas.",
+  title: "Cuidado",
+  body: "Telas seleccionadas para pieles sensibles, cortes que no aprietan, sin etiquetas.",
   accentColor: "hsl(var(--papachoa-yellow))",
   img: pijamadinosaurio3,
   imgAlt: "Papá jugando con su hija en pijama de dinosaurios"
