@@ -8,6 +8,7 @@ import type { Product } from "@/data/products";
 interface ProductInfoProps {
   product: Product;
   collectionLabel: string;
+  onOptionsChange?: (allSelected: boolean) => void;
 }
 
 /**
