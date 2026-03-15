@@ -91,6 +91,10 @@ const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoP
     return sizeOk && secOk;
   }, [hasShopifyOptions, options, selections, product, selectedSize, selectedSizeSecondary]);
 
+  useEffect(() => {
+    onOptionsChange?.(allOptionsSelected);
+  }, [allOptionsSelected, onOptionsChange]);
+
   const selectedVariant = useMemo(() => {
     if (!hasShopifyOptions) return undefined;
     return findMatchingVariant(
