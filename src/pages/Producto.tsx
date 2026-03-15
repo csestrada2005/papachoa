@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect, useState } from "react";
+import { useMemo, useRef, useEffect, useState, useCallback } from "react";
 import { useParams, Link } from "react-router-dom";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -47,6 +47,8 @@ const Producto = () => {
   // ── Scroll-driven title shrink (desktop only) ──
   const titleRef = useRef<HTMLDivElement>(null);
   const [titleProgress, setTitleProgress] = useState(0);
+  const [allOptionsSelected, setAllOptionsSelected] = useState(false);
+  const handleOptionsChange = useCallback((v: boolean) => setAllOptionsSelected(v), []);
 
   useEffect(() => {
     if (isMobile) return;
@@ -145,7 +147,7 @@ const Producto = () => {
                   willChange: "transform, opacity",
                 }}
               >
-                <ProductInfo product={product} collectionLabel={collectionLabel} />
+                <ProductInfo product={product} collectionLabel={collectionLabel} onOptionsChange={handleOptionsChange} />
               </div>
 
             </div>
@@ -168,7 +170,7 @@ const Producto = () => {
         </div>
       </main>
 
-      <StickyMobileCTA product={product} />
+      <StickyMobileCTA product={product} allOptionsSelected={allOptionsSelected} />
       <Footer />
     </div>
   );

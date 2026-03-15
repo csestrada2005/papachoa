@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { Minus, Plus, ShoppingBag, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
@@ -8,6 +8,7 @@ import type { Product } from "@/data/products";
 interface ProductInfoProps {
   product: Product;
   collectionLabel: string;
+  onOptionsChange?: (allSelected: boolean) => void;
 }
 
 /**
@@ -60,7 +61,7 @@ function isOptionValueAvailable(
   });
 }
 
-const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
+const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoProps) => {
   // Use shopifyOptions if available, otherwise fall back to sizes/sizesSecondary
   const hasShopifyOptions = product.shopifyOptions && product.shopifyOptions.length > 0;
   const options = hasShopifyOptions ? product.shopifyOptions! : [];
@@ -89,6 +90,10 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
     const secOk = !product.sizesSecondary || product.sizesSecondary.length === 0 || !!selectedSizeSecondary;
     return sizeOk && secOk;
   }, [hasShopifyOptions, options, selections, product, selectedSize, selectedSizeSecondary]);
+
+  useEffect(() => {
+    onOptionsChange?.(allOptionsSelected);
+  }, [allOptionsSelected, onOptionsChange]);
 
   const selectedVariant = useMemo(() => {
     if (!hasShopifyOptions) return undefined;
@@ -184,6 +189,7 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
       <div className="embroidery-line w-16" />
 
       {/* Shopify dynamic options */}
+      <div id="product-options">
       {hasShopifyOptions && options.map((opt, optIdx) => (
         <div key={opt.name}>
           <p className="text-sm font-medium text-foreground mb-2 tracking-wide">
@@ -264,8 +270,9 @@ const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
           </div>
         </div>
       )}
+      </div>
 
-      {/* Out of stock message */}
+
       {allOptionsSelected && isSelectedOutOfStock && (
         <div className="bg-muted/50 border border-border/40 rounded-lg px-4 py-3">
           <p className="text-sm text-muted-foreground font-medium">

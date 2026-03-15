@@ -5,9 +5,10 @@ import type { Product } from "@/data/products";
 
 interface StickyMobileCTAProps {
   product: Product;
+  allOptionsSelected: boolean;
 }
 
-const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
+const StickyMobileCTA = ({ product, allOptionsSelected }: StickyMobileCTAProps) => {
   const { addItem } = useCart();
 
   const formattedPrice = new Intl.NumberFormat("es-MX", {
@@ -20,11 +21,16 @@ const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
     product.sizes.length > 1 ||
     (product.sizesSecondary && product.sizesSecondary.length > 0);
 
-  const handleAdd = () => {
-    if (needsOptions) {
-      // Scroll to product info section where options are
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      toast("Selecciona tus opciones antes de agregar al carrito", { duration: 3000 });
+  const showAddToCart = !needsOptions || allOptionsSelected;
+
+  const handleClick = () => {
+    if (!showAddToCart) {
+      // Scroll to the options section
+      const el = document.getElementById("product-options");
+      if (el) {
+        const y = el.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }
       return;
     }
     addItem(product);
@@ -39,11 +45,11 @@ const StickyMobileCTA = ({ product }: StickyMobileCTAProps) => {
           <p className="text-sm text-muted-foreground">{formattedPrice}</p>
         </div>
         <button
-          onClick={handleAdd}
+          onClick={handleClick}
           className="btn-artisan text-sm shrink-0"
         >
           <ShoppingBag className="h-4 w-4" />
-          {needsOptions ? "Ver opciones" : "Agregar"}
+          {showAddToCart ? "Agregar" : "Ver opciones"}
         </button>
       </div>
     </div>
