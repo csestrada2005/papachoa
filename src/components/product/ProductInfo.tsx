@@ -61,7 +61,7 @@ function isOptionValueAvailable(
   });
 }
 
-const ProductInfo = ({ product, collectionLabel }: ProductInfoProps) => {
+const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoProps) => {
   // Use shopifyOptions if available, otherwise fall back to sizes/sizesSecondary
   const hasShopifyOptions = product.shopifyOptions && product.shopifyOptions.length > 0;
   const options = hasShopifyOptions ? product.shopifyOptions! : [];
