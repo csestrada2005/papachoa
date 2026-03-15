@@ -1,6 +1,7 @@
 import pajaroNaranja from "@/assets/brand/pajaro-naranja.png";
 import pajaroAmarillo from "@/assets/brand/pajaro-amarillo.png";
 import pajaroAzul from "@/assets/brand/pajaro-azul.png";
+import tallerCorte from "@/assets/taller-corte.webp";
 import SectionReveal from "@/components/ui/SectionReveal";
 
 /* ─────────────────────────────────────────
