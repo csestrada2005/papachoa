@@ -147,7 +147,7 @@ const Producto = () => {
                   willChange: "transform, opacity",
                 }}
               >
-                <ProductInfo product={product} collectionLabel={collectionLabel} />
+                <ProductInfo product={product} collectionLabel={collectionLabel} onOptionsChange={handleOptionsChange} />
               </div>
 
             </div>
