@@ -1,6 +1,7 @@
 import pajaroNaranja from "@/assets/brand/pajaro-naranja.png";
 import pajaroAmarillo from "@/assets/brand/pajaro-amarillo.png";
 import pajaroAzul from "@/assets/brand/pajaro-azul.png";
+import tallerCorte from "@/assets/taller-corte.webp";
 import SectionReveal from "@/components/ui/SectionReveal";
 
 /* ─────────────────────────────────────────
@@ -68,14 +69,14 @@ const MexicoAmor = () => (
         </SectionReveal>
 
         <SectionReveal delay={100} className="md:w-1/2 mt-0 md:mt-0">
-          <p
-            className="text-muted-foreground font-light leading-relaxed"
-            style={{ fontSize: "clamp(0.93rem, 1.4vw, 1.08rem)" }}
-          >
-            Trabajamos con talleres locales bajo principios de comercio justo.
-            Cada Papachoa lleva el cuidado de artesanas que ponen el corazón
-            en cada puntada.
-          </p>
+          <img
+            src={tallerCorte}
+            alt="Artesana cortando tela estampada en taller de Papachoa"
+            className="w-full h-full object-cover"
+            style={{ borderRadius: "8px", minHeight: "200px" }}
+            loading="lazy"
+            decoding="async"
+          />
         </SectionReveal>
       </div>
 
