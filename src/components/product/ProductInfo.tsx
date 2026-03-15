@@ -270,8 +270,9 @@ const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoP
           </div>
         </div>
       )}
+      </div>
 
-      {/* Out of stock message */}
+
       {allOptionsSelected && isSelectedOutOfStock && (
         <div className="bg-muted/50 border border-border/40 rounded-lg px-4 py-3">
           <p className="text-sm text-muted-foreground font-medium">
