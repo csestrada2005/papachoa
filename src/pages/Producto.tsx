@@ -170,7 +170,7 @@ const Producto = () => {
         </div>
       </main>
 
-      <StickyMobileCTA product={product} />
+      <StickyMobileCTA product={product} allOptionsSelected={allOptionsSelected} />
       <Footer />
     </div>
   );
