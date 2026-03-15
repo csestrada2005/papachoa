@@ -47,6 +47,8 @@ const Producto = () => {
   // ── Scroll-driven title shrink (desktop only) ──
   const titleRef = useRef<HTMLDivElement>(null);
   const [titleProgress, setTitleProgress] = useState(0);
+  const [allOptionsSelected, setAllOptionsSelected] = useState(false);
+  const handleOptionsChange = useCallback((v: boolean) => setAllOptionsSelected(v), []);
 
   useEffect(() => {
     if (isMobile) return;
