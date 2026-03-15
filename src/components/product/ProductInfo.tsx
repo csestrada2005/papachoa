@@ -189,6 +189,7 @@ const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoP
       <div className="embroidery-line w-16" />
 
       {/* Shopify dynamic options */}
+      <div id="product-options">
       {hasShopifyOptions && options.map((opt, optIdx) => (
         <div key={opt.name}>
           <p className="text-sm font-medium text-foreground mb-2 tracking-wide">
