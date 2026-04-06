@@ -125,6 +125,27 @@ export type Database = {
         }
         Relationships: []
       }
+      subscribers: {
+        Row: {
+          accepted_terms: boolean
+          email: string
+          id: string
+          subscribed_at: string
+        }
+        Insert: {
+          accepted_terms?: boolean
+          email: string
+          id?: string
+          subscribed_at?: string
+        }
+        Update: {
+          accepted_terms?: boolean
+          email?: string
+          id?: string
+          subscribed_at?: string
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
