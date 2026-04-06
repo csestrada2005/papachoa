@@ -10,7 +10,7 @@ export interface CartItem {
 
 interface CartContextType {
   items: CartItem[];
-  addItem: (product: Product) => Promise<void>;
+  addItem: (product: Product, variantId?: string) => Promise<void>;
   removeItem: (productId: string) => Promise<void>;
   updateQuantity: (productId: string, quantity: number) => Promise<void>;
   clearCart: () => void;
@@ -41,7 +41,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [cartId, checkoutUrl]);
 
-  const addItem = async (product: Product) => {
+  const addItem = async (product: Product, variantId?: string) => {
+    const merchandiseId = variantId || product.id;
     const existing = items.find((item) => item.product.id === product.id);
     if (existing) {
       await updateQuantity(product.id, existing.quantity + 1);
@@ -51,17 +52,43 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     setIsSyncing(true);
     try {
       if (!cartId) {
-        const result = await createShopifyCart(product.id, 1);
+        const result = await createShopifyCart(merchandiseId, 1);
         if (result) {
           setCartId(result.cartId);
           setCheckoutUrl(result.checkoutUrl);
           setItems((prev) => [...prev, { product, quantity: 1, lineId: result.lineId }]);
         }
       } else {
-        const result = await addLineToShopifyCart(cartId, product.id, 1);
+        const result = await addLineToShopifyCart(cartId, merchandiseId, 1);
         if (result.success) {
           setItems((prev) => [...prev, { product, quantity: 1, lineId: result.lineId }]);
+        } else {
+          // Cart may have expired — retry with a fresh cart
+          console.warn("Cart line add failed, creating new cart...");
+          setCartId(null);
+          setCheckoutUrl(null);
+          const freshResult = await createShopifyCart(merchandiseId, 1);
+          if (freshResult) {
+            setCartId(freshResult.cartId);
+            setCheckoutUrl(freshResult.checkoutUrl);
+            setItems([{ product, quantity: 1, lineId: freshResult.lineId }]);
+          }
         }
+      }
+    } catch (err) {
+      console.error("addItem error, resetting cart:", err);
+      // Network or expired cart error — create fresh cart
+      setCartId(null);
+      setCheckoutUrl(null);
+      try {
+        const freshResult = await createShopifyCart(merchandiseId, 1);
+        if (freshResult) {
+          setCartId(freshResult.cartId);
+          setCheckoutUrl(freshResult.checkoutUrl);
+          setItems([{ product, quantity: 1, lineId: freshResult.lineId }]);
+        }
+      } catch (retryErr) {
+        console.error("Retry also failed:", retryErr);
       }
     } finally {
       setIsSyncing(false);

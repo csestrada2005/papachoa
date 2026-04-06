@@ -132,8 +132,9 @@ const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoP
       toast("Esta combinación está agotada.", { duration: 3000 });
       return;
     }
+    const variantId = selectedVariant?.id || product.id;
     for (let i = 0; i < quantity; i++) {
-      addItem(product);
+      addItem(product, variantId);
     }
     // item added silently
   };
