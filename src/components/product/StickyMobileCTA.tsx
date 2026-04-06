@@ -34,7 +34,7 @@ const StickyMobileCTA = ({ product, allOptionsSelected }: StickyMobileCTAProps) 
       return;
     }
     addItem(product);
-    toast(`${product.name} agregado al carrito`, { duration: 3000 });
+    // item added silently
   };
 
   return (
