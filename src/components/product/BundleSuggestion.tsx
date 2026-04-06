@@ -68,7 +68,7 @@ const BundleSuggestion = ({ currentProduct }: BundleSuggestionProps) => {
                 onClick={(e) => {
                   e.stopPropagation();
                   addItem(item);
-                  toast(`${item.name} agregado al carrito`, { duration: 3000 });
+                  // item added silently
                 }}
                 className="w-full flex items-center justify-center gap-1.5 text-xs font-medium bg-primary/10 hover:bg-primary/20 text-primary rounded-lg py-2 active:scale-95 transition-all border border-primary/20"
               >

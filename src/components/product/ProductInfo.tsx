@@ -135,7 +135,7 @@ const ProductInfo = ({ product, collectionLabel, onOptionsChange }: ProductInfoP
     for (let i = 0; i < quantity; i++) {
       addItem(product);
     }
-    toast(`${product.name} agregado al carrito`, { duration: 3000 });
+    // item added silently
   };
 
   // Friendly option name mapping
