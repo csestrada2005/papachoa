@@ -1,14 +1,20 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Search, X, ChevronDown } from "lucide-react";
-import { products } from "@/data/products";
+import { products, collections as allCollections } from "@/data/products";
+import type { Collection } from "@/data/products";
 import MiniCart from "@/components/MiniCart";
 import { useCart } from "@/context/CartContext";
 import logo from "@/assets/brand/papachoa-logo-nuevo.png";
 
+const collectionChildren = allCollections.map((c) => ({
+  label: c.label,
+  href: c.id === "todos" ? "/catalogo" : `/catalogo?categoria=${c.id}`,
+}));
+
 const NAV_LINKS: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
   { label: "Inicio", href: "/" },
-  { label: "Catálogo", href: "/catalogo" },
+  { label: "Colecciones", href: "/catalogo", children: collectionChildren },
   { label: "Nuestra Historia", href: "/nuestra-historia" },
   { label: "Preguntas Frecuentes", href: "/faq" },
   {
@@ -24,7 +30,7 @@ const NAV_LINKS: { label: string; href: string; children?: { label: string; href
 
 const MOBILE_LINKS: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
   { label: "Inicio", href: "/" },
-  { label: "Catálogo", href: "/catalogo" },
+  { label: "Colecciones", href: "/catalogo", children: collectionChildren },
   { label: "Nuestra Historia", href: "/nuestra-historia" },
   { label: "Preguntas Frecuentes", href: "/faq" },
   {
