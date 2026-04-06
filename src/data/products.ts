@@ -57,6 +57,7 @@ export const collections: { id: Collection; label: string; color: string }[] = [
   { id: "changos", label: "Changos", color: "bg-papachoa-sage" },
   { id: "para-pintar", label: "Para Pintar", color: "bg-papachoa-peach" },
   { id: "hongos", label: "Hongos", color: "bg-papachoa-cream" },
+  { id: "mundial", label: "Mundial", color: "bg-papachoa-cream" },
   { id: "otros", label: "Otros", color: "bg-papachoa-cream" },
 ];
 
@@ -65,6 +66,7 @@ export const collectionDescriptions: Record<Exclude<Collection, "todos">, string
   changos: "Divertidos prints de changos",
   "para-pintar": "Diseños listos para colorear",
   hongos: "Estampados de hongos mágicos",
+  mundial: "Pijamas mundialistas para toda la familia",
   otros: "Más diseños únicos",
 };
 
