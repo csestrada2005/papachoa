@@ -227,6 +227,14 @@ const ProductCard = memo(({ product, isActive, onActivate, onDeactivate }: Produ
           </span>
         )}
 
+        {/* Nueva Colección badge for Mundial */}
+        {!isSoldOut && !isLowStock && product.collection === "mundial" && (
+          <span className="absolute top-2 left-2 z-10 text-white text-[10px] font-semibold tracking-wide uppercase px-2.5 py-1 rounded-md backdrop-blur-sm"
+            style={{ background: "hsl(160 50% 42% / 0.9)" }}>
+            Nueva Colección
+          </span>
+        )}
+
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/5 transition-colors duration-300" />
 

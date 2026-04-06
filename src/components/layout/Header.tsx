@@ -1,14 +1,20 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Search, X, ChevronDown } from "lucide-react";
-import { products } from "@/data/products";
+import { products, collections as allCollections } from "@/data/products";
+import type { Collection } from "@/data/products";
 import MiniCart from "@/components/MiniCart";
 import { useCart } from "@/context/CartContext";
 import logo from "@/assets/brand/papachoa-logo-nuevo.png";
 
+const collectionChildren = allCollections.map((c) => ({
+  label: c.label,
+  href: c.id === "todos" ? "/catalogo" : `/catalogo?categoria=${c.id}`,
+}));
+
 const NAV_LINKS: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
   { label: "Inicio", href: "/" },
-  { label: "Catálogo", href: "/catalogo" },
+  { label: "Colecciones", href: "/catalogo", children: collectionChildren },
   { label: "Nuestra Historia", href: "/nuestra-historia" },
   { label: "Preguntas Frecuentes", href: "/faq" },
   {
@@ -24,7 +30,7 @@ const NAV_LINKS: { label: string; href: string; children?: { label: string; href
 
 const MOBILE_LINKS: { label: string; href: string; children?: { label: string; href: string }[] }[] = [
   { label: "Inicio", href: "/" },
-  { label: "Catálogo", href: "/catalogo" },
+  { label: "Colecciones", href: "/catalogo", children: collectionChildren },
   { label: "Nuestra Historia", href: "/nuestra-historia" },
   { label: "Preguntas Frecuentes", href: "/faq" },
   {
@@ -196,7 +202,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileSubOpen, setMobileSubOpen] = useState(false);
+  const [mobileSubOpen, setMobileSubOpen] = useState<string | null>(null);
 
   useEffect(() => {
     if (menuOpen) { document.body.style.overflow = "hidden"; }
@@ -301,7 +307,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
 
             {/* Hamburger — mobile only */}
             <button
-              onClick={() => { setMenuOpen((v) => !v); setMobileSubOpen(false); }}
+              onClick={() => { setMenuOpen((v) => !v); setMobileSubOpen(null); }}
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
               className="pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
               style={{ display: undefined }}
@@ -361,7 +367,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
               link.children ? (
                 <div key={link.label} className="flex flex-col items-center">
                   <button
-                    onClick={() => setMobileSubOpen((v) => !v)}
+                    onClick={() => setMobileSubOpen((v) => v === link.label ? null : link.label)}
                     className="font-display text-xl tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center inline-flex items-center gap-2"
                     style={{
                       color: "hsl(var(--foreground))",
@@ -371,9 +377,9 @@ const Header = ({ transparent = false }: HeaderProps) => {
                     }}
                   >
                     {link.label}
-                    <ChevronDown className="h-4 w-4 transition-transform" style={{ transform: mobileSubOpen ? "rotate(180deg)" : "rotate(0)" }} />
+                    <ChevronDown className="h-4 w-4 transition-transform" style={{ transform: mobileSubOpen === link.label ? "rotate(180deg)" : "rotate(0)" }} />
                   </button>
-                  {mobileSubOpen && (
+                  {mobileSubOpen === link.label && (
                     <div className="flex flex-col items-center gap-1 mt-1">
                       {link.children.map((child) => (
                         <Link

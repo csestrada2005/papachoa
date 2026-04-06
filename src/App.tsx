@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import ScrollToTop from "@/components/ScrollToTop";
 import LegalPageSkeleton from "@/components/layout/LegalPageSkeleton";
+import MundialPopup from "@/components/MundialPopup";
 import Index from "./pages/Index";
 
 // Lazy-load secondary routes – keeps initial JS bundle small
@@ -36,6 +37,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <MundialPopup />
           <Suspense fallback={null}>
             <Routes>
               <Route path="/" element={<Index />} />
