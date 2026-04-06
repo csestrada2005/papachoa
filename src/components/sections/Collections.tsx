@@ -51,6 +51,12 @@ const collections: {
     pattern: printPapachoa,
   },
   {
+    title: "Mundial",
+    description: "Pijamas mundialistas para toda la familia",
+    slug: "mundial",
+    pattern: printPuntosCoral,
+  },
+  {
     title: "Otros",
     description: "Más diseños únicos",
     slug: "otros",
