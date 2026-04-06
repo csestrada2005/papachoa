@@ -307,7 +307,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
 
             {/* Hamburger — mobile only */}
             <button
-              onClick={() => { setMenuOpen((v) => !v); setMobileSubOpen(false); }}
+              onClick={() => { setMenuOpen((v) => !v); setMobileSubOpen(null); }}
               aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
               className="pill-btn menu-pill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40 focus-visible:ring-offset-1"
               style={{ display: undefined }}
@@ -367,7 +367,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
               link.children ? (
                 <div key={link.label} className="flex flex-col items-center">
                   <button
-                    onClick={() => setMobileSubOpen((v) => !v)}
+                    onClick={() => setMobileSubOpen((v) => v === link.label ? null : link.label)}
                     className="font-display text-xl tracking-wide py-3 px-6 rounded-xl transition-all duration-200 hover:text-primary text-center inline-flex items-center gap-2"
                     style={{
                       color: "hsl(var(--foreground))",
@@ -377,9 +377,9 @@ const Header = ({ transparent = false }: HeaderProps) => {
                     }}
                   >
                     {link.label}
-                    <ChevronDown className="h-4 w-4 transition-transform" style={{ transform: mobileSubOpen ? "rotate(180deg)" : "rotate(0)" }} />
+                    <ChevronDown className="h-4 w-4 transition-transform" style={{ transform: mobileSubOpen === link.label ? "rotate(180deg)" : "rotate(0)" }} />
                   </button>
-                  {mobileSubOpen && (
+                  {mobileSubOpen === link.label && (
                     <div className="flex flex-col items-center gap-1 mt-1">
                       {link.children.map((child) => (
                         <Link
