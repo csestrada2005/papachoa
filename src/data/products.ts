@@ -79,6 +79,11 @@ export function categorizeProduct(title: string, description: string = "", tags:
   const d = description.toLowerCase();
   const allText = `${t} ${d} ${tags.join(" ").toLowerCase()}`;
 
+  // Mundial / Football
+  if (allText.includes("mundial") || allText.includes("football") || allText.includes("futbol") || allText.includes("fútbol") || allText.includes("soccer") || allText.includes("balón")) {
+    return "mundial";
+  }
+
   // Hongos (check before para-pintar to avoid false matches on "color")
   if (allText.includes("hongo") || allText.includes("hongos") || allText.includes("mushroom") || allText.includes("seta") || allText.includes("setas")) {
     return "hongos";

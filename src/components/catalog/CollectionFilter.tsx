@@ -39,6 +39,12 @@ const chipColors: Record<Collection, { bg: string; bgActive: string; border: str
     border: "hsl(162 12% 80%)",
     borderActive: "hsl(162 18% 72%)",
   },
+  mundial: {
+    bg: "hsl(120 20% 90%)",
+    bgActive: "hsl(120 28% 82%)",
+    border: "hsl(120 14% 82%)",
+    borderActive: "hsl(120 22% 74%)",
+  },
   otros: {
     bg: "hsl(220 14% 90%)",
     bgActive: "hsl(220 20% 82%)",
