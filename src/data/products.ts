@@ -24,6 +24,7 @@ export type Collection =
   | "changos"
   | "para-pintar"
   | "hongos"
+  | "mundial"
   | "otros";
 
 export interface Product {
