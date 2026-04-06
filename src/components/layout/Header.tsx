@@ -202,7 +202,7 @@ const Header = ({ transparent = false }: HeaderProps) => {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [mobileSubOpen, setMobileSubOpen] = useState(false);
+  const [mobileSubOpen, setMobileSubOpen] = useState<string | null>(null);
 
   useEffect(() => {
     if (menuOpen) { document.body.style.overflow = "hidden"; }
