@@ -32,7 +32,7 @@ const MundialPopup = () => {
   const heroImage = mundialProduct?.image;
 
   useEffect(() => {
-    const timer = setTimeout(() => setVisible(true), 3000);
+    const timer = setTimeout(() => setVisible(true), 6000);
     return () => clearTimeout(timer);
   }, []);
 
