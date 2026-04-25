@@ -109,18 +109,7 @@ const Producto = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="pt-24 md:pt-28 pb-24 md:pb-16">
-        {/* Breadcrumbs */}
-        <div className="container">
-          <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6 md:mb-8 flex-wrap font-light">
-            <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
-            <span className="text-border">/</span>
-            <Link to="/catalogo" className="hover:text-primary transition-colors">Catálogo</Link>
-            <span className="text-border">/</span>
-            <span className="text-foreground">{product.name}</span>
-          </nav>
-        </div>
-
+      <main className="pt-20 md:pt-24 pb-24 md:pb-16">
         {/* Main product section */}
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
