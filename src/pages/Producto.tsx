@@ -109,7 +109,7 @@ const Producto = () => {
     <div className="min-h-screen bg-background">
       <Header />
 
-      <main className="pt-20 md:pt-24 pb-24 md:pb-16">
+      <main className="pt-14 md:pt-16 pb-24 md:pb-16">
         {/* Main product section */}
         <div className="container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-14 items-start">
