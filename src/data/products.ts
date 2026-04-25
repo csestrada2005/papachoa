@@ -25,6 +25,7 @@ export type Collection =
   | "para-pintar"
   | "hongos"
   | "mundial"
+  | "catarinas"
   | "otros";
 
 export interface Product {
@@ -58,6 +59,7 @@ export const collections: { id: Collection; label: string; color: string }[] = [
   { id: "para-pintar", label: "Para Pintar", color: "bg-papachoa-peach" },
   { id: "hongos", label: "Hongos", color: "bg-papachoa-cream" },
   { id: "mundial", label: "Mundial", color: "bg-papachoa-cream" },
+  { id: "catarinas", label: "Catarinas", color: "bg-papachoa-blush" },
   { id: "otros", label: "Otros", color: "bg-papachoa-cream" },
 ];
 
@@ -67,6 +69,7 @@ export const collectionDescriptions: Record<Exclude<Collection, "todos">, string
   "para-pintar": "Diseños listos para colorear",
   hongos: "Estampados de hongos mágicos",
   mundial: "Pijamas mundialistas para toda la familia",
+  catarinas: "Pijamas con estampado de catarinas",
   otros: "Más diseños únicos",
 };
 
@@ -78,6 +81,11 @@ export function categorizeProduct(title: string, description: string = "", tags:
   const t = title.toLowerCase();
   const d = description.toLowerCase();
   const allText = `${t} ${d} ${tags.join(" ").toLowerCase()}`;
+
+  // Catarinas / Ladybugs (check before flores to avoid false matches)
+  if (allText.includes("catarina") || allText.includes("catarinas") || allText.includes("ladybug") || allText.includes("mariquita")) {
+    return "catarinas";
+  }
 
   // Mundial / Football
   if (allText.includes("mundial") || allText.includes("football") || allText.includes("futbol") || allText.includes("fútbol") || allText.includes("soccer") || allText.includes("balón")) {
